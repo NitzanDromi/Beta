@@ -3,10 +3,10 @@ package com.example.beta;
 /**
  * @author		Nitzan Dromi <address @nitzandr13@gmail.com>
  * @version	1(current version number of program)
- * @since		09/01/2020 (the date of the package the class was added)
+ * @since		29/01/2020 (the date of the package the class was added)
  * Beta version of the application.
  * has:
- * login/ register activity (the same activity, it's purpose can change
+ * login/ register activity (the same activity, it's purpose can change) - xml is done, program is in progress.
  * menus activity (currently empty)
  * class for all the variables related to FireBase
  * class for the User's tree in FireBase
@@ -286,6 +286,11 @@ public class Register_Login extends AppCompatActivity {
         }
     }
 
+    /**
+     * if the user is a female, she will have an option to choose if she is pregnant (in order to get supplements
+     * worked in the version created in 22/1/20
+     * @param view
+     */
     public void MaleOrFemale(View view) {
         if (swMoF.isChecked()){
             tvPregnant.setVisibility(View.VISIBLE);
