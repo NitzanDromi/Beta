@@ -2,7 +2,7 @@ package com.example.beta;
 
 /**
  * @author		Nitzan Dromi <address @nitzandr13@gmail.com>
- * @version	1(current version number of program)
+ * @version	1.2(current version number of program)
  * @since		29/01/2020 (the date of the package the class was added)
  * Beta version of the application.
  * has:
@@ -60,13 +60,14 @@ public class Register_Login extends AppCompatActivity {
     CheckBox cbStayconnect;
     Switch swMoF;
     ToggleButton tbPreg;
+    Boolean Female, Preg;
 
     TextView mDisplayDate;
     DatePickerDialog.OnDateSetListener mDateSetListener;
 
     Button btn;
     Spinner spFplace;
-    String name, phone, email, password, uid;
+    String name, phone, email, password, id, weight, height, uid, date;
     User userdb;
     Boolean stayConnect, registered;
 
@@ -90,9 +91,7 @@ public class Register_Login extends AppCompatActivity {
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         Register_Login.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener,
-                        year, month, day);
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener, year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -103,7 +102,7 @@ public class Register_Login extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month= month+1;
                 Log.d(TAG, "onDataSet: dd/mm/yyyy: "+ dayOfMonth +"/" + month +"/" +year );
-                String date = dayOfMonth +"/" + month +"/" +year;
+                date = dayOfMonth +"/" + month +"/" +year;
                 mDisplayDate.setText(date);
             }
         };
@@ -178,6 +177,9 @@ public class Register_Login extends AppCompatActivity {
                 spFplace.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
+
+
+
                 logoption();
             }
         };
@@ -185,6 +187,10 @@ public class Register_Login extends AppCompatActivity {
         tvRegister.setText(ss);
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    private void updateUI(FirebaseUser currentUser) {
+    }
+
 
     private void logoption() {
         SpannableString ss = new SpannableString("Already have an account?  Login here!");
@@ -222,9 +228,15 @@ public class Register_Login extends AppCompatActivity {
      * <p>
      */
     public void logorreg(View view) {
+        name=etName.getText().toString();
+        phone=etPhone.getText().toString();
+        email=etMail.getText().toString();
+        password=etPass.getText().toString();
+        id=etId.getText().toString();
+        weight=etWeight.getText().toString();
+        height=etHeight.getText().toString();
+
         if (registered) {
-            email=etMail.getText().toString();
-            password=etPass.getText().toString();
 
             final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);
             refAuth.signInWithEmailAndPassword(email, password)
@@ -237,53 +249,55 @@ public class Register_Login extends AppCompatActivity {
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cbStayconnect.isChecked());
                                 editor.commit();
-                                Log.d("MainActivity", "signinUserWithEmail:success");
+                                Log.d("Register_Login", "signinUserWithEmail:success");
                                 Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
                                 Intent si = new Intent(Register_Login.this,tafritim.class);
                                 startActivity(si);
                             } else {
-                                Log.d("MainActivity", "signinUserWithEmail:fail");
+                                Log.d("Register_Login", "signinUserWithEmail:fail");
                                 Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
         } else {
-            name=etName.getText().toString();
-            phone=etPhone.getText().toString();
-            email=etMail.getText().toString();
-            password=etPass.getText().toString();
 
-            final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);
-            refAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            pd.dismiss();
-                            if (task.isSuccessful()) {
-                                SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-                                SharedPreferences.Editor editor=settings.edit();
-                                editor.putBoolean("stayConnect",cbStayconnect.isChecked());
-                                editor.commit();
-                                Log.d("MainActivity", "createUserWithEmail:success");
-                                FirebaseUser user = refAuth.getCurrentUser();
-                                uid = user.getUid();
-                                userdb=new User(name,email,phone,uid);
-                                refUsers.child(name).setValue(userdb);
-                                Toast.makeText(Register_Login.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                Intent si = new Intent(Register_Login.this,tafritim.class);
-                                startActivity(si);
-                            } else {
-                                if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                    Toast.makeText(Register_Login.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
-                                else {
-                                    Log.w("MainActivity", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(Register_Login.this, "User create failed.",Toast.LENGTH_LONG).show();
+            if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
+
+                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
+                refAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                pd.dismiss();
+                                if (task.isSuccessful()) {
+                                    SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putBoolean("stayConnect", cbStayconnect.isChecked());
+                                    editor.commit();
+                                    Log.d("Register_Login", "createUserWithEmail:success");
+                                    FirebaseUser user = refAuth.getCurrentUser();
+                                    uid = user.getUid();
+                                    userdb = new User(name, email, password, phone, id, date, weight, height, Female, Preg, uid);
+                                    refUsers.child(name).setValue(userdb);
+                                    Toast.makeText(Register_Login.this, "Successful registration", Toast.LENGTH_LONG).show();
+                                    Intent si = new Intent(Register_Login.this, tafritim.class);
+                                    startActivity(si);
+                                } else {
+                                    if (task.getException() instanceof FirebaseAuthUserCollisionException)
+                                        Toast.makeText(Register_Login.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
+                                    else {
+                                        Log.w("Register_Login", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(Register_Login.this, "User create failed.", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
 
+            }else{
+                Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+            }
         }
+
     }
 
     /**
@@ -295,10 +309,20 @@ public class Register_Login extends AppCompatActivity {
         if (swMoF.isChecked()){
             tvPregnant.setVisibility(View.VISIBLE);
             tbPreg.setVisibility(View.VISIBLE);
+            Female=true;
         }
         else{
             tvPregnant.setVisibility(View.INVISIBLE);
             tbPreg.setVisibility(View.INVISIBLE);
+            Female=false;
+
         }
+    }
+
+    public void Pregnant(View view) {
+        if (tbPreg.isChecked())
+            Preg=true;
+        else
+            Preg=false;
     }
 }
