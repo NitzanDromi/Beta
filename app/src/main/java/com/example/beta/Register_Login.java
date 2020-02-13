@@ -60,7 +60,8 @@ public class Register_Login extends AppCompatActivity {
     CheckBox cbStayconnect;
     Switch swMoF;
     ToggleButton tbPreg;
-    Boolean Female, Preg;
+    Boolean Female= false;
+    Boolean Preg=false;
 
     TextView mDisplayDate;
     DatePickerDialog.OnDateSetListener mDateSetListener;
