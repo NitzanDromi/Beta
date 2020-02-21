@@ -11,6 +11,8 @@ public class FBref {
 
     public static FirebaseDatabase FBDB = FirebaseDatabase.getInstance();
     public static DatabaseReference refUsers= FBDB.getReference("Users");
+    public static DatabaseReference refPlaces= FBDB.getReference().child("AndroidView");
+    //public static DatabaseReference refSpinnerDB=FBDB.getReference("Places");
 
     public static FirebaseStorage FBST = FirebaseStorage.getInstance();
     public static StorageReference mStorageRef = FBST.getReference("images");

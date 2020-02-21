@@ -29,10 +29,6 @@ public class Credits extends AppCompatActivity {
             Intent a=new Intent(this, recipes.class);
             startActivity(a);
         }
-        if(st.equals("credits")){
-            Intent a=new Intent(this, Credits.class);
-            startActivity(a);
-        }
         if(st.equals("menu")){
             Intent a=new Intent(this, tafritim.class);
             startActivity(a);

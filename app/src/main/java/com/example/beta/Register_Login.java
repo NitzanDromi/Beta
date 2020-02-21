@@ -29,6 +29,8 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -45,11 +47,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 import static com.example.beta.FBref.refAuth;
+import static com.example.beta.FBref.refPlaces;
 import static com.example.beta.FBref.refUsers;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Register_Login extends AppCompatActivity {
 
@@ -67,8 +76,11 @@ public class Register_Login extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener mDateSetListener;
 
     Button btn;
+
     Spinner spFplace;
-    String name, phone, email, password, id, weight, height, uid, date;
+
+
+    String name, phone, email, password, id, weight, height, uid, date, places;
     User userdb;
     Boolean stayConnect, registered;
 
@@ -77,6 +89,29 @@ public class Register_Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register__login);
+
+        spFplace=(Spinner) findViewById(R.id.spPlace);
+
+        Query query = refPlaces.orderByChild("title");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot ds) {
+                final List<String> titleList = new ArrayList<String>();
+                for (DataSnapshot data : ds.getChildren()){
+                    String titlename=data.child("title").getValue(String.class);
+                    titleList.add(titlename);
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(Register_Login.this, android.R.layout.simple_spinner_item, titleList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spFplace.setAdapter(arrayAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Register_Login.this, databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
 /**
  * date picker - in order to choose the date of birth of each user.
  * ended programming in 22/1 - the program works.
@@ -125,9 +160,15 @@ public class Register_Login extends AppCompatActivity {
         swMoF=(Switch) findViewById(R.id.switchFM);
         tvPregnant=(TextView) findViewById(R.id.tvPregnant);
         tbPreg =(ToggleButton) findViewById(R.id.tbPregnent);
-        spFplace=(Spinner) findViewById(R.id.spPlace);
 
         btn=(Button)findViewById(R.id.btn);
+
+
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spFplace.setAdapter(adapter);
+        //spFplace.setOnItemClickListener(this);
+
 
         stayConnect=false;
         registered=true;
@@ -137,7 +178,29 @@ public class Register_Login extends AppCompatActivity {
 
     }
 
-    @Override
+  /*  private void spinnerData() {
+        refSpinnerDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.e("Spinner Data", "Spinner data is changed!");
+
+                ArrayList<String> list = new ArrayList<>();
+                list.add(dataSnapshot.getValue().toString());
+                for (String lists : list) {
+                    Log.d("ddd", "Array List: " + dataSnapshot.getValue().toString());
+                    textView.setText(lists);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.e("Error", "Failed to read user", error.toException());
+            }
+        });
+        }*/
+            @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
@@ -175,9 +238,9 @@ public class Register_Login extends AppCompatActivity {
                 tvMale.setVisibility(View.VISIBLE);
                 swMoF.setVisibility(View.VISIBLE);
                 spFplace.setVisibility(View.VISIBLE);
-                spFplace.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
+
 
 
 
@@ -254,13 +317,15 @@ public class Register_Login extends AppCompatActivity {
                                 Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
                                 Intent si = new Intent(Register_Login.this,tafritim.class);
                                 startActivity(si);
-                            } else {
+                            }
+                            else {
                                 Log.d("Register_Login", "signinUserWithEmail:fail");
                                 Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-        } else {
+        }
+        else {
 
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
@@ -326,4 +391,32 @@ public class Register_Login extends AppCompatActivity {
         else
             Preg=false;
     }
+
+  /*  public void showDataInSpinner(ArrayList<String> data) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, data
+        ); //Create the Adapter to set the data
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Set the layout resource to create the drop down views.
+        spFplace.setAdapter(adapter); //Set the data to the spinner
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // Read from the database
+        refPlaces.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot ds) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String tmp = ds.getValue(String.class);
+                Log.d(TAG, "Value is: " + tmp);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }*/
 }
