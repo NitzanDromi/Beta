@@ -1,7 +1,7 @@
 package com.example.beta;
 
 class User {
-    private String name, email, phone, uid, password, id, date, weight, height;
+    private String name, email, phone, uid, password, id, date, weight, height, places;
     private Boolean isFemale,isPreg;
 
     /**
@@ -15,9 +15,10 @@ class User {
      * @param date
      * @param weight
      * @param height
+     * @param places
      * @param uid
      */
-    public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, Boolean isPreg, String uid) {
+    public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, Boolean isPreg, String places, String uid) {
         this.name=name;
         this.email=email;
         this.password=password;
@@ -28,6 +29,7 @@ class User {
         this.weight=weight;
         this.uid=uid;
         this.isFemale=isFemale;
+        this.places=places;
         this.isPreg=isPreg;
     }
 
@@ -95,11 +97,13 @@ class User {
         this.isPreg = isPreg;
     }
 
-    public String getUid() {
-        return uid;
-    }
+    public String getUid() {return uid;}
 
-    public void setUid(String uid) {
-        this.uid=uid;
+    public void setUid(String uid) {this.uid=uid;}
+
+    public String getPlaces() {return places;}
+
+    public void setPlaces(String places) {
+        this.places=places;
     }
 }

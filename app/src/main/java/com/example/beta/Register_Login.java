@@ -77,6 +77,8 @@ public class Register_Login extends AppCompatActivity {
 
     Button btn;
 
+    List<String> titleList = new ArrayList<String>();
+
     Spinner spFplace;
 
 
@@ -92,13 +94,14 @@ public class Register_Login extends AppCompatActivity {
 
         spFplace=(Spinner) findViewById(R.id.spPlace);
 
-        Query query = refPlaces.orderByChild("title");
+        Query query = refPlaces.orderByChild("Places");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
-                final List<String> titleList = new ArrayList<String>();
+                titleList.clear();
+
                 for (DataSnapshot data : ds.getChildren()){
-                    String titlename=data.child("title").getValue(String.class);
+                    String titlename=data.getKey();
                     titleList.add(titlename);
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(Register_Login.this, android.R.layout.simple_spinner_item, titleList);
@@ -292,13 +295,8 @@ public class Register_Login extends AppCompatActivity {
      * <p>
      */
     public void logorreg(View view) {
-        name=etName.getText().toString();
-        phone=etPhone.getText().toString();
         email=etMail.getText().toString();
         password=etPass.getText().toString();
-        id=etId.getText().toString();
-        weight=etWeight.getText().toString();
-        height=etHeight.getText().toString();
 
         if (registered) {
 
@@ -326,6 +324,12 @@ public class Register_Login extends AppCompatActivity {
                     });
         }
         else {
+            name=etName.getText().toString();
+            phone=etPhone.getText().toString();
+            id=etId.getText().toString();
+            weight=etWeight.getText().toString();
+            height=etHeight.getText().toString();
+            places=spFplace.getSelectedItem().toString();
 
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
@@ -343,7 +347,7 @@ public class Register_Login extends AppCompatActivity {
                                     Log.d("Register_Login", "createUserWithEmail:success");
                                     FirebaseUser user = refAuth.getCurrentUser();
                                     uid = user.getUid();
-                                    userdb = new User(name, email, password, phone, id, date, weight, height, Female, Preg, uid);
+                                    userdb = new User(name, email, password, phone, id, date, weight, height, Female, Preg, places, uid);
                                     refUsers.child(name).setValue(userdb);
                                     Toast.makeText(Register_Login.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(Register_Login.this, tafritim.class);
