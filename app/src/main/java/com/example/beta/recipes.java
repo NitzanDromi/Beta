@@ -99,7 +99,6 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
             if (dataSnapshot.exists()) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     recipe = data.getValue(Recipe.class);
-                    Toast.makeText(recipes.this, "" + recipe.getLocation(), Toast.LENGTH_SHORT).show();
                     Intent a = new Intent(recipes.this, Matcon.class);
                     a.putExtra("recNum", recipe.getLocation());
                     startActivity(a);
@@ -118,7 +117,6 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
             if (dataSnapshot.exists()) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     recipe2 = data.getValue(Recipe.class);
-                    Toast.makeText(recipes.this, "" + recipe2.getLocation(), Toast.LENGTH_SHORT).show();
                     Intent a = new Intent(recipes.this, Matcon.class);
                     a.putExtra("recNum", recipe2.getLocation());
                     startActivity(a);

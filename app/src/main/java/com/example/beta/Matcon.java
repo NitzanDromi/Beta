@@ -55,7 +55,6 @@ public class Matcon extends AppCompatActivity {
         n=a.getExtras().getInt("recNum");
         fname=Integer.toString(n);
         suf=".txt";
-        Toast.makeText(this, fname, Toast.LENGTH_SHORT).show();
         fname+=suf;
 
         try {
