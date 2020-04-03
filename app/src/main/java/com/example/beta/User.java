@@ -1,23 +1,25 @@
 package com.example.beta;
 
-class User {
+/*
+ * @param name
+ * @param email
+ * @param password
+ * @param phone
+ * @param isFemale
+ * @param isPreg
+ * @param id
+ * @param date
+ * @param weight
+ * @param height
+ * @param places
+ * @param uid
+ */
+
+public class User {
     private String name, email, phone, uid, password, id, date, weight, height, places;
     private Boolean isFemale,isPreg;
 
-    /**
-     * @param name
-     * @param email
-     * @param password
-     * @param phone
-     * @param isFemale
-     * @param isPreg
-     * @param id
-     * @param date
-     * @param weight
-     * @param height
-     * @param places
-     * @param uid
-     */
+    public User(){}
     public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, Boolean isPreg, String places, String uid) {
         this.name=name;
         this.email=email;

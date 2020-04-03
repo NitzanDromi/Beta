@@ -94,8 +94,8 @@ public class Register_Login extends AppCompatActivity {
 
         spFplace=(Spinner) findViewById(R.id.spPlace);
 
-        Query query = refPlaces.orderByChild("Places");
-        query.addValueEventListener(new ValueEventListener() {
+       // Query query = refPlaces.orderByChild("Places");
+        refPlaces.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
                 titleList.clear();
@@ -211,7 +211,9 @@ public class Register_Login extends AppCompatActivity {
         Intent si = new Intent(Register_Login.this,tafritim.class);
         if (refAuth.getCurrentUser()!=null && isChecked) {
             stayConnect=true;
+            si.putExtra("name",name);
             startActivity(si);
+            finish();
         }
     }
 
@@ -315,6 +317,7 @@ public class Register_Login extends AppCompatActivity {
                                 Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
                                 Intent si = new Intent(Register_Login.this,tafritim.class);
                                 startActivity(si);
+                                finish();
                             }
                             else {
                                 Log.d("Register_Login", "signinUserWithEmail:fail");
@@ -352,7 +355,8 @@ public class Register_Login extends AppCompatActivity {
                                     Toast.makeText(Register_Login.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(Register_Login.this, tafritim.class);
                                     startActivity(si);
-                                } else {
+                                }
+                                else {
                                     if (task.getException() instanceof FirebaseAuthUserCollisionException)
                                         Toast.makeText(Register_Login.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
                                     else {

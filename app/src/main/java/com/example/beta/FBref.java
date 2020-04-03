@@ -7,6 +7,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class FBref {
+
     public static FirebaseAuth refAuth = FirebaseAuth.getInstance();
 
     public static FirebaseDatabase FBDB = FirebaseDatabase.getInstance();
@@ -14,10 +15,20 @@ public class FBref {
     public static DatabaseReference refPlaces= FBDB.getReference("Places");
     public static DatabaseReference refMenu= FBDB.getReference("Menu");
     public static DatabaseReference refWeek= FBDB.getReference("Week_num");
-    // public static DatabaseReference refSpinnerDB=FBDB.getReference("Places");
+    public static DatabaseReference refRecipes= FBDB.getReference("recipes");
+    public static DatabaseReference reflunch= refRecipes.child("lunch");
+    public static DatabaseReference refdinner= refRecipes.child("dinner");
 
     public static FirebaseStorage FBST = FirebaseStorage.getInstance();
-    public static StorageReference mStorageRef = FBST.getReference("images");
-    public static StorageReference islandRef = mStorageRef.child("images/island.jpg");
+    public static StorageReference refStor=FBST.getReference();
+    public static StorageReference refImages=refStor.child("Images/");
+    public static StorageReference refRecfiles=refStor.child("Recipes/");
+   // public static StorageReference pathReference = refStor.child(n).child("lunch");
+   // public static StorageReference islandRef = mStorageRef.child("images/island.jpg");
+
+
+
+
+
 
 }

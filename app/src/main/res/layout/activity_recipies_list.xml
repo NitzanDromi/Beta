@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#DF26BC5C"
     android:orientation="vertical"
-    tools:context=".recipes">
+    tools:context=".recipiesList">
 
     <Space
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         android:layout_weight="0.5" />
 
     <TextView
-        android:id="@+id/tvTITLErec"
+        android:id="@+id/tvTITLErecipes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -30,7 +30,7 @@
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tvLunch"
+        android:id="@+id/tvLunch2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -40,39 +40,21 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#FFFFFF" />
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/lvLunch"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="#FFFFFF"
-            android:onClick="showReclunch"
-            android:text="show recipe"
-            android:textColor="#DF26BC5C" />
-
-        <Spinner
-            android:id="@+id/spLunch"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FFFFFF" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-
     <TextView
-        android:id="@+id/tvDinner"
+        android:id="@+id/tvDinner2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -83,41 +65,17 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#FFFFFF" />
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/lvDinner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="#FFFFFF"
-            android:onClick="dinnerRecipe"
-            android:text="show recipe"
-            android:textColor="#DF26BC5C" />
-
-        <Spinner
-            android:id="@+id/spDinner"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:backgroundTint="#FFFFFF"
-            android:outlineSpotShadowColor="@color/common_google_signin_btn_text_dark_default" />
-
-    </LinearLayout>
-
+        android:backgroundTint="#FFFFFF"
+        android:outlineSpotShadowColor="@color/common_google_signin_btn_text_dark_default" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="4" />
 
 </LinearLayout>

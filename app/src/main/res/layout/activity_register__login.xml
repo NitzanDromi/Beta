@@ -27,9 +27,10 @@
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:hint="name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:visibility="invisible"
+            />
 
         <EditText
             android:id="@+id/etMail"

@@ -79,7 +79,7 @@
             android:layout_weight="0.5" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tvTITLErec"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
@@ -192,78 +192,8 @@
             android:id="@+id/lvMenu"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5">
-        </ListView>
+            android:layout_weight="5"></ListView>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvBreakfast"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/adamina"
-                android:text="א. בוקר"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="22dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvSnack1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/adamina"
-                android:text="א. ביניים"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvLunch"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/adamina"
-                android:text="א. צהריים"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvSnack2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/adamina"
-                android:text="א. ביניים"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/tvDinner"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/adamina"
-                android:text="א. ערב"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="22dp"
-                android:textStyle="bold"
-                tools:visibility="visible" />
-
-        </LinearLayout>
 
     </LinearLayout>
     <Space

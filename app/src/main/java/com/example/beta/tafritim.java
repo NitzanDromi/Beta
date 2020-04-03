@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
     String day="Sunday";
     String week;
     int wk=1;
+    int wkmax=1;
     SeekBar seekBardays;
     TextView tvNumOfWeek;
     List<String> list = new ArrayList<String>();
@@ -59,6 +61,20 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
         //int seekValue = seekBardays.getProgress();
 
         week=Integer.toString(wk);
+        refMenu.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    wkmax=Integer.parseInt(ds.getKey(), (int) ds.getChildrenCount());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
 
         MainTafrit();
 
@@ -79,7 +95,7 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
                     stringList.add(tmp);
 
                 }
-                adp=new ArrayAdapter<String>(tafritim.this,R.layout.support_simple_spinner_dropdown_item,stringList);
+                adp=new ArrayAdapter<String>(tafritim.this,R.layout.my_lv,stringList);
                 lvMenu.setAdapter(adp);
             }
 
@@ -112,7 +128,7 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
                             stringList.add(tmp);
 
                         }
-                        adp=new ArrayAdapter<String>(tafritim.this,R.layout.support_simple_spinner_dropdown_item,stringList);
+                        adp=new ArrayAdapter<String>(tafritim.this,R.layout.my_lv,stringList);
                         lvMenu.setAdapter(adp);
                     }
 
@@ -146,14 +162,17 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
         if(st.equals("recipes")){
             Intent a=new Intent(this, recipes.class);
             startActivity(a);
+            finish();
         }
         if(st.equals("credits")){
             Intent a=new Intent(this, Credits.class);
             startActivity(a);
+            finish();
         }
         if(st.equals("settings")){
-            Intent a=new Intent(this, Settings.class);
-            startActivity(a);
+            Intent si = new Intent(tafritim.this,Settings.class);
+            startActivity(si);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -164,11 +183,33 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     public void NextWeek(View view) {
-        wk++;
-        week=Integer.toString(wk);
-        tvNumOfWeek.setText(week);
-        refWeek.setValue(wk);
-        MainTafrit();
+
+        refMenu.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    wkmax=Integer.parseInt(ds.getKey(), (int) ds.getChildrenCount());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+        if (wk<wkmax){
+            wk++;
+            week = Integer.toString(wk);
+            tvNumOfWeek.setText(week);
+            refWeek.setValue(wk);
+            MainTafrit();
+        }
+        else{
+            Toast.makeText(this, "this is the last week", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void PreviousWeek(View view) {
@@ -177,10 +218,10 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
             week = Integer.toString(wk);
             tvNumOfWeek.setText(week);
             refWeek.setValue(wk);
+            MainTafrit();
         }
         else{
             Toast.makeText(this, "this is the first week", Toast.LENGTH_SHORT).show();
         }
-        MainTafrit();
     }
 }
