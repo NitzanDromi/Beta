@@ -153,11 +153,8 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     }
 
     public void showReclunch(View view) {
-       // if (num > 0) {
             Query query = reflunch.orderByChild("name").equalTo(strlunch);
             query.addListenerForSingleValueEvent(VEL);
-     //   }
-
     }
 
     public void showRecdiner(View view) {

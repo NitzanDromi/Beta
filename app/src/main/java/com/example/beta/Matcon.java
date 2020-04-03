@@ -57,6 +57,12 @@ public class Matcon extends AppCompatActivity {
         suf=".txt";
         Toast.makeText(this, fname, Toast.LENGTH_SHORT).show();
         fname+=suf;
+
+        try {
+            download();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -88,7 +94,7 @@ public class Matcon extends AppCompatActivity {
 
     }
 
-    public void download(View view) throws IOException {
+    public void download() throws IOException {
         final ProgressDialog pd=ProgressDialog.show(this,"Recipe download","downloading...",true);
 
         StorageReference refFile = refRecfiles.child(fname);
