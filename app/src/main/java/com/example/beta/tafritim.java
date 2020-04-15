@@ -17,18 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.example.beta.FBref.refMenu;
-import static com.example.beta.FBref.refPlaces;
-import static com.example.beta.FBref.refWeek;
+import static com.example.beta.FBref.refSentence;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class tafritim extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ListView lvMenu;
@@ -39,9 +35,7 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
     int wk=1;
     int wkmax=1;
     SeekBar seekBardays;
-    TextView tvNumOfWeek;
-    List<String> list = new ArrayList<String>();
-
+    TextView tvNumOfWeek, tvSentence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +43,7 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
         setContentView(R.layout.activity_tafritim);
 
         tvNumOfWeek=(TextView)findViewById(R.id.tvNumOfWeek);
+        tvSentence=(TextView)findViewById(R.id.tvSentence);
 
         lvMenu=(ListView) findViewById(R.id.lvMenu);
 
@@ -113,7 +108,7 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
                     case 2: day="Monday and Tuesday";break;
                     case 1: day="Wednesday and Thursday";break;
                     case 0: day="Friday and Saturday";break;
-                    //  default:day="Sunday";
+                    //default:day="Sunday";
                 }
                 DatabaseReference refDay = refMenu.child(week).child(day);
                 // Read from the database
@@ -159,20 +154,24 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("recipes")){
+        if(st.equals("מתכונים")){
             Intent a=new Intent(this, recipes.class);
             startActivity(a);
             finish();
         }
-        if(st.equals("credits")){
+        if(st.equals("קרדיטים")){
             Intent a=new Intent(this, Credits.class);
             startActivity(a);
             finish();
         }
-        if(st.equals("settings")){
+        if(st.equals("הגדרות")){
             Intent si = new Intent(tafritim.this,Settings.class);
             startActivity(si);
             finish();
+        }
+        if(st.equals("תוספי תזונה")){
+            Intent a=new Intent(this, tosafim.class);
+            startActivity(a);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -183,27 +182,23 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
     public void NextWeek(View view) {
-
-        refMenu.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    wkmax=Integer.parseInt(ds.getKey(), (int) ds.getChildrenCount());
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
-
         if (wk<wkmax){
             wk++;
             week = Integer.toString(wk);
             tvNumOfWeek.setText(week);
-            refWeek.setValue(wk);
+            refSentence.child(week).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    String tmp=dataSnapshot.getValue(String.class);
+                    tvSentence.setText(tmp);
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
             MainTafrit();
         }
         else{
@@ -217,7 +212,19 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
             wk--;
             week = Integer.toString(wk);
             tvNumOfWeek.setText(week);
-            refWeek.setValue(wk);
+            refSentence.child(week).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                        String tmp=dataSnapshot.getValue(String.class);
+                        tvSentence.setText(tmp);
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
             MainTafrit();
         }
         else{

@@ -79,7 +79,7 @@
             android:layout_weight="0.5" />
 
         <TextView
-            android:id="@+id/tvTITLErec"
+            android:id="@+id/tvSentence"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"

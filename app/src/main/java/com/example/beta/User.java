@@ -16,11 +16,11 @@ package com.example.beta;
  */
 
 public class User {
-    private String name, email, phone, uid, password, id, date, weight, height, places;
+    private String name, email, phone, uid, password, id, date, weight, height, places, beforeImage, afterImage;
     private Boolean isFemale,isPreg;
 
     public User(){}
-    public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, Boolean isPreg, String places, String uid) {
+    public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, Boolean isPreg, String places, String uid,String afterImage, String beforeImage) {
         this.name=name;
         this.email=email;
         this.password=password;
@@ -33,6 +33,8 @@ public class User {
         this.isFemale=isFemale;
         this.places=places;
         this.isPreg=isPreg;
+        this.afterImage=afterImage;
+        this.beforeImage=beforeImage;
     }
 
     public String getName() {
@@ -107,5 +109,21 @@ public class User {
 
     public void setPlaces(String places) {
         this.places=places;
+    }
+
+    public String getAfterImage() {
+        return afterImage;
+    }
+
+    public void setAfterImage(String afterImage) {
+        this.afterImage = afterImage;
+    }
+
+    public void setBeforeImage(String beforeImage) {
+        this.beforeImage = beforeImage;
+    }
+
+    public String getBeforeImage() {
+        return beforeImage;
     }
 }

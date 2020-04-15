@@ -25,16 +25,20 @@ public class Credits extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("recipes")){
+        if(st.equals("מתכונים")){
             Intent a=new Intent(this, recipes.class);
             startActivity(a);
         }
-        if(st.equals("menu")){
+        if(st.equals("תפריט")){
             Intent a=new Intent(this, tafritim.class);
             startActivity(a);
         }
-        if(st.equals("settings")){
+        if(st.equals("הגדרות")){
             Intent a=new Intent(this, Settings.class);
+            startActivity(a);
+        }
+        if(st.equals("תוספי תזונה")){
+            Intent a=new Intent(this, tosafim.class);
             startActivity(a);
         }
         return super.onOptionsItemSelected(item);

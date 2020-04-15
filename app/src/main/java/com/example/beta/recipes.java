@@ -169,20 +169,24 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("settings")){
+        if(st.equals("הגדרות")){
             Intent a=new Intent(this, Settings.class);
             startActivity(a);
             finish();
         }
-        if(st.equals("credits")){
+        if(st.equals("קרדיטים")){
             Intent a=new Intent(this, Credits.class);
             startActivity(a);
             finish();
         }
-        if(st.equals("menu")){
+        if(st.equals("תפריט")){
             Intent a=new Intent(this, tafritim.class);
             startActivity(a);
             finish();
+        }
+        if(st.equals("תוספי תזונה")){
+            Intent a=new Intent(this, tosafim.class);
+            startActivity(a);
         }
         return super.onOptionsItemSelected(item);
     }

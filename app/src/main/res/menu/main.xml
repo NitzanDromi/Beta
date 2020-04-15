@@ -3,26 +3,33 @@
 
     <item
         android:id="@+id/menuTafritim"
-        android:title="menu"
+        android:title="תפריט"
         android:orderInCategory="100"
         />
 
     <item
         android:id="@+id/menuRecipes"
-        android:title="recipes"
+        android:title="מתכונים"
         android:orderInCategory="200"
         />
 
     <item
         android:id="@+id/menuCredits"
-        android:title="credits"
+        android:title="קרדיטים"
         android:orderInCategory="400"
         />
 
     <item
         android:id="@+id/menuSettings"
-        android:title="settings"
+        android:title="הגדרות"
         android:orderInCategory="300"
         />
+
+    <item
+        android:id="@+id/menuTosafim"
+        android:title="תוספי תזונה"
+        android:orderInCategory="250"
+        />
+
 
 </menu>

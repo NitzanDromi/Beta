@@ -96,9 +96,29 @@
             android:onClick="updateHeight"
             android:text="SAVE CHANGES" />
     </LinearLayout>
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"/>
+        android:layout_weight="2"/>
+
+
+        <ImageButton
+            android:id="@+id/imageButtonBeforeImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:onClick="upload_before"
+            android:background="@color/common_google_signin_btn_text_dark_default"
+            app:srcCompat="@drawable/blank_screen" />
+
+    <ImageButton
+        android:id="@+id/imageButtonAfterImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:onClick="upload_after"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        app:srcCompat="@drawable/blank_screen" />
+
+
 </LinearLayout>

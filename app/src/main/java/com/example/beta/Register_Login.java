@@ -14,15 +14,21 @@ package com.example.beta;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -44,9 +50,14 @@ import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -59,6 +70,7 @@ import static com.example.beta.FBref.refPlaces;
 import static com.example.beta.FBref.refUsers;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Register_Login extends AppCompatActivity {
 
@@ -69,8 +81,8 @@ public class Register_Login extends AppCompatActivity {
     CheckBox cbStayconnect;
     Switch swMoF;
     ToggleButton tbPreg;
-    Boolean Female= false;
-    Boolean Preg=false;
+    Boolean isFemale= false;
+    Boolean isPreg=false;
 
     TextView mDisplayDate;
     DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -81,10 +93,19 @@ public class Register_Login extends AppCompatActivity {
 
     Spinner spFplace;
 
+    User userdb, currentUser;
 
-    String name, phone, email, password, id, weight, height, uid, date, places;
-    User userdb;
-    Boolean stayConnect, registered;
+    String mVerificationId, code, name, phone, email, password, id, weight, height, uid, date, places, beforeImage="empty", afterImage="empty";
+    Boolean stayConnect, registered, isUID = false;
+
+    AlertDialog ad;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    Boolean mVerificationInProgress = false;
+    ValueEventListener usersListener;
+    ProgressDialog progressDialog;
+    FirebaseUser user;
+
+
 
 
     @Override
@@ -176,34 +197,15 @@ public class Register_Login extends AppCompatActivity {
         stayConnect=false;
         registered=true;
 
+
+        onVerificationStateChanged();
         regoption();
 
 
     }
 
-  /*  private void spinnerData() {
-        refSpinnerDB.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Log.e("Spinner Data", "Spinner data is changed!");
-
-                ArrayList<String> list = new ArrayList<>();
-                list.add(dataSnapshot.getValue().toString());
-                for (String lists : list) {
-                    Log.d("ddd", "Array List: " + dataSnapshot.getValue().toString());
-                    textView.setText(lists);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Failed to read value
-                Log.e("Error", "Failed to read user", error.toException());
-            }
-        });
-        }*/
-            @Override
+    @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
@@ -245,10 +247,7 @@ public class Register_Login extends AppCompatActivity {
                 spFplace.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
-
-
-
-
+                isUID=false;
                 logoption();
             }
         };
@@ -280,6 +279,7 @@ public class Register_Login extends AppCompatActivity {
                 tvPregnant.setVisibility(View.INVISIBLE);
                 tbPreg.setVisibility(View.INVISIBLE);
                 btn.setText("Login");
+                isUID=true;
                 registered=true;
                 regoption();
             }
@@ -301,30 +301,33 @@ public class Register_Login extends AppCompatActivity {
         password=etPass.getText().toString();
 
         if (registered) {
+            if (!phone.isEmpty() && !email.isEmpty()) {
 
-            final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);
-            refAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            pd.dismiss();
-                            if (task.isSuccessful()) {
-                                SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-                                SharedPreferences.Editor editor=settings.edit();
-                                editor.putBoolean("stayConnect",cbStayconnect.isChecked());
-                                editor.commit();
-                                Log.d("Register_Login", "signinUserWithEmail:success");
-                                Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
-                                Intent si = new Intent(Register_Login.this,tafritim.class);
-                                startActivity(si);
-                                finish();
+                final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);
+                refAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                pd.dismiss();
+                                if (task.isSuccessful()) {
+                                    SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putBoolean("stayConnect", cbStayconnect.isChecked());
+                                    editor.commit();
+                                    Log.d("Register_Login", "signinUserWithEmail:success");
+                                    Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
+                                    Intent si = new Intent(Register_Login.this, tafritim.class);
+                                    startActivity(si);
+                                    finish();
+                                } else {
+                                    Log.d("Register_Login", "signinUserWithEmail:fail");
+                                    Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
+                                }
                             }
-                            else {
-                                Log.d("Register_Login", "signinUserWithEmail:fail");
-                                Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+                        });
+            } else {
+                Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+            }
         }
         else {
             name=etName.getText().toString();
@@ -334,7 +337,31 @@ public class Register_Login extends AppCompatActivity {
             height=etHeight.getText().toString();
             places=spFplace.getSelectedItem().toString();
 
+
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
+
+                startPhoneNumberVerification(phone);
+                onVerificationStateChanged();
+                ProgressDialog.show(this, "login", "connecting.. ", true);
+                AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                final EditText edittext = new EditText(this);
+                edittext.setInputType(InputType.TYPE_CLASS_NUMBER);
+                adb.setMessage("enter the code");
+                adb.setTitle("Authentication");
+                adb.setView(edittext);
+                adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        code = edittext.getText().toString();
+                        if (!code.isEmpty())
+                            verifyPhoneNumberWithCode(mVerificationId, code);
+                    }
+                });
+                adb.setNegativeButton("BACK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+                ad = adb.create();
+                ad.show();
 
                 final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
                 refAuth.createUserWithEmailAndPassword(email, password)
@@ -350,7 +377,7 @@ public class Register_Login extends AppCompatActivity {
                                     Log.d("Register_Login", "createUserWithEmail:success");
                                     FirebaseUser user = refAuth.getCurrentUser();
                                     uid = user.getUid();
-                                    userdb = new User(name, email, password, phone, id, date, weight, height, Female, Preg, places, uid);
+                                    userdb = new User(name, email, password, phone, id, date, weight, height, isFemale, isPreg, places, uid, afterImage, beforeImage);
                                     refUsers.child(name).setValue(userdb);
                                     Toast.makeText(Register_Login.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(Register_Login.this, tafritim.class);
@@ -374,6 +401,128 @@ public class Register_Login extends AppCompatActivity {
 
     }
 
+
+    /**
+     * this function is called when the user wants to login.
+     * the function sends sms to his phone number with a verification code.
+     *
+     * @param	phoneNumber the phone number of the user. The SMS is sent to this phone number.
+     */
+
+    private void startPhoneNumberVerification(String phoneNumber) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                mCallbacks);        // OnVerificationStateChangedCallbacks
+        mVerificationInProgress = true;
+    }
+
+    /**
+     * this function is called to check if the code the user wrote is the code he received and create a credential.
+     * if he wrote a right code, "signInWithPhoneAuthCredential" function is called.
+     * @param	code the code that the
+     * @param verificationId a verification identity to connect with firebase servers.
+     */
+    private void verifyPhoneNumberWithCode(String verificationId, String code) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    /**
+     * this function is called to sign in the user.
+     * if the credential is proper the user is signs in and he sent to the next activity, depends on his status (worker or manager)
+     * @param	credential a credential that everything was right and he can sign in.
+     */
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        refAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithCredential:success");
+                            SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putBoolean("stayConnect", cbStayconnect.isChecked());
+                            editor.putBoolean("firstRun", false);
+                            editor.commit();
+
+                            FirebaseUser user = refAuth.getCurrentUser();
+                            uid = user.getUid();
+                            if (!isUID) {
+                                refUsers.child(name).child("uid").setValue(uid);
+                            }
+                            setUsersListener();
+                        }
+
+                        else {
+                            Log.d(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(Register_Login.this, "wrong!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * this function checks the status of the verification, if it's completed, failed or inProgress.
+     */
+    private void onVerificationStateChanged() {
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential credential) {
+                Log.d(TAG, "onVerificationCompleted:" + credential);
+                mVerificationInProgress = false;
+                signInWithPhoneAuthCredential(credential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Log.w(TAG, "onVerificationFailed", e);
+                mVerificationInProgress = false;
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    Toast.makeText(Register_Login.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+                   // etCode.setError("Invalid phone number.");
+                } else if (e instanceof FirebaseTooManyRequestsException) { }
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String verificationId,
+                                   @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                Log.d(TAG, "onCodeSent:" + verificationId);
+                mVerificationId = verificationId;
+            }
+        };
+    }
+
+    /**
+     * this function connect the current user with his information in the database by checking his uid,
+     * in purpose to check his status and sent him to the right activity.
+     */
+
+    public void setUsersListener() {
+        user = refAuth.getCurrentUser();
+        usersListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (user.getUid().equals(data.getValue(User.class).getUid())){
+                        currentUser=data.getValue(User.class);
+                        if (progressDialog!=null) progressDialog.dismiss();
+                            Intent si = new Intent(Register_Login.this, tafritim.class);
+                            startActivity(si);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                if (progressDialog!=null) progressDialog.dismiss();
+            }
+        };
+        refUsers.child("Managers").addValueEventListener(usersListener);
+        refUsers.child("Workers").addValueEventListener(usersListener);
+    }
+
     /**
      * if the user is a female, she will have an option to choose if she is pregnant (in order to get supplements
      * worked in the version created in 22/1/20
@@ -383,21 +532,21 @@ public class Register_Login extends AppCompatActivity {
         if (swMoF.isChecked()){
             tvPregnant.setVisibility(View.VISIBLE);
             tbPreg.setVisibility(View.VISIBLE);
-            Female=true;
+            isFemale=true;
         }
         else{
             tvPregnant.setVisibility(View.INVISIBLE);
             tbPreg.setVisibility(View.INVISIBLE);
-            Female=false;
+            isFemale=false;
 
         }
     }
 
     public void Pregnant(View view) {
         if (tbPreg.isChecked())
-            Preg=true;
+            isPreg=true;
         else
-            Preg=false;
+            isPreg=false;
     }
 
   /*  public void showDataInSpinner(ArrayList<String> data) {
@@ -427,4 +576,6 @@ public class Register_Login extends AppCompatActivity {
             }
         });
     }*/
+
+
 }
