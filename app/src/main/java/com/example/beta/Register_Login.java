@@ -182,8 +182,6 @@ public class Register_Login extends AppCompatActivity {
         tvFemale=(TextView) findViewById(R.id.tvFemale);
         tvMale = (TextView) findViewById(R.id.tvMale);
         swMoF=(Switch) findViewById(R.id.switchFM);
-        tvPregnant=(TextView) findViewById(R.id.tvPregnant);
-        tbPreg =(ToggleButton) findViewById(R.id.tbPregnent);
 
         btn=(Button)findViewById(R.id.btn);
 
@@ -198,7 +196,7 @@ public class Register_Login extends AppCompatActivity {
         registered=true;
 
 
-        onVerificationStateChanged();
+   //     onVerificationStateChanged();
         regoption();
 
 
@@ -276,8 +274,6 @@ public class Register_Login extends AppCompatActivity {
                 tvMale.setVisibility(View.INVISIBLE);
                 swMoF.setVisibility(View.INVISIBLE);
                 spFplace.setVisibility(View.INVISIBLE);
-                tvPregnant.setVisibility(View.INVISIBLE);
-                tbPreg.setVisibility(View.INVISIBLE);
                 btn.setText("Login");
                 isUID=true;
                 registered=true;
@@ -301,7 +297,7 @@ public class Register_Login extends AppCompatActivity {
         password=etPass.getText().toString();
 
         if (registered) {
-            if (!phone.isEmpty() && !email.isEmpty()) {
+            if ((!password.isEmpty()) && (!email.isEmpty())) {
 
                 final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);
                 refAuth.signInWithEmailAndPassword(email, password)
@@ -340,7 +336,7 @@ public class Register_Login extends AppCompatActivity {
 
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
-                startPhoneNumberVerification(phone);
+            /*    startPhoneNumberVerification(phone);
                 onVerificationStateChanged();
                 ProgressDialog.show(this, "login", "connecting.. ", true);
                 AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -361,7 +357,7 @@ public class Register_Login extends AppCompatActivity {
                     }
                 });
                 ad = adb.create();
-                ad.show();
+                ad.show();*/
 
                 final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
                 refAuth.createUserWithEmailAndPassword(email, password)
@@ -377,7 +373,7 @@ public class Register_Login extends AppCompatActivity {
                                     Log.d("Register_Login", "createUserWithEmail:success");
                                     FirebaseUser user = refAuth.getCurrentUser();
                                     uid = user.getUid();
-                                    userdb = new User(name, email, password, phone, id, date, weight, height, isFemale, isPreg, places, uid, afterImage, beforeImage);
+                                    userdb = new User(name, email, password, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
                                     refUsers.child(name).setValue(userdb);
                                     Toast.makeText(Register_Login.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(Register_Login.this, tafritim.class);
@@ -406,9 +402,9 @@ public class Register_Login extends AppCompatActivity {
      * this function is called when the user wants to login.
      * the function sends sms to his phone number with a verification code.
      *
-     * @param	phoneNumber the phone number of the user. The SMS is sent to this phone number.
+   //  * @param	phoneNumber the phone number of the user. The SMS is sent to this phone number.
      */
-
+/*
     private void startPhoneNumberVerification(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
@@ -418,24 +414,24 @@ public class Register_Login extends AppCompatActivity {
                 mCallbacks);        // OnVerificationStateChangedCallbacks
         mVerificationInProgress = true;
     }
-
+*/
     /**
      * this function is called to check if the code the user wrote is the code he received and create a credential.
      * if he wrote a right code, "signInWithPhoneAuthCredential" function is called.
-     * @param	code the code that the
-     * @param verificationId a verification identity to connect with firebase servers.
+   //  * @param	code the code that the
+     //* @param verificationId a verification identity to connect with firebase servers.
      */
-    private void verifyPhoneNumberWithCode(String verificationId, String code) {
+   /* private void verifyPhoneNumberWithCode(String verificationId, String code) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
         signInWithPhoneAuthCredential(credential);
-    }
+    }*/
 
     /**
      * this function is called to sign in the user.
      * if the credential is proper the user is signs in and he sent to the next activity, depends on his status (worker or manager)
-     * @param	credential a credential that everything was right and he can sign in.
+   //  * @param	credential a credential that everything was right and he can sign in.
      */
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+   /* private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         refAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -462,12 +458,12 @@ public class Register_Login extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    }*/
 
     /**
      * this function checks the status of the verification, if it's completed, failed or inProgress.
      */
-    private void onVerificationStateChanged() {
+  /*  private void onVerificationStateChanged() {
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
@@ -494,13 +490,13 @@ public class Register_Login extends AppCompatActivity {
             }
         };
     }
-
+*/
     /**
      * this function connect the current user with his information in the database by checking his uid,
      * in purpose to check his status and sent him to the right activity.
      */
 
-    public void setUsersListener() {
+   /* public void setUsersListener() {
         user = refAuth.getCurrentUser();
         usersListener = new ValueEventListener() {
             @Override
@@ -519,34 +515,22 @@ public class Register_Login extends AppCompatActivity {
                 if (progressDialog!=null) progressDialog.dismiss();
             }
         };
-        refUsers.child("Managers").addValueEventListener(usersListener);
-        refUsers.child("Workers").addValueEventListener(usersListener);
     }
+    */
 
     /**
-     * if the user is a female, she will have an option to choose if she is pregnant (in order to get supplements
+     * if the user is a female, she will have an option to choose if she is pregnant (in order to get supplements) = changed ittttt
      * worked in the version created in 22/1/20
      * @param view
      */
     public void MaleOrFemale(View view) {
         if (swMoF.isChecked()){
-            tvPregnant.setVisibility(View.VISIBLE);
-            tbPreg.setVisibility(View.VISIBLE);
             isFemale=true;
         }
         else{
-            tvPregnant.setVisibility(View.INVISIBLE);
-            tbPreg.setVisibility(View.INVISIBLE);
             isFemale=false;
 
         }
-    }
-
-    public void Pregnant(View view) {
-        if (tbPreg.isChecked())
-            isPreg=true;
-        else
-            isPreg=false;
     }
 
   /*  public void showDataInSpinner(ArrayList<String> data) {

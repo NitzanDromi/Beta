@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,6 +102,39 @@ public class Substitutes extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        String st=item.getTitle().toString();
+        if(st.equals("קרדיטים")){
+            Intent a=new Intent(this, Credits.class);
+            startActivity(a);
+        }
+        if(st.equals("תפריט")){
+            Intent a=new Intent(this, tafritim.class);
+            startActivity(a);
+        }
+        if(st.equals("הגדרות")){
+            Intent a=new Intent(this, Settings.class);
+            startActivity(a);
+        }
+        if (st.equals("מתכונים")){
+            Intent a=new Intent(this, recipes.class);
+            startActivity(a);
+        }
+        if(st.equals("תוספי תזונה")){
+            Intent a=new Intent(this, tosafim.class);
+            startActivity(a);
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 
 }

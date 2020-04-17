@@ -154,6 +154,10 @@ public class tosafim extends AppCompatActivity {
             Intent a=new Intent(this, recipes.class);
             startActivity(a);
         }
+        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
+            Intent a=new Intent(this, Substitutes.class);
+            startActivity(a);
+        }
         return super.onOptionsItemSelected(item);
 
     }

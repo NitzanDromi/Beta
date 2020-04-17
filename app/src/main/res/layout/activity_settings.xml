@@ -22,7 +22,7 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/tvweight"
@@ -61,7 +61,7 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="0.5"/>
 
     <TextView
         android:id="@+id/tvheight"
@@ -99,26 +99,38 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"/>
+        android:layout_weight="1"/>
 
 
-        <ImageButton
-            android:id="@+id/imageButtonBeforeImage"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:onClick="upload_before"
-            android:background="@color/common_google_signin_btn_text_dark_default"
-            app:srcCompat="@drawable/blank_screen" />
-
-    <ImageButton
-        android:id="@+id/imageButtonAfterImage"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:onClick="upload_after"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imageButtonAfterImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:onClick="upload_after"
+            android:background="@color/common_google_signin_btn_text_dark_default"
+            app:srcCompat="@drawable/blank_screen" />
+
+        <ImageButton
+        android:id="@+id/imageButtonBeforeImage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:onClick="upload_before"
         android:background="@color/common_google_signin_btn_text_dark_default"
         app:srcCompat="@drawable/blank_screen" />
 
+                </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>

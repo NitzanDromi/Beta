@@ -139,6 +139,10 @@ public class Matcon extends AppCompatActivity {
             Intent a=new Intent(this, tosafim.class);
             startActivity(a);
         }
+        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
+            Intent a=new Intent(this, Substitutes.class);
+            startActivity(a);
+        }
         return super.onOptionsItemSelected(item);
 
     }

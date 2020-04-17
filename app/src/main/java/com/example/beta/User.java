@@ -17,10 +17,10 @@ package com.example.beta;
 
 public class User {
     private String name, email, phone, uid, password, id, date, weight, height, places, beforeImage, afterImage;
-    private Boolean isFemale,isPreg;
+    private Boolean isFemale;
 
     public User(){}
-    public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, Boolean isPreg, String places, String uid,String afterImage, String beforeImage) {
+    public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, String places, String uid,String afterImage, String beforeImage) {
         this.name=name;
         this.email=email;
         this.password=password;
@@ -32,7 +32,6 @@ public class User {
         this.uid=uid;
         this.isFemale=isFemale;
         this.places=places;
-        this.isPreg=isPreg;
         this.afterImage=afterImage;
         this.beforeImage=beforeImage;
     }
@@ -93,12 +92,6 @@ public class User {
 
     public void setIsFemale(boolean isFemale) {
         this.isFemale = isFemale;
-    }
-
-    public boolean getIsPreg() {return isPreg;}
-
-    public void setIsPreg(boolean isPreg) {
-        this.isPreg = isPreg;
     }
 
     public String getUid() {return uid;}
