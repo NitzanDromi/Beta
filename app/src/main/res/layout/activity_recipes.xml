@@ -47,13 +47,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnLunch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="#FFFFFF"
             android:onClick="showReclunch"
-            android:text="show recipe"
+            android:text="הצג"
             android:textColor="#DF26BC5C" />
 
         <Spinner
@@ -90,13 +90,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btnDinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="#FFFFFF"
             android:onClick="dinnerRecipe"
-            android:text="show recipe"
+            android:text="הצג"
             android:textColor="#DF26BC5C" />
 
         <Spinner

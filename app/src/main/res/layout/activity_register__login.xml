@@ -14,13 +14,14 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/tvTitle"
-            android:text="Login"
-            android:textSize="30dp"
             android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="Login"
+            android:textColor="#DF26BC5C"
+            android:textSize="30dp"
             android:textStyle="bold" />
 
         <EditText
@@ -131,12 +132,15 @@
             android:id="@+id/cbStayConnect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stay Connected" />
+            android:buttonTint="#DF26BC5C"
+            android:text="Stay Connected"
+            android:textColor="#DF26BC5C" />
 
         <TextView
             android:id="@+id/tvRegister"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
 
 
 
@@ -149,8 +153,10 @@
                 android:id="@+id/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:onClick="logorreg"
-                android:text="Login" />
+                android:background="#DF26BC5C"
+                android:onClick="logOrReg"
+                android:text="Login"
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
     </LinearLayout>

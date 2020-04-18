@@ -76,13 +76,11 @@ public class Register_Login extends AppCompatActivity {
 
     private static final String TAG="MainActivity";
 
-    TextView tvTitle, tvRegister, tvFemale, tvMale, tvPregnant;
+    TextView tvTitle, tvRegister, tvFemale, tvMale;
     EditText etName, etPhone, etMail, etPass, etWeight, etId, etHeight;
     CheckBox cbStayconnect;
     Switch swMoF;
-    ToggleButton tbPreg;
     Boolean isFemale= false;
-    Boolean isPreg=false;
 
     TextView mDisplayDate;
     DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -95,8 +93,8 @@ public class Register_Login extends AppCompatActivity {
 
     User userdb, currentUser;
 
-    String mVerificationId, code, name, phone, email, password, id, weight, height, uid, date, places, beforeImage="empty", afterImage="empty";
-    Boolean stayConnect, registered, isUID = false;
+    String mVerificationId, code, name, phone, email, password, id, weight, height, uid="", date, places, beforeImage="empty", afterImage="empty";
+    Boolean stayConnect, registered, isUID = false, status;
 
     AlertDialog ad;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -115,7 +113,6 @@ public class Register_Login extends AppCompatActivity {
 
         spFplace=(Spinner) findViewById(R.id.spPlace);
 
-       // Query query = refPlaces.orderByChild("Places");
         refPlaces.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
@@ -196,7 +193,7 @@ public class Register_Login extends AppCompatActivity {
         registered=true;
 
 
-   //     onVerificationStateChanged();
+        onVerificationStateChanged();
         regoption();
 
 
@@ -211,9 +208,7 @@ public class Register_Login extends AppCompatActivity {
         Intent si = new Intent(Register_Login.this,tafritim.class);
         if (refAuth.getCurrentUser()!=null && isChecked) {
             stayConnect=true;
-            si.putExtra("name",name);
             startActivity(si);
-            finish();
         }
     }
 
@@ -227,8 +222,9 @@ public class Register_Login extends AppCompatActivity {
         if (stayConnect) finish();
     }
 
-    private void regoption() {
-        SpannableString ss = new SpannableString("Don't have an account?  Register here!");
+    private void regOption() {
+        SpannableString spannableString = new SpannableString("Don't have an account?  Register here!");
+
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -246,20 +242,17 @@ public class Register_Login extends AppCompatActivity {
                 btn.setText("Register");
                 registered=false;
                 isUID=false;
-                logoption();
+                logOption();
             }
         };
-        ss.setSpan(span, 24, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvRegister.setText(ss);
+        spannableString.setSpan(span, 24, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvRegister.setText(spannableString);
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private void updateUI(FirebaseUser currentUser) {
-    }
 
-
-    private void logoption() {
-        SpannableString ss = new SpannableString("Already have an account?  Login here!");
+    private void logOption() {
+        SpannableString spannableString = new SpannableString("Already have an account?  Login here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -277,11 +270,11 @@ public class Register_Login extends AppCompatActivity {
                 btn.setText("Login");
                 isUID=true;
                 registered=true;
-                regoption();
+                regOption();
             }
         };
-        ss.setSpan(span, 26, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvRegister.setText(ss);
+        spannableString.setSpan(span, 26, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvRegister.setText(spannableString);
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
@@ -292,7 +285,7 @@ public class Register_Login extends AppCompatActivity {
      * If login or register process is Ok saving stay connect status & pass to next activity
      * <p>
      */
-    public void logorreg(View view) {
+    public void logOrReg(View view) {
         email=etMail.getText().toString();
         password=etPass.getText().toString();
 
