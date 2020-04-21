@@ -2,10 +2,10 @@ package com.example.beta;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,6 +61,8 @@ public class Settings extends AppCompatActivity {
     String name="";
     int Gallery=1, count=0;
     ImageButton ibBefore, ibAfter;
+    AlertDialog ad;
+    Boolean female;
 
 
     @Override
@@ -103,15 +106,16 @@ public class Settings extends AppCompatActivity {
                     name=user.getName();
                     etweight.setText(user.getWeight());
                     etheight.setText(user.getHeight());
+                    female=user.getIsFemale();
                     if (user.getBeforeImage().equals("empty")){
-                        if (user.getIsFemale())
+                        if (female)
                         ibBefore.setImageResource(R.drawable.request_before_female);
                         else
                             ibBefore.setImageResource(R.drawable.request_before_male);
                     }
                     else {
                         if (user.getAfterImage().equals("empty")){
-                            if (user.getIsFemale())
+                            if (female)
                                 ibAfter.setImageResource(R.drawable.request_after_female);
                             else
                                 ibAfter.setImageResource(R.drawable.request_after_male);
@@ -131,7 +135,7 @@ public class Settings extends AppCompatActivity {
                         }
                     }
                     if (user.getAfterImage().equals("empty")){
-                        if (user.getIsFemale())
+                        if (female)
                             ibAfter.setImageResource(R.drawable.request_after_female);
                         else
                             ibAfter.setImageResource(R.drawable.request_after_male);
@@ -165,15 +169,83 @@ public class Settings extends AppCompatActivity {
 
 
     public void upload_before(View view) {
-        count=1;
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, Gallery);
+        if (user.getBeforeImage().equals("empty")){
+            count = 1;
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, Gallery);
+        }
+        else {
+            androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            // adb.setMessage("");
+            adb.setTitle("what would you like to do with the image?");
+            //   adb.setView(et);
+            adb.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                    if (female)
+                        ibBefore.setImageResource(R.drawable.request_before_female);
+                    else
+                        ibBefore.setImageResource(R.drawable.request_before_male);
+                    refUsers.child(user.getName()).child("beforeImage").removeValue();
+                    refUsers.child(user.getName()).child("beforeImage").setValue("empty");
+                    dialogInterface.dismiss();
+                }
+            });
+            adb.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                    count = 1;
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, Gallery);
+                    dialogInterface.cancel();
+                }
+            });
+            adb.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                    dialogInterface.cancel();
+                }
+            });
+            ad = adb.create();
+            ad.show();
+        }
     }
 
     public void upload_after(View view) {
-        count=2;
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, Gallery);
+        if (user.getAfterImage().equals("empty")){
+            count = 2;
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, Gallery);
+        }
+        else {
+            androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            // adb.setMessage("");
+            adb.setTitle("what would you like to do with this image?");
+            //   adb.setView(et);
+            adb.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                    if (female)
+                        ibAfter.setImageResource(R.drawable.request_after_female);
+                    else
+                        ibAfter.setImageResource(R.drawable.request_after_male);
+                    refUsers.child(user.getName()).child("afterImage").removeValue();
+                    refUsers.child(user.getName()).child("afterImage").setValue("empty");
+                    dialogInterface.dismiss();
+                }
+            });
+            adb.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                    count = 2;
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, Gallery);
+                    dialogInterface.cancel();
+                }
+            });
+            adb.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                    dialogInterface.cancel();
+                }
+            });
+            ad = adb.create();
+            ad.show();
+        }
     }
 
     @Override
@@ -215,7 +287,7 @@ public class Settings extends AppCompatActivity {
                     else {
 
                         final ProgressDialog pd = ProgressDialog.show(this, "Upload image", "Uploading...", true);
-                        StorageReference refImg = refImages.child(name + ".jpg");
+                        StorageReference refImg = refImages.child(name + "_before.jpg");
                         refImg.putFile(file)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -249,9 +321,9 @@ public class Settings extends AppCompatActivity {
     }
 
     public void download() throws IOException{
-        StorageReference refImg = refImages.child(name+".jpg");
+        StorageReference refImg = refImages.child(name+"_before.jpg");
 
-        final File localFile = File.createTempFile(name,"jpg");
+        final File localFile = File.createTempFile(name,"_beforejpg");
         refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

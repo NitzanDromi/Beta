@@ -10,7 +10,7 @@
         android:label="Keren Shlissel"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <activity android:name=".Substitutes"></activity>
         <activity android:name=".tosafim" />
         <activity android:name=".Matcon" />

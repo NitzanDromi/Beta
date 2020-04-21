@@ -93,8 +93,8 @@ public class Register_Login extends AppCompatActivity {
 
     User userdb, currentUser;
 
-    String mVerificationId, code, name, phone, email, password, id, weight, height, uid="", date, places, beforeImage="empty", afterImage="empty";
-    Boolean stayConnect, registered, isUID = false, status;
+    String mVerificationId, code, name, phone="+972", phoneInput, email, password, id, weight, height, uid="", date, places, beforeImage="empty", afterImage="empty";
+    Boolean stayConnect, registered, isUID = false;
 
     AlertDialog ad;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -194,7 +194,7 @@ public class Register_Login extends AppCompatActivity {
 
 
         onVerificationStateChanged();
-        regoption();
+        regOption();
 
 
     }
@@ -320,111 +320,98 @@ public class Register_Login extends AppCompatActivity {
         }
         else {
             name=etName.getText().toString();
-            phone=etPhone.getText().toString();
+            phoneInput=etPhone.getText().toString();
             id=etId.getText().toString();
             weight=etWeight.getText().toString();
             height=etHeight.getText().toString();
             places=spFplace.getSelectedItem().toString();
 
+                if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phoneInput.isEmpty())&&
+                        (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
-            if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
-
-            /*    startPhoneNumberVerification(phone);
-                onVerificationStateChanged();
-                ProgressDialog.show(this, "login", "connecting.. ", true);
-                AlertDialog.Builder adb = new AlertDialog.Builder(this);
-                final EditText edittext = new EditText(this);
-                edittext.setInputType(InputType.TYPE_CLASS_NUMBER);
-                adb.setMessage("enter the code");
-                adb.setTitle("Authentication");
-                adb.setView(edittext);
-                adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        code = edittext.getText().toString();
-                        if (!code.isEmpty())
-                            verifyPhoneNumberWithCode(mVerificationId, code);
+                    if ((phoneInput.length() !=10)||(!phoneInput.substring(0,2).equals("05"))||(phoneInput.indexOf(".")!=(-1))||(phoneInput.indexOf("/")!=(-1))
+                            ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf("#")!=(-1))||(phoneInput.indexOf(")")!=(-1))||(phoneInput.indexOf("()")!=(-1))
+                            ||(phoneInput.indexOf("N")!=(-1))||(phoneInput.indexOf(",")!=(-1))||(phoneInput.indexOf(";")!=(-1))||(phoneInput.indexOf("*")!=(-1))
+                            ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf(" ")!=(-1))||(phoneInput.indexOf("-")!=(-1))) {
+                        etPhone.setError("invalid phone number");
                     }
-                });
-                adb.setNegativeButton("BACK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                    else {
+                        for (int x = 1; x <= 9; x++)
+                            phone = phone + phoneInput.charAt(x);
+
+                        userdb = new User(name, email, password, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                        refUsers.child(name).setValue(userdb);
+
+
+                        startPhoneNumberVerification(phone);
+                            onVerificationStateChanged();
+                            progressDialog.show(this, "register", "connecting.. ", true);
+
+                            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                            final EditText et = new EditText(this);
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            adb.setMessage("enter the code you received");
+                            adb.setTitle("Authentication");
+                            adb.setView(et);
+                            adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                    code = et.getText().toString();
+                                    if (!code.isEmpty())
+                                        verifyPhoneNumberWithCode(mVerificationId, code);
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                            adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                    dialogInterface.cancel();
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            ad = adb.create();
+                            ad.show();
                     }
-                });
-                ad = adb.create();
-                ad.show();*/
+                } else {
+                    Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+                }
 
-                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
-                refAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                pd.dismiss();
-                                if (task.isSuccessful()) {
-                                    SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = settings.edit();
-                                    editor.putBoolean("stayConnect", cbStayconnect.isChecked());
-                                    editor.commit();
-                                    Log.d("Register_Login", "createUserWithEmail:success");
-                                    FirebaseUser user = refAuth.getCurrentUser();
-                                    uid = user.getUid();
-                                    userdb = new User(name, email, password, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
-                                    refUsers.child(name).setValue(userdb);
-                                    Toast.makeText(Register_Login.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                    Intent si = new Intent(Register_Login.this, tafritim.class);
-                                    startActivity(si);
-                                }
-                                else {
-                                    if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                        Toast.makeText(Register_Login.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
-                                    else {
-                                        Log.w("Register_Login", "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(Register_Login.this, "User create failed.", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            }
-                        });
-
-            }else{
-                Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
-            }
         }
 
     }
 
 
     /**
-     * this function is called when the user wants to login.
-     * the function sends sms to his phone number with a verification code.
-     *
-   //  * @param	phoneNumber the phone number of the user. The SMS is sent to this phone number.
+     * this function is called when the user wants to register.
+     * the function sends sms to his phone with a verification code.
+     * @param	phoneNumber the user's phone number. The SMS is sent to this phone number.
      */
-/*
+
     private void startPhoneNumberVerification(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                mCallbacks);        // OnVerificationStateChangedCallbacks
+                phoneNumber,           // Phone number to verify
+                40,                 // Timeout duration
+                TimeUnit.SECONDS,      // Unit of timeout
+                this,          // Activity (for callback binding)
+                mCallbacks);          // OnVerificationStateChangedCallbacks
         mVerificationInProgress = true;
     }
-*/
+
     /**
-     * this function is called to check if the code the user wrote is the code he received and create a credential.
+     * this function is called in order to check if the code the user wrote is the code he received and create a credential.
      * if he wrote a right code, "signInWithPhoneAuthCredential" function is called.
-   //  * @param	code the code that the
-     //* @param verificationId a verification identity to connect with firebase servers.
+     * @param	code the code that the
+     * @param verificationId a verification identity to connect with firebase servers.
      */
-   /* private void verifyPhoneNumberWithCode(String verificationId, String code) {
+    private void verifyPhoneNumberWithCode(String verificationId, String code) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
         signInWithPhoneAuthCredential(credential);
-    }*/
+    }
 
     /**
      * this function is called to sign in the user.
-     * if the credential is proper the user is signs in and he sent to the next activity, depends on his status (worker or manager)
-   //  * @param	credential a credential that everything was right and he can sign in.
+     * if the credential is proper the user is signs in and he sent to the next activity
+     * @param	credential is a credential that everything was right and the user can sign in.
      */
-   /* private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         refAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -451,12 +438,12 @@ public class Register_Login extends AppCompatActivity {
                         }
                     }
                 });
-    }*/
+    }
 
     /**
      * this function checks the status of the verification, if it's completed, failed or inProgress.
      */
-  /*  private void onVerificationStateChanged() {
+    private void onVerificationStateChanged() {
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
@@ -470,8 +457,8 @@ public class Register_Login extends AppCompatActivity {
                 Log.w(TAG, "onVerificationFailed", e);
                 mVerificationInProgress = false;
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    Toast.makeText(Register_Login.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
-                   // etCode.setError("Invalid phone number.");
+                   // Toast.makeText(Register_Login.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+                    etPhone.setError("Invalid phone number");
                 } else if (e instanceof FirebaseTooManyRequestsException) { }
             }
 
@@ -483,13 +470,13 @@ public class Register_Login extends AppCompatActivity {
             }
         };
     }
-*/
+
     /**
      * this function connect the current user with his information in the database by checking his uid,
-     * in purpose to check his status and sent him to the right activity.
+     * in order to check his status and sent him to the next activity.
      */
 
-   /* public void setUsersListener() {
+    public void setUsersListener() {
         user = refAuth.getCurrentUser();
         usersListener = new ValueEventListener() {
             @Override
@@ -497,9 +484,10 @@ public class Register_Login extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (user.getUid().equals(data.getValue(User.class).getUid())){
                         currentUser=data.getValue(User.class);
-                        if (progressDialog!=null) progressDialog.dismiss();
-                            Intent si = new Intent(Register_Login.this, tafritim.class);
-                            startActivity(si);
+                        if (progressDialog!=null)
+                         progressDialog.dismiss();
+                        Intent si = new Intent(Register_Login.this, tafritim.class);
+                        startActivity(si);
                     }
                 }
             }
@@ -508,11 +496,13 @@ public class Register_Login extends AppCompatActivity {
                 if (progressDialog!=null) progressDialog.dismiss();
             }
         };
+        refUsers.addValueEventListener(usersListener);
+
     }
-    */
+
 
     /**
-     * if the user is a female, she will have an option to choose if she is pregnant (in order to get supplements) = changed ittttt
+     *this function gets the information about the user's gender in order to give them the right supplements activity
      * worked in the version created in 22/1/20
      * @param view
      */
@@ -525,34 +515,6 @@ public class Register_Login extends AppCompatActivity {
 
         }
     }
-
-  /*  public void showDataInSpinner(ArrayList<String> data) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, data
-        ); //Create the Adapter to set the data
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Set the layout resource to create the drop down views.
-        spFplace.setAdapter(adapter); //Set the data to the spinner
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Read from the database
-        refPlaces.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot ds) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String tmp = ds.getValue(String.class);
-                Log.d(TAG, "Value is: " + tmp);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }*/
 
 
 }
