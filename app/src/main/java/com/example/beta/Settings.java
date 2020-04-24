@@ -235,7 +235,7 @@ public class Settings extends AppCompatActivity {
                     count = 2;
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, Gallery);
-                    dialogInterface.cancel();
+                    dialogInterface.dismiss();
                 }
             });
             adb.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {

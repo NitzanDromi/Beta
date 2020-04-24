@@ -17,8 +17,8 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
-        app:srcCompat="@drawable/keren_cartoon" />
+        android:layout_weight="2"
+        app:srcCompat="@drawable/application_icon" />
 
     <Space
         android:layout_width="match_parent"

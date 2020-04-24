@@ -94,17 +94,14 @@ public class Register_Login extends AppCompatActivity {
     User userdb, currentUser;
 
     String mVerificationId, code, name, phone="+972", phoneInput, email, password, id, weight, height, uid="", date, places, beforeImage="empty", afterImage="empty";
-    Boolean stayConnect, registered, isUID = false;
+    Boolean stayConnect, registered, isUID = true, invalid=true;
 
-    AlertDialog ad;
+    AlertDialog ad, ad1;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     Boolean mVerificationInProgress = false;
     ValueEventListener usersListener;
     ProgressDialog progressDialog;
     FirebaseUser user;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,12 +230,14 @@ public class Register_Login extends AppCompatActivity {
                 mDisplayDate.setVisibility(View.VISIBLE);
                 etId.setVisibility(View.VISIBLE);
                 etWeight.setVisibility(View.VISIBLE);
-                etPhone.setVisibility(View.VISIBLE);
+                //etPhone.setVisibility(View.VISIBLE);
                 etName.setVisibility(View.VISIBLE);
                 tvFemale.setVisibility(View.VISIBLE);
                 tvMale.setVisibility(View.VISIBLE);
                 swMoF.setVisibility(View.VISIBLE);
                 spFplace.setVisibility(View.VISIBLE);
+                etMail.setVisibility(View.VISIBLE);
+                etPass.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
                 isUID=false;
@@ -262,11 +261,13 @@ public class Register_Login extends AppCompatActivity {
                 etId.setVisibility(View.INVISIBLE);
                 mDisplayDate.setVisibility(View.INVISIBLE);
                 etName.setVisibility(View.INVISIBLE);
-                etPhone.setVisibility(View.INVISIBLE);
+               // etPhone.setVisibility(View.INVISIBLE);
                 tvFemale.setVisibility(View.INVISIBLE);
                 tvMale.setVisibility(View.INVISIBLE);
                 swMoF.setVisibility(View.INVISIBLE);
                 spFplace.setVisibility(View.INVISIBLE);
+                etMail.setVisibility(View.INVISIBLE);
+                etPass.setVisibility(View.INVISIBLE);
                 btn.setText("Login");
                 isUID=true;
                 registered=true;
@@ -286,13 +287,48 @@ public class Register_Login extends AppCompatActivity {
      * <p>
      */
     public void logOrReg(View view) {
-        email=etMail.getText().toString();
-        password=etPass.getText().toString();
-
+        phoneInput=etPhone.getText().toString();
         if (registered) {
-            if ((!password.isEmpty()) && (!email.isEmpty())) {
+            if (!phoneInput.isEmpty()) {
 
-                final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);
+                if ((phoneInput.length() !=10)||(!phoneInput.substring(0, 2).equals("05")) || (phoneInput.indexOf(".") != (-1)) || (phoneInput.indexOf("/") != (-1))
+                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf("#") != (-1)) || (phoneInput.indexOf(")") != (-1)) || (phoneInput.indexOf("()") != (-1))
+                        || (phoneInput.indexOf("N") != (-1)) || (phoneInput.indexOf(",") != (-1)) || (phoneInput.indexOf(";") != (-1)) || (phoneInput.indexOf("*") != (-1))
+                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf(" ") != (-1)) || (phoneInput.indexOf("-") != (-1))) {
+                    etPhone.setError("invalid phone number");
+                } else {
+                    for (int x = 1; x <= 9; x++)
+                        phone = phone + phoneInput.charAt(x);
+
+                    startPhoneNumberVerification(phone);
+                    onVerificationStateChanged();
+
+                  //  progressDialog.show(this, "Login", "Connecting...", true);
+                   //progressDialog.dismiss();
+
+                    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                    final EditText et = new EditText(this);
+                    et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    adb.setMessage("enter the code you received");
+                    adb.setTitle("Authentication");
+                    adb.setView(et);
+                    adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                            code = et.getText().toString();
+                            if (!code.isEmpty())
+                                verifyPhoneNumberWithCode(mVerificationId, code);
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    ad1 = adb.create();
+                    ad1.show();
+
+              /*
                 refAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -313,10 +349,12 @@ public class Register_Login extends AppCompatActivity {
                                     Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
                                 }
                             }
-                        });
-            } else {
-                Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+                        });*/
+                }
+            }else {
+                Toast.makeText(Register_Login.this, "Please, enter your phone number.", Toast.LENGTH_LONG).show();
             }
+
         }
         else {
             name=etName.getText().toString();
@@ -325,9 +363,13 @@ public class Register_Login extends AppCompatActivity {
             weight=etWeight.getText().toString();
             height=etHeight.getText().toString();
             places=spFplace.getSelectedItem().toString();
+            password=etPass.getText().toString();
+            email=etMail.getText().toString();
 
-                if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phoneInput.isEmpty())&&
-                        (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
+
+                if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) &&
+                        (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
+
 
                     if ((phoneInput.length() !=10)||(!phoneInput.substring(0,2).equals("05"))||(phoneInput.indexOf(".")!=(-1))||(phoneInput.indexOf("/")!=(-1))
                             ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf("#")!=(-1))||(phoneInput.indexOf(")")!=(-1))||(phoneInput.indexOf("()")!=(-1))
@@ -343,9 +385,10 @@ public class Register_Login extends AppCompatActivity {
                         refUsers.child(name).setValue(userdb);
 
 
-                        startPhoneNumberVerification(phone);
+                            startPhoneNumberVerification(phone);
                             onVerificationStateChanged();
-                            progressDialog.show(this, "register", "connecting.. ", true);
+                        //    if (!invalid){
+                          //  progressDialog.show(this, "register", "connecting.. ", true);
 
                             AlertDialog.Builder adb = new AlertDialog.Builder(this);
                             final EditText et = new EditText(this);
@@ -363,13 +406,16 @@ public class Register_Login extends AppCompatActivity {
                             });
                             adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                    //progressDialog.dismiss();
                                     dialogInterface.cancel();
-                                    progressDialog.dismiss();
                                 }
                             });
                             ad = adb.create();
                             ad.show();
                     }
+                           // else{
+                             //   etPhone.setError("invalid phone number");
+                            //}
                 } else {
                     Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
                 }
@@ -459,7 +505,11 @@ public class Register_Login extends AppCompatActivity {
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                    // Toast.makeText(Register_Login.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                     etPhone.setError("Invalid phone number");
-                } else if (e instanceof FirebaseTooManyRequestsException) { }
+                    invalid=true;
+                } else { invalid=false;
+                    if (e instanceof FirebaseTooManyRequestsException) {
+                    }
+                }
             }
 
             @Override
@@ -484,8 +534,8 @@ public class Register_Login extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (user.getUid().equals(data.getValue(User.class).getUid())){
                         currentUser=data.getValue(User.class);
-                        if (progressDialog!=null)
-                         progressDialog.dismiss();
+                      //  if (progressDialog!=null)
+//                         progressDialog.dismiss();
                         Intent si = new Intent(Register_Login.this, tafritim.class);
                         startActivity(si);
                     }
@@ -493,7 +543,7 @@ public class Register_Login extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                if (progressDialog!=null) progressDialog.dismiss();
+            //    if (progressDialog!=null) progressDialog.dismiss();
             }
         };
         refUsers.addValueEventListener(usersListener);
