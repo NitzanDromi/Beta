@@ -16,14 +16,14 @@ package com.example.beta;
  */
 
 public class User {
-    private String name, email, phone, uid, password, id, date, weight, height, places, beforeImage, afterImage;
+    private String name, lastName, email, phone, uid, id, date, weight, height, places, beforeImage, afterImage;
     private Boolean isFemale;
 
     public User(){}
-    public User (String name, String email, String password, String phone, String id, String date, String weight, String height, Boolean isFemale, String places, String uid,String afterImage, String beforeImage) {
+    public User (String name,String lastName, String email, String phone, String id, String date, String weight, String height, Boolean isFemale, String places, String uid,String afterImage, String beforeImage) {
         this.name=name;
+        this.lastName=lastName;
         this.email=email;
-        this.password=password;
         this.phone=phone;
         this.id=id;
         this.date=date;
@@ -42,6 +42,14 @@ public class User {
 
     public void setName(String name) {
         this.name=name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -80,12 +88,6 @@ public class User {
 
     public void setWeight(String weight) {
         this.weight = weight;
-    }
-
-    public String getPassword() {return password;}
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean getIsFemale() {return isFemale;}

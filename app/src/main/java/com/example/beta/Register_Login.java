@@ -52,7 +52,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
@@ -77,7 +79,7 @@ public class Register_Login extends AppCompatActivity {
     private static final String TAG="MainActivity";
 
     TextView tvTitle, tvRegister, tvFemale, tvMale;
-    EditText etName, etPhone, etMail, etPass, etWeight, etId, etHeight;
+    EditText etName, etLastName, etPhone, etMail, etWeight, etId, etHeight;
     CheckBox cbStayconnect;
     Switch swMoF;
     Boolean isFemale= false;
@@ -93,14 +95,13 @@ public class Register_Login extends AppCompatActivity {
 
     User userdb, currentUser;
 
-    String mVerificationId, code, name, phone="+972", phoneInput, email, password, id, weight, height, uid="", date, places, beforeImage="empty", afterImage="empty";
+    String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="", id="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
     Boolean stayConnect, registered, isUID = true, invalid=true;
 
     AlertDialog ad, ad1;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     Boolean mVerificationInProgress = false;
     ValueEventListener usersListener;
-    ProgressDialog progressDialog;
     FirebaseUser user;
 
     @Override
@@ -165,8 +166,8 @@ public class Register_Login extends AppCompatActivity {
         tvTitle=(TextView) findViewById(R.id.tvTitle);
         etHeight=(EditText) findViewById(R.id.etHeight);
         etName=(EditText)findViewById(R.id.etName);
+        etLastName=(EditText)findViewById(R.id.etLastName);
         etMail=(EditText)findViewById(R.id.etMail);
-        etPass=(EditText)findViewById(R.id.etPass);
         etPhone=(EditText)findViewById(R.id.etPhone);
         etWeight= (EditText) findViewById(R.id.etWeight);
         etId=(EditText)findViewById(R.id.etId);
@@ -185,15 +186,11 @@ public class Register_Login extends AppCompatActivity {
         //spFplace.setAdapter(adapter);
         //spFplace.setOnItemClickListener(this);
 
-
         stayConnect=false;
         registered=true;
 
-
         onVerificationStateChanged();
         regOption();
-
-
     }
 
 
@@ -230,14 +227,13 @@ public class Register_Login extends AppCompatActivity {
                 mDisplayDate.setVisibility(View.VISIBLE);
                 etId.setVisibility(View.VISIBLE);
                 etWeight.setVisibility(View.VISIBLE);
-                //etPhone.setVisibility(View.VISIBLE);
+                etLastName.setVisibility(View.VISIBLE);
                 etName.setVisibility(View.VISIBLE);
                 tvFemale.setVisibility(View.VISIBLE);
                 tvMale.setVisibility(View.VISIBLE);
                 swMoF.setVisibility(View.VISIBLE);
                 spFplace.setVisibility(View.VISIBLE);
                 etMail.setVisibility(View.VISIBLE);
-                etPass.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
                 isUID=false;
@@ -261,13 +257,12 @@ public class Register_Login extends AppCompatActivity {
                 etId.setVisibility(View.INVISIBLE);
                 mDisplayDate.setVisibility(View.INVISIBLE);
                 etName.setVisibility(View.INVISIBLE);
-               // etPhone.setVisibility(View.INVISIBLE);
+                etLastName.setVisibility(View.INVISIBLE);
                 tvFemale.setVisibility(View.INVISIBLE);
                 tvMale.setVisibility(View.INVISIBLE);
                 swMoF.setVisibility(View.INVISIBLE);
                 spFplace.setVisibility(View.INVISIBLE);
                 etMail.setVisibility(View.INVISIBLE);
-                etPass.setVisibility(View.INVISIBLE);
                 btn.setText("Login");
                 isUID=true;
                 registered=true;
@@ -303,9 +298,6 @@ public class Register_Login extends AppCompatActivity {
                     startPhoneNumberVerification(phone);
                     onVerificationStateChanged();
 
-                  //  progressDialog.show(this, "Login", "Connecting...", true);
-                   //progressDialog.dismiss();
-
                     AlertDialog.Builder adb = new AlertDialog.Builder(this);
                     final EditText et = new EditText(this);
                     et.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -328,6 +320,28 @@ public class Register_Login extends AppCompatActivity {
                     ad1 = adb.create();
                     ad1.show();
 
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+
+                    refAuth.signInWithCredential(phone).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            //pd.dismiss();
+                            if (task.isSuccessful()) {
+                                SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putBoolean("stayConnect", cbStayconnect.isChecked());
+                                editor.commit();
+                                Log.d("Register_Login", "signinUserWithEmail:success");
+                                Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
+                                Intent si = new Intent(Register_Login.this, tafritim.class);
+                                startActivity(si);
+                                finish();
+                            } else {
+                                Log.d("Register_Login", "signinUserWithEmail:fail");
+                                Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
               /*
                 refAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -357,17 +371,17 @@ public class Register_Login extends AppCompatActivity {
 
         }
         else {
-            name=etName.getText().toString();
+            fstName=etName.getText().toString();
             phoneInput=etPhone.getText().toString();
             id=etId.getText().toString();
             weight=etWeight.getText().toString();
+            currentWeight=weight;
             height=etHeight.getText().toString();
             places=spFplace.getSelectedItem().toString();
-            password=etPass.getText().toString();
             email=etMail.getText().toString();
 
 
-                if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) &&
+                if ((!fstName.isEmpty()) && (!email.isEmpty()) &&
                         (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
 
@@ -378,11 +392,17 @@ public class Register_Login extends AppCompatActivity {
                         etPhone.setError("invalid phone number");
                     }
                     else {
+
+
+
+
+
+
                         for (int x = 1; x <= 9; x++)
                             phone = phone + phoneInput.charAt(x);
 
-                        userdb = new User(name, email, password, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
-                        refUsers.child(name).setValue(userdb);
+                        userdb = new User(fstName,lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                        refUsers.child(fstName+" "+lastName).setValue(userdb);
 
 
                             startPhoneNumberVerification(phone);
@@ -473,7 +493,7 @@ public class Register_Login extends AppCompatActivity {
                             FirebaseUser user = refAuth.getCurrentUser();
                             uid = user.getUid();
                             if (!isUID) {
-                                refUsers.child(name).child("uid").setValue(uid);
+                                refUsers.child(fstName+" "+lastName).child("uid").setValue(uid);
                             }
                             setUsersListener();
                         }

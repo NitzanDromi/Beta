@@ -33,7 +33,7 @@ public class Credits extends AppCompatActivity {
             Intent a=new Intent(this, tafritim.class);
             startActivity(a);
         }
-        if(st.equals("הגדרות")){
+        if(st.equals("פרופיל אישי")){
             Intent a=new Intent(this, Settings.class);
             startActivity(a);
         }
