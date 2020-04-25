@@ -6,22 +6,38 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
+    android:background="#E91E63"
     tools:context=".Credits">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+         />
+
+
+    <ImageView
+        android:id="@+id/ivkereninfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        app:srcCompat="@drawable/kereninformation" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/common_google_signin_btn_text_dark_pressed"
+        android:autoSizeMaxTextSize="@android:dimen/dialog_min_width_major"
         android:gravity="center"
         android:text="The application was created by Nitzan Dromi"
-        android:textColor="#D81B60"
-        android:textSize="36sp"
+        android:textColor="#E91E63"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="TextView" />
 </LinearLayout>

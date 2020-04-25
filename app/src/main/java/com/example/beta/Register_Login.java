@@ -276,7 +276,7 @@ public class Register_Login extends AppCompatActivity {
 
     /**
      * Logging in or Registering to the application
-     * Using:   Firebase Auth with email & password
+     * Using:   Firebase Auth with phone and sms code
      *          Firebase Realtime database with the object User to the branch Users
      * If login or register process is Ok saving stay connect status & pass to next activity
      * <p>
@@ -319,51 +319,6 @@ public class Register_Login extends AppCompatActivity {
                     });
                     ad1 = adb.create();
                     ad1.show();
-
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-
-                    refAuth.signInWithCredential(phone).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            //pd.dismiss();
-                            if (task.isSuccessful()) {
-                                SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = settings.edit();
-                                editor.putBoolean("stayConnect", cbStayconnect.isChecked());
-                                editor.commit();
-                                Log.d("Register_Login", "signinUserWithEmail:success");
-                                Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
-                                Intent si = new Intent(Register_Login.this, tafritim.class);
-                                startActivity(si);
-                                finish();
-                            } else {
-                                Log.d("Register_Login", "signinUserWithEmail:fail");
-                                Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-              /*
-                refAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                pd.dismiss();
-                                if (task.isSuccessful()) {
-                                    SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = settings.edit();
-                                    editor.putBoolean("stayConnect", cbStayconnect.isChecked());
-                                    editor.commit();
-                                    Log.d("Register_Login", "signinUserWithEmail:success");
-                                    Toast.makeText(Register_Login.this, "Login Success", Toast.LENGTH_LONG).show();
-                                    Intent si = new Intent(Register_Login.this, tafritim.class);
-                                    startActivity(si);
-                                    finish();
-                                } else {
-                                    Log.d("Register_Login", "signinUserWithEmail:fail");
-                                    Toast.makeText(Register_Login.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });*/
                 }
             }else {
                 Toast.makeText(Register_Login.this, "Please, enter your phone number.", Toast.LENGTH_LONG).show();
@@ -392,12 +347,6 @@ public class Register_Login extends AppCompatActivity {
                         etPhone.setError("invalid phone number");
                     }
                     else {
-
-
-
-
-
-
                         for (int x = 1; x <= 9; x++)
                             phone = phone + phoneInput.charAt(x);
 
@@ -433,9 +382,6 @@ public class Register_Login extends AppCompatActivity {
                             ad = adb.create();
                             ad.show();
                     }
-                           // else{
-                             //   etPhone.setError("invalid phone number");
-                            //}
                 } else {
                     Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
                 }
@@ -525,8 +471,7 @@ public class Register_Login extends AppCompatActivity {
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                    // Toast.makeText(Register_Login.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                     etPhone.setError("Invalid phone number");
-                    invalid=true;
-                } else { invalid=false;
+                } else {
                     if (e instanceof FirebaseTooManyRequestsException) {
                     }
                 }
@@ -554,8 +499,6 @@ public class Register_Login extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (user.getUid().equals(data.getValue(User.class).getUid())){
                         currentUser=data.getValue(User.class);
-                      //  if (progressDialog!=null)
-//                         progressDialog.dismiss();
                         Intent si = new Intent(Register_Login.this, tafritim.class);
                         startActivity(si);
                     }
@@ -563,7 +506,6 @@ public class Register_Login extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-            //    if (progressDialog!=null) progressDialog.dismiss();
             }
         };
         refUsers.addValueEventListener(usersListener);

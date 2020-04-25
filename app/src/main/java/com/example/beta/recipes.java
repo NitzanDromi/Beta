@@ -213,12 +213,12 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("הגדרות")){
+        if(st.equals("פרופיל אישי")){
             Intent a=new Intent(this, Settings.class);
             startActivity(a);
             finish();
         }
-        if(st.equals("קרדיטים")){
+        if(st.equals("אודות")){
             Intent a=new Intent(this, Credits.class);
             startActivity(a);
             finish();

@@ -54,7 +54,7 @@ import static com.example.beta.FBref.refImages;
 import static com.example.beta.FBref.refUsers;
 
 public class Settings extends AppCompatActivity {
-    String uid;
+    String uid, fullName;
     User user;
     TextView tvname;
     EditText etweight, etheight;
@@ -81,19 +81,6 @@ public class Settings extends AppCompatActivity {
         uid = fbuser.getUid();
         Query query = refUsers.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
-
-     /*   try {
-            download();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            download1();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
@@ -103,6 +90,7 @@ public class Settings extends AppCompatActivity {
                 for(DataSnapshot data : dS.getChildren()) {
                     user = data.getValue(User.class);
                     tvname.setText("Welcome " + user.getName() + "!");
+                    fullName=user.getName()+" "+user.getLastName();
                     name=user.getName();
                     etweight.setText(user.getWeight());
                     etheight.setText(user.getHeight());
@@ -158,13 +146,13 @@ public class Settings extends AppCompatActivity {
 
 
     public void updateHeight(View view) {
-        refUsers.child(user.getName()).child("height").removeValue();
-        refUsers.child(user.getName()).child("height").setValue(etheight.getText().toString());
+        refUsers.child(fullName).child("height").removeValue();
+        refUsers.child(fullName).child("height").setValue(etheight.getText().toString());
     }
 
     public void updateWeight(View view) {
-        refUsers.child(name).child("weight").removeValue();
-        refUsers.child(name).child("weight").setValue(etweight.getText().toString());
+        refUsers.child(fullName).child("weight").removeValue();
+        refUsers.child(fullName).child("weight").setValue(etweight.getText().toString());
     }
 
 
@@ -185,8 +173,8 @@ public class Settings extends AppCompatActivity {
                         ibBefore.setImageResource(R.drawable.request_before_female);
                     else
                         ibBefore.setImageResource(R.drawable.request_before_male);
-                    refUsers.child(user.getName()).child("beforeImage").removeValue();
-                    refUsers.child(user.getName()).child("beforeImage").setValue("empty");
+                    refUsers.child(fullName).child("beforeImage").removeValue();
+                    refUsers.child(fullName).child("beforeImage").setValue("empty");
                     dialogInterface.dismiss();
                 }
             });
@@ -216,17 +204,15 @@ public class Settings extends AppCompatActivity {
         }
         else {
             androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            // adb.setMessage("");
             adb.setTitle("what would you like to do with this image?");
-            //   adb.setView(et);
             adb.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     if (female)
                         ibAfter.setImageResource(R.drawable.request_after_female);
                     else
                         ibAfter.setImageResource(R.drawable.request_after_male);
-                    refUsers.child(user.getName()).child("afterImage").removeValue();
-                    refUsers.child(user.getName()).child("afterImage").setValue("empty");
+                    refUsers.child(fullName).child("afterImage").removeValue();
+                    refUsers.child(fullName).child("afterImage").setValue("empty");
                     dialogInterface.dismiss();
                 }
             });
@@ -266,8 +252,8 @@ public class Settings extends AppCompatActivity {
                                         pd.dismiss();
                                         Toast.makeText(Settings.this, "Image Uploaded", Toast.LENGTH_LONG).show();
 
-                                        refUsers.child(user.getName()).child("afterImage").removeValue();
-                                        refUsers.child(user.getName()).child("afterImage").setValue("checked");
+                                        refUsers.child(fullName).child("afterImage").removeValue();
+                                        refUsers.child(fullName).child("afterImage").setValue("checked");
 
                                         try {
                                             download1();
@@ -295,8 +281,8 @@ public class Settings extends AppCompatActivity {
                                         pd.dismiss();
                                         Toast.makeText(Settings.this, "Image Uploaded", Toast.LENGTH_LONG).show();
 
-                                        refUsers.child(user.getName()).child("beforeImage").removeValue();
-                                        refUsers.child(user.getName()).child("beforeImage").setValue("checked");
+                                        refUsers.child(fullName).child("beforeImage").removeValue();
+                                        refUsers.child(fullName).child("beforeImage").setValue("checked");
 
                                         try {
                                             download();
@@ -376,7 +362,7 @@ public class Settings extends AppCompatActivity {
             Intent a=new Intent(this, recipes.class);
             startActivity(a);
         }
-        if(st.equals("קרדיטים")){
+        if(st.equals("אודות")){
             Intent a=new Intent(this, Credits.class);
             startActivity(a);
         }

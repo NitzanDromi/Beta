@@ -159,12 +159,12 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
             startActivity(a);
             finish();
         }
-        if(st.equals("קרדיטים")){
+        if(st.equals("אודות")){
             Intent a=new Intent(this, Credits.class);
             startActivity(a);
             finish();
         }
-        if(st.equals("הגדרות")){
+        if(st.equals("פרופיל אישי")){
             Intent si = new Intent(tafritim.this,Settings.class);
             startActivity(si);
             finish();
