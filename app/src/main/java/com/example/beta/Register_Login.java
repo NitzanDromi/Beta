@@ -73,6 +73,7 @@ import static com.example.beta.FBref.refUsers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Register_Login extends AppCompatActivity {
 
@@ -335,53 +336,54 @@ public class Register_Login extends AppCompatActivity {
             places=spFplace.getSelectedItem().toString();
             email=etMail.getText().toString();
 
-
                 if ((!fstName.isEmpty()) && (!email.isEmpty()) &&
                         (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
-
-                    if ((phoneInput.length() !=10)||(!phoneInput.substring(0,2).equals("05"))||(phoneInput.indexOf(".")!=(-1))||(phoneInput.indexOf("/")!=(-1))
-                            ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf("#")!=(-1))||(phoneInput.indexOf(")")!=(-1))||(phoneInput.indexOf("()")!=(-1))
-                            ||(phoneInput.indexOf("N")!=(-1))||(phoneInput.indexOf(",")!=(-1))||(phoneInput.indexOf(";")!=(-1))||(phoneInput.indexOf("*")!=(-1))
-                            ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf(" ")!=(-1))||(phoneInput.indexOf("-")!=(-1))) {
+                    if (Pattern.matches("[a-zA-Z]+", id) == false && id.length() != 9) {
+                        etId.setError("invalid id");
+                    } else{
+                        if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || (phoneInput.indexOf(".") != (-1)) || (phoneInput.indexOf("/") != (-1))
+                            || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf("#") != (-1)) || (phoneInput.indexOf(")") != (-1)) || (phoneInput.indexOf("()") != (-1))
+                            || (phoneInput.indexOf("N") != (-1)) || (phoneInput.indexOf(",") != (-1)) || (phoneInput.indexOf(";") != (-1)) || (phoneInput.indexOf("*") != (-1))
+                            || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf(" ") != (-1)) || (phoneInput.indexOf("-") != (-1))) {
                         etPhone.setError("invalid phone number");
-                    }
-                    else {
+                    } else {
                         for (int x = 1; x <= 9; x++)
                             phone = phone + phoneInput.charAt(x);
 
-                        userdb = new User(fstName,lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
-                        refUsers.child(fstName+" "+lastName).setValue(userdb);
+                        userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                        refUsers.child(fstName + " " + lastName).setValue(userdb);
 
 
-                            startPhoneNumberVerification(phone);
-                            onVerificationStateChanged();
+                        startPhoneNumberVerification(phone);
+                        onVerificationStateChanged();
                         //    if (!invalid){
-                          //  progressDialog.show(this, "register", "connecting.. ", true);
+                        //  progressDialog.show(this, "register", "connecting.. ", true);
 
-                            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-                            final EditText et = new EditText(this);
-                            et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            adb.setMessage("enter the code you received");
-                            adb.setTitle("Authentication");
-                            adb.setView(et);
-                            adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                    code = et.getText().toString();
-                                    if (!code.isEmpty())
-                                        verifyPhoneNumberWithCode(mVerificationId, code);
-                                    dialogInterface.dismiss();
-                                }
-                            });
-                            adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                    //progressDialog.dismiss();
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            ad = adb.create();
-                            ad.show();
+                        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                        final EditText et = new EditText(this);
+                        et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        adb.setMessage("enter the code you received");
+                        adb.setTitle("Authentication");
+                        adb.setView(et);
+                        adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                code = et.getText().toString();
+                                if (!code.isEmpty())
+                                    verifyPhoneNumberWithCode(mVerificationId, code);
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                //progressDialog.dismiss();
+                                dialogInterface.cancel();
+                            }
+                        });
+                        ad = adb.create();
+                        ad.show();
                     }
+                }
                 } else {
                     Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
                 }
