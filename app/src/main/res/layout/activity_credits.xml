@@ -11,7 +11,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
          />
 
@@ -19,22 +19,21 @@
     <ImageView
         android:id="@+id/ivkereninfo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="3"
         app:srcCompat="@drawable/kereninformation" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvcreatorofapp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/common_google_signin_btn_text_dark_pressed"
-        android:autoSizeMaxTextSize="@android:dimen/dialog_min_width_major"
+        android:background="#FFFFFF"
         android:gravity="center"
         android:text="The application was created by Nitzan Dromi"
         android:textColor="#E91E63"

@@ -66,6 +66,7 @@
             android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary"
             android:hint="Select date of birth" />
 
         <EditText
@@ -130,6 +131,10 @@
         android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <CheckBox
             android:id="@+id/cbStayConnect"
