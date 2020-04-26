@@ -97,7 +97,7 @@ public class Register_Login extends AppCompatActivity {
     User userdb, currentUser;
 
     String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="", id="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
-    Boolean stayConnect, registered, isUID = true, invalid=true;
+    Boolean stayConnect, registered, isUID = true;
 
     AlertDialog ad, ad1;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -118,7 +118,7 @@ public class Register_Login extends AppCompatActivity {
                 titleList.clear();
 
                 for (DataSnapshot data : ds.getChildren()){
-                    String titlename=data.getKey();
+                    String titlename=data.getValue().toString();
                     titleList.add(titlename);
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(Register_Login.this, android.R.layout.simple_spinner_item, titleList);
@@ -287,14 +287,12 @@ public class Register_Login extends AppCompatActivity {
         if (registered) {
             if (!phoneInput.isEmpty()) {
 
-                if ((phoneInput.length() !=10)||(!phoneInput.substring(0, 2).equals("05")) || (phoneInput.indexOf(".") != (-1)) || (phoneInput.indexOf("/") != (-1))
-                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf("#") != (-1)) || (phoneInput.indexOf(")") != (-1)) || (phoneInput.indexOf("()") != (-1))
-                        || (phoneInput.indexOf("N") != (-1)) || (phoneInput.indexOf(",") != (-1)) || (phoneInput.indexOf(";") != (-1)) || (phoneInput.indexOf("*") != (-1))
-                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf(" ") != (-1)) || (phoneInput.indexOf("-") != (-1))) {
+                if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) {
                     etPhone.setError("invalid phone number");
                 } else {
-                    for (int x = 1; x <= 9; x++)
-                        phone = phone + phoneInput.charAt(x);
+                    if (phone.equals("+972"))
+                        for (int x = 1; x <= 9; x++)
+                            phone = phone + phoneInput.charAt(x);
 
                     startPhoneNumberVerification(phone);
                     onVerificationStateChanged();
@@ -339,50 +337,55 @@ public class Register_Login extends AppCompatActivity {
                 if ((!fstName.isEmpty()) && (!email.isEmpty()) &&
                         (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
-                    if (Pattern.matches("[a-zA-Z]+", id) == true || id.length() != 9) {
-                        etId.setError("invalid id");
-                    } else {
-                        if (((!email.endsWith(".com")) || (!email.endsWith(".il"))) && (email.indexOf("@") == (-1)))
-                            etMail.setError("invalid e-mail");
-                        else {
-                            if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) {
-                                etPhone.setError("invalid phone number");
-                            } else {
-                                if (phone.equals("+972"))
-                                for (int x = 1; x <= 9; x++)
-                                    phone = phone + phoneInput.charAt(x);
+                    if (places.equals("select your meetings location")) {
+                        Toast.makeText(this, "please choose your meetings location", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        if (Pattern.matches("[a-zA-Z]+", id) == true || id.length() != 9) {
+                            etId.setError("invalid id");
+                        } else {
+                            if (((!email.endsWith(".com")) || (!email.endsWith(".il"))) && (email.indexOf("@") == (-1)))
+                                etMail.setError("invalid e-mail");
+                            else {
+                                if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) {
+                                    etPhone.setError("invalid phone number");
+                                } else {
+                                    if (phone.equals("+972"))
+                                        for (int x = 1; x <= 9; x++)
+                                            phone = phone + phoneInput.charAt(x);
 
-                                userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
-                                refUsers.child(fstName + " " + lastName).setValue(userdb);
+                                    userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                                    refUsers.child(fstName + " " + lastName).setValue(userdb);
 
 
-                                startPhoneNumberVerification(phone);
-                                onVerificationStateChanged();
-                                //    if (!invalid){
-                                //  progressDialog.show(this, "register", "connecting.. ", true);
+                                    startPhoneNumberVerification(phone);
+                                    onVerificationStateChanged();
+                                    //    if (!invalid){
+                                    //  progressDialog.show(this, "register", "connecting.. ", true);
 
-                                AlertDialog.Builder adb = new AlertDialog.Builder(this);
-                                final EditText et = new EditText(this);
-                                et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                adb.setMessage("enter the code you received");
-                                adb.setTitle("Authentication");
-                                adb.setView(et);
-                                adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                        code = et.getText().toString();
-                                        if (!code.isEmpty())
-                                            verifyPhoneNumberWithCode(mVerificationId, code);
-                                        dialogInterface.dismiss();
-                                    }
-                                });
-                                adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                        //progressDialog.dismiss();
-                                        dialogInterface.cancel();
-                                    }
-                                });
-                                ad = adb.create();
-                                ad.show();
+                                    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                                    final EditText et = new EditText(this);
+                                    et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    adb.setMessage("enter the code you received");
+                                    adb.setTitle("Authentication");
+                                    adb.setView(et);
+                                    adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                            code = et.getText().toString();
+                                            if (!code.isEmpty())
+                                                verifyPhoneNumberWithCode(mVerificationId, code);
+                                            dialogInterface.dismiss();
+                                        }
+                                    });
+                                    adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                                            //progressDialog.dismiss();
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    ad = adb.create();
+                                    ad.show();
+                                }
                             }
                         }
                     }
