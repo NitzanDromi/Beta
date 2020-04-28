@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,16 +25,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class tafritim extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class tafritim extends AppCompatActivity {
     ListView lvMenu;
+    TextView tvNumOfWeek, tvSentence;
+
     ArrayList<String> stringList= new ArrayList<String>();
     ArrayAdapter<String> adp;
-    String day="Sunday";
-    String week;
-    int wk=1;
-    int wkmax=1;
+
+    String day="Sunday", week;
+    int wk=1, wkmax=1;
+
     SeekBar seekBardays;
-    TextView tvNumOfWeek, tvSentence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +47,10 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
 
         lvMenu=(ListView) findViewById(R.id.lvMenu);
 
-        lvMenu.setOnItemClickListener(this);
-        lvMenu.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adp=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringList);
         lvMenu.setAdapter(adp);
 
         seekBardays=(SeekBar) findViewById(R.id.seekBar);
-        //int seekValue = seekBardays.getProgress();
 
         week=Integer.toString(wk);
         refMenu.addValueEventListener(new ValueEventListener() {
@@ -75,6 +72,10 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
 
     }
 
+    /**
+     * this function is called in order to set the appropriate menu.
+     * the default option (when called from the oncreate) is the first week and Sunday
+     */
     public void MainTafrit (){
         DatabaseReference refDay = refMenu.child(week).child(day);
 
@@ -108,7 +109,6 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
                     case 2: day="Monday and Tuesday";break;
                     case 1: day="Wednesday and Thursday";break;
                     case 0: day="Friday and Saturday";break;
-                    //default:day="Sunday";
                 }
                 DatabaseReference refDay = refMenu.child(week).child(day);
                 // Read from the database
@@ -142,47 +142,6 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        String st=item.getTitle().toString();
-        if(st.equals("מתכונים")){
-            Intent a=new Intent(this, recipes.class);
-            startActivity(a);
-            finish();
-        }
-        if(st.equals("אודות")){
-            Intent a=new Intent(this, Credits.class);
-            startActivity(a);
-            finish();
-        }
-        if(st.equals("פרופיל אישי")){
-            Intent si = new Intent(tafritim.this,Settings.class);
-            startActivity(si);
-            finish();
-        }
-        if(st.equals("תוספי תזונה")){
-            Intent a=new Intent(this, tosafim.class);
-            startActivity(a);
-        }
-        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
-            Intent a=new Intent(this, Substitutes.class);
-            startActivity(a);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     public void NextWeek(View view) {
@@ -234,5 +193,50 @@ public class tafritim extends AppCompatActivity implements AdapterView.OnItemCli
         else{
             Toast.makeText(this, "this is the first week", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * this function creates the menu options - the menu - main.xml
+     * @param menu
+     * @return ????????????????????????????????????????????
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
+     * @param item
+     * @return ???????????????????
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        String st=item.getTitle().toString();
+        if(st.equals("מתכונים")){
+            Intent a=new Intent(this, recipes.class);
+            startActivity(a);
+            finish();
+        }
+        if(st.equals("אודות")){
+            Intent a=new Intent(this, Credits.class);
+            startActivity(a);
+            finish();
+        }
+        if(st.equals("פרופיל אישי")){
+            Intent si = new Intent(tafritim.this,Settings.class);
+            startActivity(si);
+            finish();
+        }
+        if(st.equals("תוספי תזונה")){
+            Intent a=new Intent(this, tosafim.class);
+            startActivity(a);
+        }
+        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
+            Intent a=new Intent(this, Substitutes.class);
+            startActivity(a);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

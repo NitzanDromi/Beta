@@ -204,6 +204,13 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
             query2.addListenerForSingleValueEvent(VEL2);
 
     }
+
+    public void dinnerRecipe(View view) {
+        Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
+        query2.addListenerForSingleValueEvent(VEL2);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -240,8 +247,5 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     }
 
 
-    public void dinnerRecipe(View view) {
-        Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
-        query2.addListenerForSingleValueEvent(VEL2);
-    }
+
 }

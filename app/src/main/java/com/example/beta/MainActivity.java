@@ -15,6 +15,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /**
+         * this function transfer the user(?) to the next activity (register or login activity) after 3 seconds in this activity.
+         * without any intervention from the user
+         * @param TimerTask
+         */
         timer= new Timer();
         timer.schedule(new TimerTask() {
             @Override

@@ -6,10 +6,17 @@ package com.example.beta;
  * @since		29/01/2020 (the date of the package the class was added)
  * Beta version of the application.
  * has:
- * login/ register activity (the same activity, it's purpose can change) - xml is done, program is in progress.
+ * main activity (contains the app icon image - "loading the app" activity)
+ * login/ register activity (the same activity, it's purpose can change)
  * menus activity
  * class for all the variables related to FireBase
  * class for the User's tree in FireBase
+ * recipes activity
+ * matcon (single recipe) activity (the user can reach to it only through the recipes activity)
+ * substitutes activity
+ * tosafim (supplements) activity
+ * credits activity
+ * and a main menu - in order to easily move from one activity to the other
  */
 
 
@@ -18,13 +25,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -35,34 +38,27 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
@@ -97,7 +93,7 @@ public class Register_Login extends AppCompatActivity {
     User userdb, currentUser;
 
     String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="", id="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
-    Boolean stayConnect, registered, isUID = true;
+    Boolean stayConnect, registered=false, isUID = false;
 
     AlertDialog ad, ad1;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -105,64 +101,13 @@ public class Register_Login extends AppCompatActivity {
     ValueEventListener usersListener;
     FirebaseUser user;
 
+    Boolean firstRun=true;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register__login);
-
-        spFplace=(Spinner) findViewById(R.id.spPlace);
-
-        refPlaces.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot ds) {
-                titleList.clear();
-
-                for (DataSnapshot data : ds.getChildren()){
-                    String titlename=data.getValue().toString();
-                    titleList.add(titlename);
-                }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(Register_Login.this, android.R.layout.simple_spinner_item, titleList);
-                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spFplace.setAdapter(arrayAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(Register_Login.this, databaseError.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
-
-/**
- * date picker - in order to choose the date of birth of each user.
- * ended programming in 22/1 - the program works.
- */
-        mDisplayDate=(TextView)findViewById(R.id.tvBDate);
-        mDisplayDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        Register_Login.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener, year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-        mDateSetListener= new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month= month+1;
-                Log.d(TAG, "onDataSet: dd/mm/yyyy: "+ dayOfMonth +"/" + month +"/" +year );
-                date = dayOfMonth +"/" + month +"/" +year;
-                mDisplayDate.setText(date);
-            }
-        };
-
 
         tvTitle=(TextView) findViewById(R.id.tvTitle);
         etHeight=(EditText) findViewById(R.id.etHeight);
@@ -181,17 +126,90 @@ public class Register_Login extends AppCompatActivity {
 
         btn=(Button)findViewById(R.id.btn);
 
+        spFplace=(Spinner) findViewById(R.id.spPlace);
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spFplace.setAdapter(adapter);
-        //spFplace.setOnItemClickListener(this);
+        /**
+         * this function uploads the information from the firebase tree - Places
+         * using the reference - refPlaces and a Value event listener.
+         */
+        refPlaces.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot ds) {
+                titleList.clear();
 
-        stayConnect=false;
-        registered=true;
+                for (DataSnapshot data : ds.getChildren()){
+                    String info=data.getValue().toString();
+                    titleList.add(info);
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(Register_Login.this, android.R.layout.simple_spinner_item, titleList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spFplace.setAdapter(arrayAdapter);
+            }
 
-        onVerificationStateChanged();
-        regOption();
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Register_Login.this, databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+/**
+ * date picker - in order to choose the user's birth day (to know his age).
+ * ended programming in 22/1 - the program works.)?(
+ */
+        mDisplayDate=(TextView)findViewById(R.id.tvBDate);
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                year=year-15;
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        Register_Login.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener, year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        /**
+         * after the dialog is opened, this function gets the date the user chose.
+         * if the user is under the minimal age to use this app (under 15), the function sets a toast to tell him that
+         */
+        mDateSetListener= new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month++;
+               // Log.d(TAG, "onDataSet: dd/mm/yyyy: "+ dayOfMonth +"/" + month +"/" +year );
+                date = dayOfMonth +"/" + month +"/" +year;
+                int currentYear=Calendar.getInstance().get(Calendar.YEAR);
+                if ((currentYear-year)>=15)
+                    mDisplayDate.setText(date);
+                else
+                    Toast.makeText(Register_Login.this, "You are too young to use this application!", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        /**
+         * this function checks if this is the first run on the user's device
+         * if so, the function sends th user directly to the registration option
+         * if not, it sends him to the login option
+         */
+        SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+        firstRun=settings.getBoolean("firstRun",true);
+        stayConnect = false;
+
+        if (firstRun) {
+            onVerificationStateChanged();
+            regOption();
+        }
+        else {
+            registered = true;
+            onVerificationStateChanged();
+            logOption();
+        }
     }
 
 
@@ -218,59 +236,61 @@ public class Register_Login extends AppCompatActivity {
     }
 
     private void regOption() {
-        SpannableString spannableString = new SpannableString("Don't have an account?  Register here!");
+        tvTitle.setText("Register");
+        etHeight.setVisibility(View.VISIBLE);
+        mDisplayDate.setVisibility(View.VISIBLE);
+        etId.setVisibility(View.VISIBLE);
+        etWeight.setVisibility(View.VISIBLE);
+        etLastName.setVisibility(View.VISIBLE);
+        etName.setVisibility(View.VISIBLE);
+        tvFemale.setVisibility(View.VISIBLE);
+        tvMale.setVisibility(View.VISIBLE);
+        swMoF.setVisibility(View.VISIBLE);
+        spFplace.setVisibility(View.VISIBLE);
+        etMail.setVisibility(View.VISIBLE);
+        btn.setText("Register");
 
+        SpannableString spannableString = new SpannableString("Already have an account?  Login here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                tvTitle.setText("Register");
-                etHeight.setVisibility(View.VISIBLE);
-                mDisplayDate.setVisibility(View.VISIBLE);
-                etId.setVisibility(View.VISIBLE);
-                etWeight.setVisibility(View.VISIBLE);
-                etLastName.setVisibility(View.VISIBLE);
-                etName.setVisibility(View.VISIBLE);
-                tvFemale.setVisibility(View.VISIBLE);
-                tvMale.setVisibility(View.VISIBLE);
-                swMoF.setVisibility(View.VISIBLE);
-                spFplace.setVisibility(View.VISIBLE);
-                etMail.setVisibility(View.VISIBLE);
-                btn.setText("Register");
-                registered=false;
-                isUID=false;
+                registered=true;
+                isUID=true;
                 logOption();
             }
         };
-        spannableString.setSpan(span, 24, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(span, 26, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvRegister.setText(spannableString);
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
 
     private void logOption() {
-        SpannableString spannableString = new SpannableString("Already have an account?  Login here!");
+        tvTitle.setText("Login");
+        etWeight.setVisibility(View.INVISIBLE);
+        etHeight.setVisibility(View.INVISIBLE);
+        etId.setVisibility(View.INVISIBLE);
+        mDisplayDate.setVisibility(View.INVISIBLE);
+        etName.setVisibility(View.INVISIBLE);
+        etLastName.setVisibility(View.INVISIBLE);
+        tvFemale.setVisibility(View.INVISIBLE);
+        tvMale.setVisibility(View.INVISIBLE);
+        swMoF.setVisibility(View.INVISIBLE);
+        spFplace.setVisibility(View.INVISIBLE);
+        etMail.setVisibility(View.INVISIBLE);
+        btn.setText("Login");
+        registered=true;
+
+        SpannableString spannableString = new SpannableString("Don't have an account?  Register here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                tvTitle.setText("Login");
-                etWeight.setVisibility(View.INVISIBLE);
-                etHeight.setVisibility(View.INVISIBLE);
-                etId.setVisibility(View.INVISIBLE);
-                mDisplayDate.setVisibility(View.INVISIBLE);
-                etName.setVisibility(View.INVISIBLE);
-                etLastName.setVisibility(View.INVISIBLE);
-                tvFemale.setVisibility(View.INVISIBLE);
-                tvMale.setVisibility(View.INVISIBLE);
-                swMoF.setVisibility(View.INVISIBLE);
-                spFplace.setVisibility(View.INVISIBLE);
-                etMail.setVisibility(View.INVISIBLE);
-                btn.setText("Login");
-                isUID=true;
-                registered=true;
+                isUID=false;
+                registered=false;
                 regOption();
             }
         };
-        spannableString.setSpan(span, 26, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(span, 24, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvRegister.setText(spannableString);
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
@@ -326,6 +346,7 @@ public class Register_Login extends AppCompatActivity {
         }
         else {
             fstName=etName.getText().toString();
+            lastName=etLastName.getText().toString();
             phoneInput=etPhone.getText().toString();
             id=etId.getText().toString();
             weight=etWeight.getText().toString();
@@ -334,7 +355,7 @@ public class Register_Login extends AppCompatActivity {
             places=spFplace.getSelectedItem().toString();
             email=etMail.getText().toString();
 
-                if ((!fstName.isEmpty()) && (!email.isEmpty()) &&
+                if ((!fstName.isEmpty()) && (!email.isEmpty()) &&(!lastName.isEmpty())&&
                         (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
                     if (places.equals("select your meetings location")) {
@@ -354,8 +375,8 @@ public class Register_Login extends AppCompatActivity {
                                         for (int x = 1; x <= 9; x++)
                                             phone = phone + phoneInput.charAt(x);
 
-                                    userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
-                                    refUsers.child(fstName + " " + lastName).setValue(userdb);
+                                  //  userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                                    //refUsers.child(fstName + " " + lastName).setValue(userdb);
 
 
                                     startPhoneNumberVerification(phone);
@@ -446,7 +467,9 @@ public class Register_Login extends AppCompatActivity {
                             FirebaseUser user = refAuth.getCurrentUser();
                             uid = user.getUid();
                             if (!isUID) {
-                                refUsers.child(fstName+" "+lastName).child("uid").setValue(uid);
+                                userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                                refUsers.child(fstName + " " + lastName).setValue(userdb);
+                               // refUsers.child(fstName+" "+lastName).child("uid").setValue(uid);
                             }
                             setUsersListener();
                         }
@@ -476,7 +499,6 @@ public class Register_Login extends AppCompatActivity {
                 Log.w(TAG, "onVerificationFailed", e);
                 mVerificationInProgress = false;
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                   // Toast.makeText(Register_Login.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                     etPhone.setError("Invalid phone number");
                 } else {
                     if (e instanceof FirebaseTooManyRequestsException) {
@@ -505,9 +527,9 @@ public class Register_Login extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (user.getUid().equals(data.getValue(User.class).getUid())){
-                        currentUser=data.getValue(User.class);
                         Intent si = new Intent(Register_Login.this, tafritim.class);
                         startActivity(si);
+                        finish();
                     }
                 }
             }
