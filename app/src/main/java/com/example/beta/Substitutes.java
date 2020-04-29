@@ -36,8 +36,7 @@ import static com.example.beta.FBref.refSUPfiles;
 import static com.example.beta.FBref.refUsers;
 
 public class Substitutes extends AppCompatActivity {
-    String uid, fname;
-    User user;
+    String fname;
     TextView tvOutPutSub;
 
     @Override
@@ -48,14 +47,15 @@ public class Substitutes extends AppCompatActivity {
         tvOutPutSub=(TextView)findViewById(R.id.tv_OutPut_sub);
 
         fname = "substitutes.txt";
-        try {
-            download();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        download();
+
     }
 
-    public void download() throws IOException {
+    /**
+     * this function uploads the substitutes file (text file) from Firebase Storage
+     */
+    public void download() {
         final ProgressDialog pd=ProgressDialog.show(this,"Substitutes download","downloading...",true);
 
         StorageReference refFile = refSUBfiles.child(fname);
@@ -66,7 +66,6 @@ public class Substitutes extends AppCompatActivity {
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
                 Toast.makeText(Substitutes.this, "Substitutes download success", Toast.LENGTH_LONG).show();
-                // String filePath = localFile.getPath();
 
                 try {
                     InputStream is = openFileInput(fname);
@@ -104,12 +103,22 @@ public class Substitutes extends AppCompatActivity {
         });
     }
 
+    /**
+     * this function creates the menu options - the menu - main.xml
+     * @param menu
+     * @return ????????????????????????????????????????????
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
+     * @param item
+     * @return ???????????????????
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();

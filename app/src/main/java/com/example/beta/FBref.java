@@ -6,6 +6,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+/**
+ * a class that contains references to Firebase- Authentication, Database and Storage
+ */
 public class FBref {
 
     public static FirebaseAuth refAuth = FirebaseAuth.getInstance();
@@ -25,13 +28,4 @@ public class FBref {
     public static StorageReference refRecfiles=refStor.child("Recipes/");
     public static StorageReference refSUPfiles=refStor.child("Supplements/");
     public static StorageReference refSUBfiles=refStor.child("Substitutes/");
-
-   // public static StorageReference pathReference = refStor.child(n).child("lunch");
-   // public static StorageReference islandRef = mStorageRef.child("images/island.jpg");
-
-
-
-
-
-
 }

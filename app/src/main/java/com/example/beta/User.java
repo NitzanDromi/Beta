@@ -1,25 +1,28 @@
 package com.example.beta;
 
-/*
- * @param name
- * @param email
- * @param password
- * @param phone
- * @param isFemale
- * @param isPreg
- * @param id
- * @param date
- * @param weight
- * @param height
- * @param places
- * @param uid
- */
-
 public class User {
     private String name, lastName, email, phone, uid, id, date, weight, height, places, beforeImage, afterImage;
     private Boolean isFemale;
 
+    /**
+     * an empty builder. not used, but is required in order to use Firebase
+     */
     public User(){}
+
+    /** User class builder. this function gets all of the variables that are required in order to assemble a user.
+     * @param name
+     * @param email
+     * @param phone
+     * @param isFemale
+     * @param id
+     * @param date
+     * @param weight
+     * @param height
+     * @param places
+     * @param beforeImage
+     * @param afterImage
+     * @param uid
+     */
     public User (String name,String lastName, String email, String phone, String id, String date, String weight, String height, Boolean isFemale, String places, String uid,String afterImage, String beforeImage) {
         this.name=name;
         this.lastName=lastName;

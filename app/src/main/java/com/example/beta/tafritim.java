@@ -53,6 +53,9 @@ public class tafritim extends AppCompatActivity {
         seekBardays=(SeekBar) findViewById(R.id.seekBar);
 
         week=Integer.toString(wk);
+        /**
+         * this function checks how many weeks are in the database in order to know the maximal week
+         */
         refMenu.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -144,6 +147,10 @@ public class tafritim extends AppCompatActivity {
         });
     }
 
+    /**
+     * this function changes the screen into the next week's menu and information (unless it's the last one)
+     * @param view
+     */
     public void NextWeek(View view) {
         if (wk<wkmax){
             wk++;
@@ -169,7 +176,10 @@ public class tafritim extends AppCompatActivity {
         }
 
     }
-
+    /**
+     * this function changes the screen into the previous week's menu and information (unless it's the first one)
+     * @param view
+     */
     public void PreviousWeek(View view) {
         if (wk>1) {
             wk--;

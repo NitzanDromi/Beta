@@ -2,7 +2,9 @@ package com.example.beta;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,14 +57,15 @@ public class Matcon extends AppCompatActivity {
         fname=Integer.toString(n);
         fname+=".txt";
 
-        try {
-            download();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        download();
+
     }
 
-    public void download() throws IOException {
+    /**
+     * this function uploads the recipe file (text file) from Firebase Storage
+     * according to the recipe location from the previous activity (recipes activity)
+     */
+    public void download() {
         final ProgressDialog pd=ProgressDialog.show(this,"Recipe download","downloading...",true);
 
         StorageReference refFile = refRecfiles.child(fname);
@@ -72,7 +76,6 @@ public class Matcon extends AppCompatActivity {
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
                 Toast.makeText(Matcon.this, "Recipe download success", Toast.LENGTH_LONG).show();
-                // String filePath = localFile.getPath();
 
                 try {
                     InputStream is = openFileInput(fname);
@@ -110,12 +113,48 @@ public class Matcon extends AppCompatActivity {
         });
     }
 
+    /**
+     * this function is called if the user presses the "back" button on his device.
+     * it assures the user's intention to leave the current screen.
+     * if the user wants to exit, it sends him back to the recipes activity.
+     */
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setMessage("Are you sure you want to close the recipe?");
+        adb.setTitle("BACK");
+        adb.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int whichButton) {
+                Intent a=new Intent(Matcon.this, recipes.class);
+                startActivity(a);
+                dialogInterface.dismiss();
+            }
+        });
+        adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int whichButton) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog ad = adb.create();
+        ad.show();
+    }
+
+    /**
+     * this function creates the menu options - the menu - main.xml
+     * @param menu
+     * @return ????????????????????????????????????????????
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
+     * @param item
+     * @return ???????????????????
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();

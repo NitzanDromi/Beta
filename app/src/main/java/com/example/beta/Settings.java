@@ -60,7 +60,8 @@ public class Settings extends AppCompatActivity {
     EditText etweight, etheight;
     String name="";
     int Gallery=1, count=0;
-    ImageButton ibBefore, ibAfter;
+    ImageView ivBefore, ivAfter;
+    TextView tvBefore, tvAfter, tvPlace;
     AlertDialog ad;
     Boolean female;
 
@@ -70,9 +71,11 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        ibBefore=(ImageButton)findViewById(R.id.imageButtonBeforeImage);
-        ibAfter=(ImageButton)findViewById(R.id.imageButtonAfterImage);
-
+        ivBefore=(ImageView)findViewById(R.id.imageViewBeforeImage);
+        ivAfter=(ImageView)findViewById(R.id.imageViewAfterImage);
+        tvBefore=(TextView) findViewById(R.id.tvBefore);
+        tvAfter=(TextView) findViewById(R.id.tvAfter);
+        tvPlace=(TextView)findViewById(R.id.tvPlaces);
         tvname=(TextView)findViewById(R.id.tvname);
         etheight=(EditText) findViewById(R.id.etHeightt);
         etweight=(EditText) findViewById(R.id.etWeightt);
@@ -83,6 +86,11 @@ public class Settings extends AppCompatActivity {
         query.addListenerForSingleValueEvent(VEL);
     }
 
+    /**
+     * this function reads the necessary information about the user to this activity.
+     * (the user's gender and name (personal and full name)
+     * and whether the user already uploaded a before & an after image - if not, it puts the default image according to his gender)
+     */
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
@@ -94,19 +102,22 @@ public class Settings extends AppCompatActivity {
                     name=user.getName();
                     etweight.setText(user.getWeight());
                     etheight.setText(user.getHeight());
+                    tvPlace.setText("your sessions are in "+user.getPlaces());
                     female=user.getIsFemale();
                     if (user.getBeforeImage().equals("empty")){
+                        tvBefore.setVisibility(View.INVISIBLE);
                         if (female)
-                        ibBefore.setImageResource(R.drawable.request_before_female);
+                            ivBefore.setImageResource(R.drawable.request_before_female);
                         else
-                            ibBefore.setImageResource(R.drawable.request_before_male);
+                            ivBefore.setImageResource(R.drawable.request_before_male);
                     }
                     else {
                         if (user.getAfterImage().equals("empty")){
+                            tvAfter.setVisibility(View.INVISIBLE);
                             if (female)
-                                ibAfter.setImageResource(R.drawable.request_after_female);
+                                ivAfter.setImageResource(R.drawable.request_after_female);
                             else
-                                ibAfter.setImageResource(R.drawable.request_after_male);
+                                ivAfter.setImageResource(R.drawable.request_after_male);
                         }
                         else {
                             try {
@@ -123,10 +134,11 @@ public class Settings extends AppCompatActivity {
                         }
                     }
                     if (user.getAfterImage().equals("empty")){
+                        tvAfter.setVisibility(View.INVISIBLE);
                         if (female)
-                            ibAfter.setImageResource(R.drawable.request_after_female);
+                            ivAfter.setImageResource(R.drawable.request_after_female);
                         else
-                            ibAfter.setImageResource(R.drawable.request_after_male);
+                            ivAfter.setImageResource(R.drawable.request_after_male);
                     }
                     else {
                         try {
@@ -144,18 +156,30 @@ public class Settings extends AppCompatActivity {
         }
     };
 
-
+    /**
+     * this function updates the user's height in the Firebase Database
+     * @param view
+     */
     public void updateHeight(View view) {
         refUsers.child(fullName).child("height").removeValue();
         refUsers.child(fullName).child("height").setValue(etheight.getText().toString());
     }
 
+    /**
+     * this function updates the user's weight in the Firebase Database
+     * @param view
+     */
     public void updateWeight(View view) {
         refUsers.child(fullName).child("weight").removeValue();
         refUsers.child(fullName).child("weight").setValue(etweight.getText().toString());
     }
 
-
+    /**
+     * this function checks the user's before image status from the Firebase Database
+     * if there isn't a picture, it opens the gallery
+     * if there is - it gives the user the option to replace it or delete it.
+     * @param view
+     */
     public void upload_before(View view) {
         if (user.getBeforeImage().equals("empty")){
             count = 1;
@@ -164,17 +188,16 @@ public class Settings extends AppCompatActivity {
         }
         else {
             androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            // adb.setMessage("");
             adb.setTitle("what would you like to do with the image?");
-            //   adb.setView(et);
             adb.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     if (female)
-                        ibBefore.setImageResource(R.drawable.request_before_female);
+                        ivBefore.setImageResource(R.drawable.request_before_female);
                     else
-                        ibBefore.setImageResource(R.drawable.request_before_male);
+                        ivBefore.setImageResource(R.drawable.request_before_male);
                     refUsers.child(fullName).child("beforeImage").removeValue();
                     refUsers.child(fullName).child("beforeImage").setValue("empty");
+                    tvBefore.setVisibility(View.INVISIBLE);
                     dialogInterface.dismiss();
                 }
             });
@@ -196,6 +219,12 @@ public class Settings extends AppCompatActivity {
         }
     }
 
+    /**
+     * this function checks the user's after image status from the Firebase Database
+     * if there isn't a picture, it opens the gallery
+     * if there is - it gives the user the option to replace it or delete it.
+     * @param view
+     */
     public void upload_after(View view) {
         if (user.getAfterImage().equals("empty")){
             count = 2;
@@ -208,11 +237,12 @@ public class Settings extends AppCompatActivity {
             adb.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     if (female)
-                        ibAfter.setImageResource(R.drawable.request_after_female);
+                        ivAfter.setImageResource(R.drawable.request_after_female);
                     else
-                        ibAfter.setImageResource(R.drawable.request_after_male);
+                        ivAfter.setImageResource(R.drawable.request_after_male);
                     refUsers.child(fullName).child("afterImage").removeValue();
                     refUsers.child(fullName).child("afterImage").setValue("empty");
+                    tvAfter.setVisibility(View.INVISIBLE);
                     dialogInterface.dismiss();
                 }
             });
@@ -234,6 +264,13 @@ public class Settings extends AppCompatActivity {
         }
     }
 
+    /**
+     * After the user chose an image from the gallery,
+     * this function updates the before/after image status and uploads the selected image file to the firebase storage
+     * @param requestCode   The call sign of the intent that requested the result
+     * @param resultCode    A code that symbols the status of the result of the activity
+     * @param data          The data returned
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -306,7 +343,14 @@ public class Settings extends AppCompatActivity {
         }
     }
 
+    /**
+     * this function downloads the 'before' image (image file) from Firebase Storage to a local file
+     * and presents the image
+     * @throws IOException
+     */
     public void download() throws IOException{
+        tvBefore.setVisibility(View.VISIBLE);
+
         StorageReference refImg = refImages.child(name+"_before.jpg");
 
         final File localFile = File.createTempFile(name,"_beforejpg");
@@ -315,20 +359,24 @@ public class Settings extends AppCompatActivity {
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 String filePath = localFile.getPath();
                 Bitmap bitmapImage = BitmapFactory.decodeFile(filePath);
-               // int nh = (int) ( bitmapImage.getHeight() * (512.0 / bitmapImage.getWidth()) );
-                //Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage, 512, nh, true);
-                //ibBefore.setImageBitmap(scaled);
-                ibBefore.setImageBitmap(bitmapImage);
-                ibBefore.setVisibility(View.VISIBLE);
+                ivBefore.setImageBitmap(bitmapImage);
+                ivBefore.setVisibility(View.VISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Toast.makeText(infoTeacher.this, "Image download failed", Toast.LENGTH_LONG).show();
+                 Toast.makeText(Settings.this, "Image download failed", Toast.LENGTH_LONG).show();
             }
         });
     }
+
+    /**
+     * this function downloads the 'after' image (image file) from Firebase Storage to a local file
+     * and presents the image
+     * @throws IOException
+     */
     public void download1() throws IOException{
+        tvAfter.setVisibility(View.VISIBLE);
 
         StorageReference refImg = refImages.child(name+"_after.jpg");
 
@@ -338,23 +386,33 @@ public class Settings extends AppCompatActivity {
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 String filePath = localFile.getPath();
                 Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-                ibAfter.setImageBitmap(bitmap);
-                ibAfter.setVisibility(View.VISIBLE);
+                ivAfter.setImageBitmap(bitmap);
+                ivAfter.setVisibility(View.VISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Toast.makeText(infoTeacher.this, "Image download failed", Toast.LENGTH_LONG).show();
+                 Toast.makeText(Settings.this, "Image download failed", Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    /**
+     * this function creates the menu options - the menu - main.xml
+     * @param menu
+     * @return ????????????????????????????????????????????
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
+     * @param item
+     * @return ???????????????????
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();

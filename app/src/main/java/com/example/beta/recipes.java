@@ -38,8 +38,8 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     String strlunch="",strdinner="";
     Recipe recipe, recipe2;
 
-    List<String> lst = new ArrayList<String>();
-    List<String> lst1 = new ArrayList<String>();
+    List<String> lst_lunch = new ArrayList<String>();
+    List<String> lst_dinner = new ArrayList<String>();
 
     String uid;
     User user;
@@ -56,25 +56,29 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
         btnLunch=(Button)findViewById(R.id.btnLunch);
 
 
-        lst.clear();
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst);
+        lst_lunch.clear();
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_lunch);
         spLunch.setAdapter(arrayAdapter);
         spLunch.setOnItemSelectedListener(this);
 
-        lst1.clear();
-        final ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst1);
+        lst_dinner.clear();
+        final ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_dinner);
         spDinner.setAdapter(arrayAdapter1);
         spDinner.setOnItemSelectedListener(this);
 
+        /**
+         * this function uploads the information from the firebase tree - recipes ->(branch) lunch - to a spinner
+         * using the reference - reflunch and a Value event listener.
+         */
         reflunch.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
-                lst.clear();
+                lst_lunch.clear();
                 for (DataSnapshot data : ds.getChildren()) {
                     String recipesname = (String) data.child("name").getValue();
-                    lst.add(recipesname);
+                    lst_lunch.add(recipesname);
                 }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_lunch);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spLunch.setAdapter(arrayAdapter);
             }
@@ -85,15 +89,19 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
             }
         });
 
+        /**
+         * this function uploads the information from the firebase tree - recipes ->(branch) dinner - to a spinner
+         * using the reference - refdinner and a Value event listener.
+         */
         refdinner.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
-                lst1.clear();
+                lst_dinner.clear();
                 for (DataSnapshot data : ds.getChildren()){
                     String recipesname = (String) data.child("name").getValue();
-                    lst1.add(recipesname);
+                    lst_dinner.add(recipesname);
                 }
-                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst1);
+                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_dinner);
                 arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spDinner.setAdapter(arrayAdapter1);
             }
@@ -110,7 +118,10 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
         query.addListenerForSingleValueEvent(VEL_USER);
     }
 
-
+    /**
+     * this function reads the necessary information about the user to this activity.
+     * (the user's gender)
+     */
     com.google.firebase.database.ValueEventListener VEL_USER = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
@@ -133,10 +144,47 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
         }
     };
 
+    /**
+     * this function is called when the user chooses an item from either one of the spinners.
+     * it checks on which spinner the user clicked on gets the name of the recipe.
+     * @param parent - parent is used in order to know on which spinner the user clicked
+     * @param view
+     * @param pos - used in order to get the correct value from the spinner (according to the user's choice)
+     * @param id
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        if (spLunch.equals(parent)){
+          //  numl=pos+1;
+            strlunch = lst_lunch.get(pos);
+        }
+        else{
+            if (spDinner.equals(parent)){
+             //   numd=pos+1;
+                strdinner=lst_dinner.get(pos);
+            }
+        }
+    }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Toast.makeText(this, "please choose a recipe", Toast.LENGTH_SHORT).show();
+    }
 
+    /**
+     * this function is called when the user clicks on the button "show" (lunch recipe).
+     * it calls a query in order to find the recipe in the firebase database using the recipe name and the reference reflunch.
+     * @param view
+     */
+    public void lunchRecipe(View view) {
+            Query query = reflunch.orderByChild("name").equalTo(strlunch);
+            query.addListenerForSingleValueEvent(VEL);
+    }
 
-
+    /**
+     * this function gets the correct recipe from the firebase database.
+     * afterwards, it sends the user to the next activity in which the recipe will appear.
+     */
     ValueEventListener VEL = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -155,6 +203,20 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
         }
     };
 
+    /**
+     * this function is called when the user clicks on the button "show" (dinner recipe).
+     * it calls a query in order to find the recipe in the firebase database using the recipe name and the reference refdinner.
+     * @param view
+     */
+    public void dinnerRecipe(View view) {
+        Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
+        query2.addListenerForSingleValueEvent(VEL2);
+    }
+
+    /**
+     * this function gets the correct recipe from the firebase database.
+     * afterwards, it sends the user to the next activity in which the recipe will appear.
+     */
     ValueEventListener VEL2 = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -173,50 +235,22 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
         }
     };
 
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        if (spLunch.equals(parent)){
-            numl=pos+1;
-            strlunch = lst.get(pos);
-        }
-        else{
-            if (spDinner.equals(parent)){
-                numd=pos+1;
-                strdinner=lst1.get(pos);
-            }
-
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        Toast.makeText(this, "please choose a recipe", Toast.LENGTH_SHORT).show();
-    }
-
-    public void showReclunch(View view) {
-            Query query = reflunch.orderByChild("name").equalTo(strlunch);
-            query.addListenerForSingleValueEvent(VEL);
-    }
-
-    public void showRecdiner(View view) {
-            Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
-            query2.addListenerForSingleValueEvent(VEL2);
-
-    }
-
-    public void dinnerRecipe(View view) {
-        Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
-        query2.addListenerForSingleValueEvent(VEL2);
-    }
-
-
+    /**
+     * this function creates the menu options - the menu - main.xml
+     * @param menu
+     * @return ????????????????????????????????????????????
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
+     * @param item
+     * @return ???????????????????
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();

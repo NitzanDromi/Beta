@@ -54,6 +54,10 @@ public class tosafim extends AppCompatActivity {
         query.addListenerForSingleValueEvent(VEL);
     }
 
+    /**
+     * this function reads the necessary information about the user to this activity.
+     * (the user's gender)
+     */
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
@@ -66,11 +70,8 @@ public class tosafim extends AppCompatActivity {
                         fname = "supplements_male";
 
                     fname += ".txt";
-                    try {
-                        download();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+                    download();
                 }
             }
         }
@@ -79,7 +80,11 @@ public class tosafim extends AppCompatActivity {
         }
     };
 
-    public void download() throws IOException {
+    /**
+     * this function uploads the supplements file (text file) from Firebase Storage,
+     * according to the user's gender
+     */
+    public void download() {
         final ProgressDialog pd=ProgressDialog.show(this,"Supplements download","downloading...",true);
 
         StorageReference refFile = refSUPfiles.child(fname);
@@ -128,12 +133,22 @@ public class tosafim extends AppCompatActivity {
         });
     }
 
+    /**
+     * this function creates the menu options - the menu - main.xml
+     * @param menu
+     * @return ????????????????????????????????????????????
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
+     * @param item
+     * @return ???????????????????
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();

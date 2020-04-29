@@ -10,8 +10,7 @@
     <TextView
         android:id="@+id/tvname"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
         android:background="#E91E63"
         android:text=""
         android:textAlignment="center"
@@ -22,13 +21,12 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="0.6" />
 
     <TextView
         android:id="@+id/tvweight"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:text="Weight"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold" />
@@ -66,8 +64,7 @@
     <TextView
         android:id="@+id/tvheight"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:text="Height"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="22sp"
@@ -96,41 +93,78 @@
             android:onClick="updateHeight"
             android:text="SAVE CHANGES" />
     </LinearLayout>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/tvPlaces"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="0.5"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButtonAfterImage"
+        <TextView
+            android:id="@+id/tvAfter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:textAlignment="center"
+            android:textColor="#E91E63"
+            android:visibility="invisible"
+            android:text="After" />
+
+        <TextView
+            android:id="@+id/tvBefore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:textAlignment="center"
+            android:textColor="#E91E63"
+            android:visibility="invisible"
+            android:text="Before" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4.5"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageViewAfterImage"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:onClick="upload_after"
-            android:background="@color/common_google_signin_btn_text_dark_default"
             app:srcCompat="@drawable/blank_screen" />
 
-        <ImageButton
-        android:id="@+id/imageButtonBeforeImage"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:onClick="upload_before"
-        android:background="@color/common_google_signin_btn_text_dark_default"
-        app:srcCompat="@drawable/blank_screen" />
-
-                </LinearLayout>
+        <ImageView
+            android:id="@+id/imageViewBeforeImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:onClick="upload_before"
+            app:srcCompat="@drawable/blank_screen" />
+    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="0.5"/>
 
 </LinearLayout>

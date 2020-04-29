@@ -3,7 +3,7 @@ package com.example.beta;
 /**
  * @author		Nitzan Dromi <address @nitzandr13@gmail.com>
  * @version	    1.2(current version number of program)
- * @since		29/01/2020 (the date of the package the class was added)
+ * @since		29/12/2019 (the date of the package the class was added)
  * Beta version of the application.
  * has:
  * main activity (contains the app icon image - "loading the app" activity)
@@ -90,7 +90,7 @@ public class Register_Login extends AppCompatActivity {
 
     Spinner spFplace;
 
-    User userdb, currentUser;
+    User userdb;
 
     String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="", id="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
     Boolean stayConnect, registered=false, isUID = false;
@@ -129,7 +129,7 @@ public class Register_Login extends AppCompatActivity {
         spFplace=(Spinner) findViewById(R.id.spPlace);
 
         /**
-         * this function uploads the information from the firebase tree - Places
+         * this function uploads the information from the firebase tree - Places - to a spinner
          * using the reference - refPlaces and a Value event listener.
          */
         refPlaces.addValueEventListener(new ValueEventListener() {
@@ -154,7 +154,7 @@ public class Register_Login extends AppCompatActivity {
 
 /**
  * date picker - in order to choose the user's birth day (to know his age).
- * ended programming in 22/1 - the program works.)?(
+ * ended programming in 22/1 - the program works.(?)
  */
         mDisplayDate=(TextView)findViewById(R.id.tvBDate);
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
@@ -192,15 +192,15 @@ public class Register_Login extends AppCompatActivity {
             }
         };
 
-        /**
-         * this function checks if this is the first run on the user's device
-         * if so, the function sends th user directly to the registration option
-         * if not, it sends him to the login option
-         */
+
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         firstRun=settings.getBoolean("firstRun",true);
         stayConnect = false;
-
+    /**
+     * this condition checks if this is the first run on the user's device
+     * if so, the function sends th user directly to the registration option
+     * if not, it sends him to the login option
+     */
         if (firstRun) {
             onVerificationStateChanged();
             regOption();
@@ -212,7 +212,9 @@ public class Register_Login extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * on activity start - if the user exists & asked to  be remembered -transfer to the next activity (tafritim)
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -227,7 +229,6 @@ public class Register_Login extends AppCompatActivity {
 
     /**
      * On activity pause - If logged in & asked to be remembered - kill activity.
-     * <p>
      */
     @Override
     protected void onPause() {
@@ -235,6 +236,12 @@ public class Register_Login extends AppCompatActivity {
         if (stayConnect) finish();
     }
 
+    /**
+     * this function is called when the user is in the login option but he needs to register
+     * OR
+     * when the application is running for the first time in the user's device
+     * the function "changes" the screen for the register option.
+     */
     private void regOption() {
         tvTitle.setText("Register");
         etHeight.setVisibility(View.VISIBLE);
@@ -264,7 +271,11 @@ public class Register_Login extends AppCompatActivity {
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-
+    /**
+     * this function is called when the user is in the register option but he needs to log in.
+     * the function "changes" the screen for the login option
+     * It is also the default option (the Login activity) unless the user is entering the app for the first time
+     */
     private void logOption() {
         tvTitle.setText("Login");
         etWeight.setVisibility(View.INVISIBLE);
@@ -300,7 +311,7 @@ public class Register_Login extends AppCompatActivity {
      * Using:   Firebase Auth with phone and sms code
      *          Firebase Realtime database with the object User to the branch Users
      * If login or register process is Ok saving stay connect status & pass to next activity
-     * <p>
+     * @param view
      */
     public void logOrReg(View view) {
         phoneInput=etPhone.getText().toString();
@@ -354,73 +365,71 @@ public class Register_Login extends AppCompatActivity {
             height=etHeight.getText().toString();
             places=spFplace.getSelectedItem().toString();
             email=etMail.getText().toString();
+            if (swMoF.isChecked()){
+                isFemale=true;
+            }
+            else{
+                isFemale=false;
 
-                if ((!fstName.isEmpty()) && (!email.isEmpty()) &&(!lastName.isEmpty())&&
-                        (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
+            }
 
-                    if (places.equals("select your meetings location")) {
+            if ((!fstName.isEmpty()) && (!email.isEmpty()) &&(!lastName.isEmpty())&&
+                    (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
+
+                if (places.equals("select your meetings location")) {
                         Toast.makeText(this, "please choose your meetings location", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        if (Pattern.matches("[a-zA-Z]+", id) == true || id.length() != 9) {
-                            etId.setError("invalid id");
-                        } else {
-                            if (((!email.endsWith(".com")) || (!email.endsWith(".il"))) && (email.indexOf("@") == (-1)))
-                                etMail.setError("invalid e-mail");
-                            else {
-                                if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) {
-                                    etPhone.setError("invalid phone number");
-                                } else {
-                                    if (phone.equals("+972"))
-                                        for (int x = 1; x <= 9; x++)
-                                            phone = phone + phoneInput.charAt(x);
+                } else {
+                    if (Pattern.matches("[a-zA-Z]+", id) == true || id.length() != 9) {
+                        etId.setError("invalid id");
+                    } else {
+                        if (((!email.endsWith(".com")) || (!email.endsWith(".il"))) && (email.indexOf("@") == (-1)))
+                            etMail.setError("invalid e-mail");
+                        else {
+                            if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) {
+                                etPhone.setError("invalid phone number");
+                            } else {
+                                if (phone.equals("+972")) {
+                                    for (int x = 1; x <= 9; x++)
+                                        phone = phone + phoneInput.charAt(x);
+                                }
 
-                                  //  userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
-                                    //refUsers.child(fstName + " " + lastName).setValue(userdb);
+                                startPhoneNumberVerification(phone);
+                                onVerificationStateChanged();
 
-
-                                    startPhoneNumberVerification(phone);
-                                    onVerificationStateChanged();
-                                    //    if (!invalid){
-                                    //  progressDialog.show(this, "register", "connecting.. ", true);
-
-                                    AlertDialog.Builder adb = new AlertDialog.Builder(this);
-                                    final EditText et = new EditText(this);
-                                    et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                    adb.setMessage("enter the code you received");
-                                    adb.setTitle("Authentication");
-                                    adb.setView(et);
-                                    adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                                final EditText et = new EditText(this);
+                                et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                adb.setMessage("enter the code you received");
+                                adb.setTitle("Authentication");
+                                adb.setView(et);
+                                adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialogInterface, int whichButton) {
                                             code = et.getText().toString();
                                             if (!code.isEmpty())
                                                 verifyPhoneNumberWithCode(mVerificationId, code);
                                             dialogInterface.dismiss();
                                         }
-                                    });
-                                    adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                                });
+                                adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                            //progressDialog.dismiss();
                                             dialogInterface.cancel();
                                         }
-                                    });
-                                    ad = adb.create();
-                                    ad.show();
-                                }
+                                });
+                                ad = adb.create();
+                                ad.show();
                             }
                         }
                     }
-                } else {
-                    Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
                 }
-
+            } else {
+                    Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+            }
         }
-
     }
 
 
     /**
-     * this function is called when the user wants to register.
+     * this function is called when the user wants to sign up (register) or sign in (login).
      * the function sends sms to his phone with a verification code.
      * @param	phoneNumber the user's phone number. The SMS is sent to this phone number.
      */
@@ -438,7 +447,7 @@ public class Register_Login extends AppCompatActivity {
     /**
      * this function is called in order to check if the code the user wrote is the code he received and create a credential.
      * if he wrote a right code, "signInWithPhoneAuthCredential" function is called.
-     * @param	code the code that the
+     * @param	code the code that the user received
      * @param verificationId a verification identity to connect with firebase servers.
      */
     private void verifyPhoneNumberWithCode(String verificationId, String code) {
@@ -447,7 +456,7 @@ public class Register_Login extends AppCompatActivity {
     }
 
     /**
-     * this function is called to sign in the user.
+     * this function is called to sign in or sign up the user.
      * if the credential is proper the user is signs in and he sent to the next activity
      * @param	credential is a credential that everything was right and the user can sign in.
      */
@@ -483,6 +492,32 @@ public class Register_Login extends AppCompatActivity {
     }
 
     /**
+     * this function connect the current user with his information in the database by checking his uid,
+     * in order to check his status and sent him to the next activity.
+     */
+
+    public void setUsersListener() {
+        user = refAuth.getCurrentUser();
+        usersListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (user.getUid().equals(data.getValue(User.class).getUid())){
+                        Intent si = new Intent(Register_Login.this, tafritim.class);
+                        startActivity(si);
+                        finish();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        refUsers.addValueEventListener(usersListener);
+
+    }
+
+    /**
      * this function checks the status of the verification, if it's completed, failed or inProgress.
      */
     private void onVerificationStateChanged() {
@@ -515,39 +550,12 @@ public class Register_Login extends AppCompatActivity {
         };
     }
 
-    /**
-     * this function connect the current user with his information in the database by checking his uid,
-     * in order to check his status and sent him to the next activity.
-     */
-
-    public void setUsersListener() {
-        user = refAuth.getCurrentUser();
-        usersListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    if (user.getUid().equals(data.getValue(User.class).getUid())){
-                        Intent si = new Intent(Register_Login.this, tafritim.class);
-                        startActivity(si);
-                        finish();
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-        refUsers.addValueEventListener(usersListener);
-
-    }
-
-
-    /**
+    /*
      *this function gets the information about the user's gender in order to give them the right supplements activity
      * worked in the version created in 22/1/20
      * @param view
      */
-    public void MaleOrFemale(View view) {
+   /* public void MaleOrFemale(View view) {
         if (swMoF.isChecked()){
             isFemale=true;
         }
@@ -555,7 +563,7 @@ public class Register_Login extends AppCompatActivity {
             isFemale=false;
 
         }
-    }
+    }*/
 
 
 }
