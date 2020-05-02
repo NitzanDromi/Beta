@@ -34,7 +34,10 @@ import static com.example.beta.FBref.refAuth;
 import static com.example.beta.FBref.refSUBfiles;
 import static com.example.beta.FBref.refSUPfiles;
 import static com.example.beta.FBref.refUsers;
-
+/**
+ * @author Nitzan Dromi
+ * an activity that presents substitutes for vegans or vegiterians
+ */
 public class Substitutes extends AppCompatActivity {
     String fname;
     TextView tvOutPutSub;
@@ -65,7 +68,7 @@ public class Substitutes extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
-                Toast.makeText(Substitutes.this, "Substitutes download success", Toast.LENGTH_LONG).show();
+                Toast.makeText(Substitutes.this, "Substitutes download success", Toast.LENGTH_SHORT).show();
 
                 try {
                     InputStream is = openFileInput(fname);
@@ -106,7 +109,6 @@ public class Substitutes extends AppCompatActivity {
     /**
      * this function creates the menu options - the menu - main.xml
      * @param menu
-     * @return ????????????????????????????????????????????
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,7 +119,6 @@ public class Substitutes extends AppCompatActivity {
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
      * @param item
-     * @return ???????????????????
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -31,10 +31,13 @@ import static com.example.beta.FBref.refUsers;
 import static com.example.beta.FBref.refdinner;
 import static com.example.beta.FBref.reflunch;
 
+/**
+ * @author Nitzan Dromi
+ * an activity in which the user needs to choose a recipe
+ */
 public class recipes extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Spinner spLunch, spDinner;
     Button btnLunch, btnDinner;
-    int numl=0,numd=0;
     String strlunch="",strdinner="";
     Recipe recipe, recipe2;
 
@@ -238,7 +241,6 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     /**
      * this function creates the menu options - the menu - main.xml
      * @param menu
-     * @return ????????????????????????????????????????????
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -249,7 +251,6 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
      * @param item
-     * @return ???????????????????
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

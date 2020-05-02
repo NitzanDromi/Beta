@@ -53,6 +53,9 @@ import static com.example.beta.FBref.refAuth;
 import static com.example.beta.FBref.refImages;
 import static com.example.beta.FBref.refUsers;
 
+/**
+ * an activity that shows personal information about the user
+ */
 public class Settings extends AppCompatActivity {
     String uid, fullName;
     User user;
@@ -62,7 +65,7 @@ public class Settings extends AppCompatActivity {
     int Gallery=1, count=0;
     ImageView ivBefore, ivAfter;
     TextView tvBefore, tvAfter, tvPlace;
-    AlertDialog ad;
+    AlertDialog adImagebefore, adImageAfter;
     Boolean female;
 
 
@@ -187,9 +190,9 @@ public class Settings extends AppCompatActivity {
             startActivityForResult(intent, Gallery);
         }
         else {
-            androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setTitle("what would you like to do with the image?");
-            adb.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            androidx.appcompat.app.AlertDialog.Builder alertDialogB = new AlertDialog.Builder(this);
+            alertDialogB.setTitle("what would you like to do with the image?");
+            alertDialogB.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     if (female)
                         ivBefore.setImageResource(R.drawable.request_before_female);
@@ -201,7 +204,7 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.dismiss();
                 }
             });
-            adb.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
+            alertDialogB.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     count = 1;
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -209,13 +212,13 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.cancel();
                 }
             });
-            adb.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialogB.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     dialogInterface.cancel();
                 }
             });
-            ad = adb.create();
-            ad.show();
+            adImagebefore = alertDialogB.create();
+            adImagebefore.show();
         }
     }
 
@@ -232,9 +235,9 @@ public class Settings extends AppCompatActivity {
             startActivityForResult(intent, Gallery);
         }
         else {
-            androidx.appcompat.app.AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setTitle("what would you like to do with this image?");
-            adb.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            androidx.appcompat.app.AlertDialog.Builder adbAfter= new AlertDialog.Builder(this);
+            adbAfter.setTitle("what would you like to do with this image?");
+            adbAfter.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     if (female)
                         ivAfter.setImageResource(R.drawable.request_after_female);
@@ -246,7 +249,7 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.dismiss();
                 }
             });
-            adb.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
+            adbAfter.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     count = 2;
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -254,13 +257,13 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.dismiss();
                 }
             });
-            adb.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            adbAfter.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     dialogInterface.cancel();
                 }
             });
-            ad = adb.create();
-            ad.show();
+            adImageAfter = adbAfter.create();
+            adImageAfter.show();
         }
     }
 
@@ -400,7 +403,6 @@ public class Settings extends AppCompatActivity {
     /**
      * this function creates the menu options - the menu - main.xml
      * @param menu
-     * @return ????????????????????????????????????????????
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -411,7 +413,6 @@ public class Settings extends AppCompatActivity {
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
      * @param item
-     * @return ???????????????????
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

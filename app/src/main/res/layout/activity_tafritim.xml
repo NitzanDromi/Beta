@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center"
+    android:background="#FFFFFF"
     tools:context=".tafritim">
 
 
@@ -180,7 +181,7 @@
             android:progressBackgroundTint="#E91E63"
             android:progressTint="#E91E63"
             android:secondaryProgressTint="#E91E63"
-            android:thumb="@drawable/arrow2"
+            android:thumb="@drawable/arrow_movement"
             app:tickMarkTint="#E91E63" />
 
         <Space

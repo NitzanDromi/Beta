@@ -1,5 +1,8 @@
 package com.example.beta;
 
+/**
+ * a recipe class. build like the firebase tree - recipes.
+ */
 public class Recipe {
     private String name;
     private Integer location;

@@ -8,6 +8,10 @@ import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * @author Nitzan Dromi
+ * the first activity. self transfer after 3 seconds
+ */
 public class MainActivity extends AppCompatActivity {
     Timer timer;
 
@@ -16,12 +20,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        timer= new Timer();
+
         /**
          * this function transfer the user(?) to the next activity (register or login activity) after 3 seconds in this activity.
          * without any intervention from the user
          * @param TimerTask
          */
-        timer= new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

@@ -94,10 +94,10 @@ public class Register_Login extends AppCompatActivity {
 
     String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="", id="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
     Boolean stayConnect, registered=false, isUID = false;
-
-    AlertDialog ad, ad1;
-    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     Boolean mVerificationInProgress = false;
+
+    AlertDialog ad, adCode;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     ValueEventListener usersListener;
     FirebaseUser user;
 
@@ -202,10 +202,12 @@ public class Register_Login extends AppCompatActivity {
      * if not, it sends him to the login option
      */
         if (firstRun) {
+            isUID=false;
             onVerificationStateChanged();
             regOption();
         }
         else {
+            isUID=true;
             registered = true;
             onVerificationStateChanged();
             logOption();
@@ -347,8 +349,8 @@ public class Register_Login extends AppCompatActivity {
                             dialogInterface.cancel();
                         }
                     });
-                    ad1 = adb.create();
-                    ad1.show();
+                    adCode = adb.create();
+                    adCode.show();
                 }
             }else {
                 Toast.makeText(Register_Login.this, "Please, enter your phone number.", Toast.LENGTH_LONG).show();
@@ -503,6 +505,10 @@ public class Register_Login extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (user.getUid().equals(data.getValue(User.class).getUid())){
+                        if (registered)
+                            adCode.dismiss();
+                        else
+                            ad.dismiss();;
                         Intent si = new Intent(Register_Login.this, tafritim.class);
                         startActivity(si);
                         finish();
@@ -549,21 +555,4 @@ public class Register_Login extends AppCompatActivity {
             }
         };
     }
-
-    /*
-     *this function gets the information about the user's gender in order to give them the right supplements activity
-     * worked in the version created in 22/1/20
-     * @param view
-     */
-   /* public void MaleOrFemale(View view) {
-        if (swMoF.isChecked()){
-            isFemale=true;
-        }
-        else{
-            isFemale=false;
-
-        }
-    }*/
-
-
 }

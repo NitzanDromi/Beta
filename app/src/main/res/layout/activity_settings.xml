@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".Settings">
 
@@ -42,18 +43,23 @@
             android:id="@+id/etWeightt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="5"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textColor="@color/colorAccent" />
 
-        <Button
-            android:id="@+id/btWeight"
+        <ImageButton
+            android:id="@+id/imbtWeight"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2.5"
             android:onClick="updateWeight"
-            android:text="SAVE CHANGES" />
+            android:background="#FFFFFF"
+            android:src="@drawable/save_changes" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"/>
     </LinearLayout>
 
     <Space
@@ -80,18 +86,23 @@
             android:id="@+id/etHeightt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="5"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textColor="@color/colorAccent" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btHeight"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2.5"
             android:onClick="updateHeight"
-            android:text="SAVE CHANGES" />
+            android:background="#FFFFFF"
+            android:src="@drawable/save_changes" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"/>
     </LinearLayout>
 
     <Space
@@ -104,6 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textColor="#E91E63"
         android:text="" />
 
     <Space

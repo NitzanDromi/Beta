@@ -1,5 +1,8 @@
 package com.example.beta;
 
+/**
+ * a User class - contains all of the data required for a user
+ */
 public class User {
     private String name, lastName, email, phone, uid, id, date, weight, height, places, beforeImage, afterImage;
     private Boolean isFemale;

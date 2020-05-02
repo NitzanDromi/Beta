@@ -25,6 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * an activity that presents the menus.
+ */
 public class tafritim extends AppCompatActivity {
     ListView lvMenu;
     TextView tvNumOfWeek, tvSentence;
@@ -208,7 +211,6 @@ public class tafritim extends AppCompatActivity {
     /**
      * this function creates the menu options - the menu - main.xml
      * @param menu
-     * @return ????????????????????????????????????????????
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -219,7 +221,6 @@ public class tafritim extends AppCompatActivity {
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
      * @param item
-     * @return ???????????????????
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

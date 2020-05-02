@@ -35,6 +35,9 @@ import static com.example.beta.FBref.refRecfiles;
 import static com.example.beta.FBref.refSUPfiles;
 import static com.example.beta.FBref.refUsers;
 
+/**
+ * an activity that shows the supplements for women/ men according to the user's gender
+ */
 public class tosafim extends AppCompatActivity {
     String uid, fname;
     User user;
@@ -94,7 +97,7 @@ public class tosafim extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
-                Toast.makeText(tosafim.this, "Supplements download success", Toast.LENGTH_LONG).show();
+                Toast.makeText(tosafim.this, "Supplements download success", Toast.LENGTH_SHORT).show();
                 // String filePath = localFile.getPath();
 
                 try {

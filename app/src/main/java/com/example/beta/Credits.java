@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * @author Nitzan Dromi
+ * an activity that presents the credits for the application author and information about the manager of the sessions
+ */
+
 public class Credits extends AppCompatActivity {
 
     @Override
@@ -19,7 +24,6 @@ public class Credits extends AppCompatActivity {
     /**
      * this function creates the menu options - the menu - main.xml
      * @param menu
-     * @return ????????????????????????????????????????????
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -30,7 +34,6 @@ public class Credits extends AppCompatActivity {
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
      * @param item
-     * @return ???????????????????
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -40,6 +40,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.beta.FBref.refRecfiles;
 
+/**
+ * @author Nitzan Dromi
+ * an activity that presents the recipe the user chose in the recipes activity
+ */
+
 public class Matcon extends AppCompatActivity {
     int n;
     TextView tv_output;
@@ -142,7 +147,6 @@ public class Matcon extends AppCompatActivity {
     /**
      * this function creates the menu options - the menu - main.xml
      * @param menu
-     * @return ????????????????????????????????????????????
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,7 +157,6 @@ public class Matcon extends AppCompatActivity {
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
      * @param item
-     * @return ???????????????????
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
