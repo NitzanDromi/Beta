@@ -161,7 +161,7 @@ public class Settings extends AppCompatActivity {
                     else {
                         imBefore="checked";
                     }
-                    if (user.getAfterImage().equals("empty"))
+                    if (userimage.getAfterImage().equals("empty"))
                         imAfter="empty";
                      else
                          imAfter="checked";
@@ -258,7 +258,7 @@ public class Settings extends AppCompatActivity {
     public void upload_after(View view) {
         Query q2 = refUsers.orderByChild("uid").equalTo(uiduser);
         q2.addListenerForSingleValueEvent(VELimage);
-        if (user.getAfterImage().equals("empty")){
+        if (imAfter.equals("empty")){
             count = 2;
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, Gallery);
@@ -274,6 +274,7 @@ public class Settings extends AppCompatActivity {
                         ivAfter.setImageResource(R.drawable.request_after_male);
                     refUsers.child(fullName).child("afterImage").removeValue();
                     refUsers.child(fullName).child("afterImage").setValue("empty");
+                    imAfter="empty";
                     tvAfter.setVisibility(View.INVISIBLE);
                     dialogInterface.dismiss();
                 }
@@ -323,6 +324,7 @@ public class Settings extends AppCompatActivity {
 
                                         refUsers.child(fullName).child("afterImage").removeValue();
                                         refUsers.child(fullName).child("afterImage").setValue("checked");
+                                        imAfter="checked";
 
 
                                         try {
