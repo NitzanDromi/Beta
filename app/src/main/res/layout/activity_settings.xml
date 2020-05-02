@@ -24,13 +24,25 @@
         android:layout_height="0dp"
         android:layout_weight="0.6" />
 
-    <TextView
-        android:id="@+id/tvweight"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Weight"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3" />
+
+        <TextView
+            android:id="@+id/tvweight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7.3"
+            android:text="Weight"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
     <LinearLayout
@@ -39,11 +51,30 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3" />
+
+        <TextView
+            android:id="@+id/tvbeginningweight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textSize="20dp"
+            android:text=""
+            android:textColor="#000000" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5" />
+
         <EditText
             android:id="@+id/etWeightt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="2"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textColor="@color/colorAccent" />
@@ -52,9 +83,9 @@
             android:id="@+id/imbtWeight"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2.5"
-            android:onClick="updateWeight"
+            android:layout_weight="2"
             android:background="#FFFFFF"
+            android:onClick="updateWeight"
             android:src="@drawable/save_changes" />
         <Space
             android:layout_width="0dp"
@@ -62,19 +93,71 @@
             android:layout_weight="0.3"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3" />
+
+        <TextView
+            android:id="@+id/tvinitial"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="initial"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/common_google_signin_btn_text_light_default" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvnow"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:text="now"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/common_google_signin_btn_text_light_default" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.2" />
+    </LinearLayout>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"/>
 
-    <TextView
-        android:id="@+id/tvheight"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Height"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3" />
+
+        <TextView
+            android:id="@+id/tvheight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Height"
+            android:layout_weight="7.3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,20 +165,29 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3" />
+
         <EditText
             android:id="@+id/etHeightt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="2"
             android:ems="10"
             android:inputType="numberDecimal"
             android:textColor="@color/colorAccent" />
-
-        <ImageButton
-            android:id="@+id/btHeight"
+        <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2.5"
+            android:layout_weight="3" />
+
+        <ImageButton
+            android:id="@+id/imbtHeight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
             android:onClick="updateHeight"
             android:background="#FFFFFF"
             android:src="@drawable/save_changes" />
@@ -104,19 +196,6 @@
             android:layout_height="match_parent"
             android:layout_weight="0.3"/>
     </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"/>
-
-    <TextView
-        android:id="@+id/tvPlaces"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="#E91E63"
-        android:text="" />
 
     <Space
         android:layout_width="match_parent"

@@ -26,6 +26,12 @@
         />
 
     <item
+        android:id="@+id/menuSessions"
+        android:title="פרטי הסדנה"
+        android:orderInCategory="350"
+        />
+
+    <item
         android:id="@+id/menuTosafim"
         android:title="תוספי תזונה"
         android:orderInCategory="250"

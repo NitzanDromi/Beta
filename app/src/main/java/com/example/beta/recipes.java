@@ -181,14 +181,14 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
      */
     public void lunchRecipe(View view) {
             Query query = reflunch.orderByChild("name").equalTo(strlunch);
-            query.addListenerForSingleValueEvent(VEL);
+            query.addListenerForSingleValueEvent(VELrecipe1);
     }
 
     /**
      * this function gets the correct recipe from the firebase database.
      * afterwards, it sends the user to the next activity in which the recipe will appear.
      */
-    ValueEventListener VEL = new ValueEventListener() {
+    ValueEventListener VELrecipe1 = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if (dataSnapshot.exists()) {
@@ -213,14 +213,14 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
      */
     public void dinnerRecipe(View view) {
         Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
-        query2.addListenerForSingleValueEvent(VEL2);
+        query2.addListenerForSingleValueEvent(VELrecipe2);
     }
 
     /**
      * this function gets the correct recipe from the firebase database.
      * afterwards, it sends the user to the next activity in which the recipe will appear.
      */
-    ValueEventListener VEL2 = new ValueEventListener() {
+    ValueEventListener VELrecipe2 = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if (dataSnapshot.exists()) {
@@ -255,29 +255,31 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("פרופיל אישי")){
-            Intent a=new Intent(this, Settings.class);
-            startActivity(a);
-            finish();
+        Intent a=new Intent();
+        if(st.equals("פרופיל אישי"))
+            a=new Intent(this, Settings.class);
+        else {
+            if (st.equals("פרטי הסדנה"))
+                a = new Intent(this, sessions.class);
+            else {
+                if (st.equals("תפריט"))
+                    a = new Intent(this, tafritim.class);
+                else {
+                    if (st.equals("תוספי תזונה"))
+                        a = new Intent(this, tosafim.class);
+                    else {
+                        if (st.equals("תחליפים לצמחוניים וטבעוניים"))
+                            a = new Intent(this, Substitutes.class);
+
+                        else
+                        if (st.equals("אודות"))
+                            a = new Intent(this, Credits.class);
+                    }
+                }
+            }
         }
-        if(st.equals("אודות")){
-            Intent a=new Intent(this, Credits.class);
-            startActivity(a);
-            finish();
-        }
-        if(st.equals("תפריט")){
-            Intent a=new Intent(this, tafritim.class);
-            startActivity(a);
-            finish();
-        }
-        if(st.equals("תוספי תזונה")){
-            Intent a=new Intent(this, tosafim.class);
-            startActivity(a);
-        }
-        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
-            Intent a=new Intent(this, Substitutes.class);
-            startActivity(a);
-        }
+        startActivity(a);
+        finish();
         return super.onOptionsItemSelected(item);
     }
 

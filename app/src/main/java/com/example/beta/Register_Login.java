@@ -478,9 +478,8 @@ public class Register_Login extends AppCompatActivity {
                             FirebaseUser user = refAuth.getCurrentUser();
                             uid = user.getUid();
                             if (!isUID) {
-                                userdb = new User(fstName, lastName, email, phone, id, date, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                                userdb = new User(fstName, lastName, email, phone, id, date, weight, weight, height, isFemale, places, uid, afterImage, beforeImage);
                                 refUsers.child(fstName + " " + lastName).setValue(userdb);
-                               // refUsers.child(fstName+" "+lastName).child("uid").setValue(uid);
                             }
                             setUsersListener();
                         }

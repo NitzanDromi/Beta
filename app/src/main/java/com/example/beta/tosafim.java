@@ -54,14 +54,14 @@ public class tosafim extends AppCompatActivity {
         FirebaseUser fbuser = refAuth.getCurrentUser();
         uid = fbuser.getUid();
         Query query = refUsers.orderByChild("uid").equalTo(uid);
-        query.addListenerForSingleValueEvent(VEL);
+        query.addListenerForSingleValueEvent(VELSup);
     }
 
     /**
      * this function reads the necessary information about the user to this activity.
      * (the user's gender)
      */
-    com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
+    com.google.firebase.database.ValueEventListener VELSup = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
             if (dS.exists()) {
@@ -139,7 +139,6 @@ public class tosafim extends AppCompatActivity {
     /**
      * this function creates the menu options - the menu - main.xml
      * @param menu
-     * @return ????????????????????????????????????????????
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,33 +149,37 @@ public class tosafim extends AppCompatActivity {
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
      * @param item
-     * @return ???????????????????
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("אודות")){
-            Intent a=new Intent(this, Credits.class);
-            startActivity(a);
+        Intent a=new Intent();
+        if(st.equals("מתכונים")){
+            a=new Intent(this, recipes.class);
         }
-        if(st.equals("תפריט")){
-            Intent a=new Intent(this, tafritim.class);
-            startActivity(a);
-        }
-        if(st.equals("פרופיל אישי")){
-            Intent a=new Intent(this, Settings.class);
-            startActivity(a);
-        }
-        if (st.equals("מתכונים")){
-            Intent a=new Intent(this, recipes.class);
-            startActivity(a);
-        }
-        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
-            Intent a=new Intent(this, Substitutes.class);
-            startActivity(a);
-        }
-        return super.onOptionsItemSelected(item);
+        else {
+            if (st.equals("פרטי הסדנה"))
+                a = new Intent(this, sessions.class);
+            else {
+                if (st.equals("תפריט"))
+                    a = new Intent(this, tafritim.class);
+                else {
+                    if (st.equals("פרופיל אישי"))
+                        a = new Intent(this, Settings.class);
+                    else {
+                        if (st.equals("תחליפים לצמחוניים וטבעוניים"))
+                            a = new Intent(this, Substitutes.class);
 
+                        else
+                        if (st.equals("אודות"))
+                            a = new Intent(this, Credits.class);
+                    }
+                }
+            }
+        }
+        startActivity(a);
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 
 }

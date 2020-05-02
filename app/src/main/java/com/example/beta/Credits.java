@@ -38,26 +38,31 @@ public class Credits extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("מתכונים")){
-            Intent a=new Intent(this, recipes.class);
-            startActivity(a);
+        Intent a=new Intent();
+        if(st.equals("מתכונים"))
+            a=new Intent(this, recipes.class);
+        else {
+            if (st.equals("פרטי הסדנה"))
+                a = new Intent(this, sessions.class);
+            else {
+                if (st.equals("תפריט"))
+                    a = new Intent(this, tafritim.class);
+                else {
+                    if (st.equals("תוספי תזונה"))
+                        a = new Intent(this, tosafim.class);
+                    else {
+                        if (st.equals("תחליפים לצמחוניים וטבעוניים"))
+                            a = new Intent(this, Substitutes.class);
+
+                        else
+                        if (st.equals("פרופיל אישי"))
+                            a = new Intent(this, Settings.class);
+                    }
+                }
+            }
         }
-        if(st.equals("תפריט")){
-            Intent a=new Intent(this, tafritim.class);
-            startActivity(a);
-        }
-        if(st.equals("פרופיל אישי")){
-            Intent a=new Intent(this, Settings.class);
-            startActivity(a);
-        }
-        if(st.equals("תוספי תזונה")){
-            Intent a=new Intent(this, tosafim.class);
-            startActivity(a);
-        }
-        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
-            Intent a=new Intent(this, Substitutes.class);
-            startActivity(a);
-        }
+        startActivity(a);
+        finish();
         return super.onOptionsItemSelected(item);
     }
 

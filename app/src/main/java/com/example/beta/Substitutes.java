@@ -123,28 +123,32 @@ public class Substitutes extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String st=item.getTitle().toString();
-        if(st.equals("אודות")){
-            Intent a=new Intent(this, Credits.class);
-            startActivity(a);
-        }
-        if(st.equals("תפריט")){
-            Intent a=new Intent(this, tafritim.class);
-            startActivity(a);
-        }
-        if(st.equals("פרופיל אישי")){
-            Intent a=new Intent(this, Settings.class);
-            startActivity(a);
-        }
-        if (st.equals("מתכונים")){
-            Intent a=new Intent(this, recipes.class);
-            startActivity(a);
-        }
-        if(st.equals("תוספי תזונה")){
-            Intent a=new Intent(this, tosafim.class);
-            startActivity(a);
-        }
-        return super.onOptionsItemSelected(item);
+        Intent a=new Intent();
+        if(st.equals("מתכונים"))
+            a=new Intent(this, recipes.class);
+        else {
+            if (st.equals("פרטי הסדנה"))
+                a = new Intent(this, sessions.class);
+            else {
+                if (st.equals("תפריט"))
+                    a = new Intent(this, tafritim.class);
+                else {
+                    if (st.equals("תוספי תזונה"))
+                        a = new Intent(this, tosafim.class);
+                    else {
+                        if (st.equals("פרופיל אישי"))
+                            a = new Intent(this, Settings.class);
 
+                        else
+                        if (st.equals("אודות"))
+                            a = new Intent(this, Credits.class);
+                    }
+                }
+            }
+        }
+        startActivity(a);
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 
 }

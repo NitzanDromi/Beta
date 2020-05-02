@@ -57,14 +57,13 @@ import static com.example.beta.FBref.refUsers;
  * an activity that shows personal information about the user
  */
 public class Settings extends AppCompatActivity {
-    String uid, fullName;
-    User user;
+    String uiduser="", fullName="", name="", imBefore="checked", imAfter="checked";
+    User user, userimage;
     TextView tvname;
     EditText etweight, etheight;
-    String name="";
     int Gallery=1, count=0;
     ImageView ivBefore, ivAfter;
-    TextView tvBefore, tvAfter, tvPlace;
+    TextView tvBefore, tvAfter, tvweight;
     AlertDialog adImagebefore, adImageAfter;
     Boolean female;
 
@@ -78,15 +77,15 @@ public class Settings extends AppCompatActivity {
         ivAfter=(ImageView)findViewById(R.id.imageViewAfterImage);
         tvBefore=(TextView) findViewById(R.id.tvBefore);
         tvAfter=(TextView) findViewById(R.id.tvAfter);
-        tvPlace=(TextView)findViewById(R.id.tvPlaces);
         tvname=(TextView)findViewById(R.id.tvname);
+        tvweight=(TextView)findViewById(R.id.tvbeginningweight);
         etheight=(EditText) findViewById(R.id.etHeightt);
         etweight=(EditText) findViewById(R.id.etWeightt);
 
         FirebaseUser fbuser = refAuth.getCurrentUser();
-        uid = fbuser.getUid();
-        Query query = refUsers.orderByChild("uid").equalTo(uid);
-        query.addListenerForSingleValueEvent(VEL);
+        uiduser = fbuser.getUid();
+        Query query = refUsers.orderByChild("uid").equalTo(uiduser);
+        query.addListenerForSingleValueEvent(VELUser);
     }
 
     /**
@@ -94,7 +93,7 @@ public class Settings extends AppCompatActivity {
      * (the user's gender and name (personal and full name)
      * and whether the user already uploaded a before & an after image - if not, it puts the default image according to his gender)
      */
-    com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
+    com.google.firebase.database.ValueEventListener VELUser = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
             if (dS.exists()) {
@@ -103,11 +102,12 @@ public class Settings extends AppCompatActivity {
                     tvname.setText("Welcome " + user.getName() + "!");
                     fullName=user.getName()+" "+user.getLastName();
                     name=user.getName();
+                    tvweight.setText(user.getBeginningweight());
                     etweight.setText(user.getWeight());
                     etheight.setText(user.getHeight());
-                    tvPlace.setText("your sessions are in "+user.getPlaces());
                     female=user.getIsFemale();
                     if (user.getBeforeImage().equals("empty")){
+                        imBefore="empty";
                         tvBefore.setVisibility(View.INVISIBLE);
                         if (female)
                             ivBefore.setImageResource(R.drawable.request_before_female);
@@ -115,28 +115,15 @@ public class Settings extends AppCompatActivity {
                             ivBefore.setImageResource(R.drawable.request_before_male);
                     }
                     else {
-                        if (user.getAfterImage().equals("empty")){
-                            tvAfter.setVisibility(View.INVISIBLE);
-                            if (female)
-                                ivAfter.setImageResource(R.drawable.request_after_female);
-                            else
-                                ivAfter.setImageResource(R.drawable.request_after_male);
-                        }
-                        else {
-                            try {
-                                download1();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
                         try {
                             download();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
+
                     if (user.getAfterImage().equals("empty")){
+                        imAfter="empty";
                         tvAfter.setVisibility(View.INVISIBLE);
                         if (female)
                             ivAfter.setImageResource(R.drawable.request_after_female);
@@ -160,12 +147,44 @@ public class Settings extends AppCompatActivity {
     };
 
     /**
+     * this function gets the image existing status.
+     */
+    com.google.firebase.database.ValueEventListener VELimage = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dSim) {
+            if (dSim.exists()) {
+                for(DataSnapshot dataim : dSim.getChildren()) {
+                    userimage = dataim.getValue(User.class);
+                    if (userimage.getBeforeImage().equals("empty")){
+                       imBefore="empty";
+                    }
+                    else {
+                        imBefore="checked";
+                    }
+                    if (user.getAfterImage().equals("empty"))
+                        imAfter="empty";
+                     else
+                         imAfter="checked";
+                }
+            }
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
+
+    /**
      * this function updates the user's height in the Firebase Database
      * @param view
      */
     public void updateHeight(View view) {
-        refUsers.child(fullName).child("height").removeValue();
-        refUsers.child(fullName).child("height").setValue(etheight.getText().toString());
+        if (!etheight.getText().toString().isEmpty()) {
+            refUsers.child(fullName).child("height").removeValue();
+            refUsers.child(fullName).child("height").setValue(etheight.getText().toString());
+        }
+        else
+            Toast.makeText(this, "please, fill your height", Toast.LENGTH_SHORT).show();
+
     }
 
     /**
@@ -173,8 +192,13 @@ public class Settings extends AppCompatActivity {
      * @param view
      */
     public void updateWeight(View view) {
-        refUsers.child(fullName).child("weight").removeValue();
-        refUsers.child(fullName).child("weight").setValue(etweight.getText().toString());
+        if (!etweight.getText().toString().isEmpty()) {
+            refUsers.child(fullName).child("weight").removeValue();
+            refUsers.child(fullName).child("weight").setValue(etweight.getText().toString());
+        }
+        else
+            Toast.makeText(this, "please, fill your weight", Toast.LENGTH_SHORT).show();
+
     }
 
     /**
@@ -184,7 +208,9 @@ public class Settings extends AppCompatActivity {
      * @param view
      */
     public void upload_before(View view) {
-        if (user.getBeforeImage().equals("empty")){
+        Query q = refUsers.orderByChild("uid").equalTo(uiduser);
+        q.addListenerForSingleValueEvent(VELimage);
+        if (imBefore.equals("empty")){
             count = 1;
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, Gallery);
@@ -198,6 +224,7 @@ public class Settings extends AppCompatActivity {
                         ivBefore.setImageResource(R.drawable.request_before_female);
                     else
                         ivBefore.setImageResource(R.drawable.request_before_male);
+                    imBefore="empty";
                     refUsers.child(fullName).child("beforeImage").removeValue();
                     refUsers.child(fullName).child("beforeImage").setValue("empty");
                     tvBefore.setVisibility(View.INVISIBLE);
@@ -229,6 +256,8 @@ public class Settings extends AppCompatActivity {
      * @param view
      */
     public void upload_after(View view) {
+        Query q2 = refUsers.orderByChild("uid").equalTo(uiduser);
+        q2.addListenerForSingleValueEvent(VELimage);
         if (user.getAfterImage().equals("empty")){
             count = 2;
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -295,6 +324,7 @@ public class Settings extends AppCompatActivity {
                                         refUsers.child(fullName).child("afterImage").removeValue();
                                         refUsers.child(fullName).child("afterImage").setValue("checked");
 
+
                                         try {
                                             download1();
                                         } catch (IOException e) {
@@ -323,6 +353,7 @@ public class Settings extends AppCompatActivity {
 
                                         refUsers.child(fullName).child("beforeImage").removeValue();
                                         refUsers.child(fullName).child("beforeImage").setValue("checked");
+                                        imBefore="checked";
 
                                         try {
                                             download();
@@ -420,23 +451,44 @@ public class Settings extends AppCompatActivity {
         if(st.equals("מתכונים")){
             Intent a=new Intent(this, recipes.class);
             startActivity(a);
+            finish();
         }
-        if(st.equals("אודות")){
-            Intent a=new Intent(this, Credits.class);
-            startActivity(a);
+        else {
+            if (st.equals("פרטי הסדנה")) {
+                Intent  a = new Intent(this, sessions.class);
+                startActivity(a);
+                finish();
+            }
+            else {
+                if (st.equals("תפריט")) {
+                    Intent    a = new Intent(this, tafritim.class);
+                    startActivity(a);
+                    finish();
+                }
+                else {
+                    if (st.equals("תוספי תזונה")) {
+                        Intent   a = new Intent(this, tosafim.class);
+                        startActivity(a);
+                        finish();
+                    }
+                    else {
+                      if (st.equals("תחליפים לצמחוניים וטבעוניים")){
+                          Intent  a = new Intent(this, Substitutes.class);
+                        startActivity(a);
+                        finish();}
+
+                      else
+                        if (st.equals("אודות")) {
+                            Intent   a = new Intent(this, Credits.class);
+                            startActivity(a);
+                            finish();
+                        }
+                    }
+                }
+            }
         }
-        if(st.equals("תפריט")){
-            Intent a=new Intent(this, tafritim.class);
-            startActivity(a);
-        }
-        if(st.equals("תוספי תזונה")){
-            Intent a=new Intent(this, tosafim.class);
-            startActivity(a);
-        }
-        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
-            Intent a=new Intent(this, Substitutes.class);
-            startActivity(a);
-        }
+
+
         return super.onOptionsItemSelected(item);
     }
 

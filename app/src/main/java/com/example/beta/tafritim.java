@@ -29,8 +29,8 @@ import java.util.ArrayList;
  * an activity that presents the menus.
  */
 public class tafritim extends AppCompatActivity {
-    ListView lvMenu;
     TextView tvNumOfWeek, tvSentence;
+    ListView lvMenu;
 
     ArrayList<String> stringList= new ArrayList<String>();
     ArrayAdapter<String> adp;
@@ -230,24 +230,41 @@ public class tafritim extends AppCompatActivity {
             startActivity(a);
             finish();
         }
-        if(st.equals("אודות")){
-            Intent a=new Intent(this, Credits.class);
-            startActivity(a);
-            finish();
-        }
-        if(st.equals("פרופיל אישי")){
-            Intent si = new Intent(tafritim.this,Settings.class);
-            startActivity(si);
-            finish();
-        }
-        if(st.equals("תוספי תזונה")){
-            Intent a=new Intent(this, tosafim.class);
-            startActivity(a);
-        }
-        if(st.equals("תחליפים לצמחוניים וטבעוניים")){
-            Intent a=new Intent(this, Substitutes.class);
-            startActivity(a);
+        else {
+            if (st.equals("פרטי הסדנה")) {
+                Intent  a = new Intent(this, sessions.class);
+                startActivity(a);
+                finish();
+            }
+            else {
+                if (st.equals("פרופיל אישי")) {
+                    Intent    a = new Intent(this, Settings.class);
+                    startActivity(a);
+                    finish();
+                }
+                else {
+                    if (st.equals("תוספי תזונה")) {
+                        Intent   a = new Intent(this, tosafim.class);
+                        startActivity(a);
+                        finish();
+                    }
+                    else {
+                        if (st.equals("תחליפים לצמחוניים וטבעוניים")){
+                            Intent  a = new Intent(this, Substitutes.class);
+                            startActivity(a);
+                            finish();}
+
+                        else
+                        if (st.equals("אודות")) {
+                            Intent   a = new Intent(this, Credits.class);
+                            startActivity(a);
+                            finish();
+                        }
+                    }
+                }
+            }
         }
         return super.onOptionsItemSelected(item);
+
     }
 }
