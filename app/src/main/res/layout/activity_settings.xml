@@ -71,7 +71,7 @@
             android:layout_weight="0.5" />
 
         <EditText
-            android:id="@+id/etWeightt"
+            android:id="@+id/etWeightnow"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -171,7 +171,7 @@
             android:layout_weight="0.3" />
 
         <EditText
-            android:id="@+id/etHeightt"
+            android:id="@+id/etHeightnow"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"

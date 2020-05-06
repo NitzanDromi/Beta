@@ -182,7 +182,6 @@ public class Register_Login extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month++;
-               // Log.d(TAG, "onDataSet: dd/mm/yyyy: "+ dayOfMonth +"/" + month +"/" +year );
                 date = dayOfMonth +"/" + month +"/" +year;
                 int currentYear=Calendar.getInstance().get(Calendar.YEAR);
                 if ((currentYear-year)>=15)
@@ -437,12 +436,7 @@ public class Register_Login extends AppCompatActivity {
      */
 
     private void startPhoneNumberVerification(String phoneNumber) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,           // Phone number to verify
-                40,                 // Timeout duration
-                TimeUnit.SECONDS,      // Unit of timeout
-                this,          // Activity (for callback binding)
-                mCallbacks);          // OnVerificationStateChangedCallbacks
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber, 40, TimeUnit.SECONDS, this, mCallbacks);
         mVerificationInProgress = true;
     }
 

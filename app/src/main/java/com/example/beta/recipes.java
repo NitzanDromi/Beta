@@ -158,12 +158,10 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         if (spLunch.equals(parent)){
-          //  numl=pos+1;
             strlunch = lst_lunch.get(pos);
         }
         else{
             if (spDinner.equals(parent)){
-             //   numd=pos+1;
                 strdinner=lst_dinner.get(pos);
             }
         }

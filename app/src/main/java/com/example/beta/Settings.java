@@ -57,7 +57,7 @@ import static com.example.beta.FBref.refUsers;
  * an activity that shows personal information about the user
  */
 public class Settings extends AppCompatActivity {
-    String uiduser="", fullName="", name="", imBefore="checked", imAfter="checked";
+    String uiduser="", fullName="", name="", imBefore="checked", imAfter="checked", weight="";
     User user, userimage;
     TextView tvname;
     EditText etweight, etheight;
@@ -79,8 +79,8 @@ public class Settings extends AppCompatActivity {
         tvAfter=(TextView) findViewById(R.id.tvAfter);
         tvname=(TextView)findViewById(R.id.tvname);
         tvweight=(TextView)findViewById(R.id.tvbeginningweight);
-        etheight=(EditText) findViewById(R.id.etHeightt);
-        etweight=(EditText) findViewById(R.id.etWeightt);
+        etheight=(EditText) findViewById(R.id.etHeightnow);
+        etweight=(EditText) findViewById(R.id.etWeightnow);
 
         FirebaseUser fbuser = refAuth.getCurrentUser();
         uiduser = fbuser.getUid();
@@ -102,7 +102,8 @@ public class Settings extends AppCompatActivity {
                     tvname.setText("Welcome " + user.getName() + "!");
                     fullName=user.getName()+" "+user.getLastName();
                     name=user.getName();
-                    tvweight.setText(user.getBeginningweight());
+                    weight=user.getBeginningweight();
+                    tvweight.setText(weight);
                     etweight.setText(user.getWeight());
                     etheight.setText(user.getHeight());
                     female=user.getIsFemale();
@@ -181,6 +182,11 @@ public class Settings extends AppCompatActivity {
         if (!etheight.getText().toString().isEmpty()) {
             refUsers.child(fullName).child("height").removeValue();
             refUsers.child(fullName).child("height").setValue(etheight.getText().toString());
+            if(!Settings.this.isFinishing())
+            {
+                Toast.makeText(this, "Changes are saved", Toast.LENGTH_SHORT).show();
+
+            }
         }
         else
             Toast.makeText(this, "please, fill your height", Toast.LENGTH_SHORT).show();
@@ -195,6 +201,11 @@ public class Settings extends AppCompatActivity {
         if (!etweight.getText().toString().isEmpty()) {
             refUsers.child(fullName).child("weight").removeValue();
             refUsers.child(fullName).child("weight").setValue(etweight.getText().toString());
+            if(!Settings.this.isFinishing())
+            {
+                Toast.makeText(this, "Changes are saved", Toast.LENGTH_SHORT).show();
+
+            }
         }
         else
             Toast.makeText(this, "please, fill your weight", Toast.LENGTH_SHORT).show();
@@ -245,7 +256,10 @@ public class Settings extends AppCompatActivity {
                 }
             });
             adImagebefore = alertDialogB.create();
-            adImagebefore.show();
+            if(!Settings.this.isFinishing())
+            {
+                adImagebefore.show();
+            }
         }
     }
 
@@ -293,7 +307,10 @@ public class Settings extends AppCompatActivity {
                 }
             });
             adImageAfter = adbAfter.create();
-            adImageAfter.show();
+            if(!Settings.this.isFinishing())
+            {
+                adImageAfter.show();
+            }
         }
     }
 
@@ -463,7 +480,7 @@ public class Settings extends AppCompatActivity {
             }
             else {
                 if (st.equals("תפריט")) {
-                    Intent    a = new Intent(this, tafritim.class);
+                    Intent    a = new Intent(Settings.this, tafritim.class);
                     startActivity(a);
                     finish();
                 }

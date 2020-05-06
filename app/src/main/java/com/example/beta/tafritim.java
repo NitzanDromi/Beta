@@ -62,15 +62,13 @@ public class tafritim extends AppCompatActivity {
         refMenu.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
+
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                     wkmax=Integer.parseInt(ds.getKey(), (int) ds.getChildrenCount());
                 }
             }
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
             }
         });
 
@@ -85,12 +83,9 @@ public class tafritim extends AppCompatActivity {
     public void MainTafrit (){
         DatabaseReference refDay = refMenu.child(week).child(day);
 
-        // Read from the database
         refDay.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 stringList.clear();
                 for (DataSnapshot data : ds.getChildren()){
                     String tmp=data.getValue(String.class);
@@ -103,7 +98,6 @@ public class tafritim extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
             }
         });
 
@@ -117,12 +111,9 @@ public class tafritim extends AppCompatActivity {
                     case 0: day="Friday and Saturday";break;
                 }
                 DatabaseReference refDay = refMenu.child(week).child(day);
-                // Read from the database
                 refDay.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot ds) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
                         stringList.clear();
                         for (DataSnapshot data : ds.getChildren()){
                             String tmp=data.getValue(String.class);
@@ -135,7 +126,6 @@ public class tafritim extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError error) {
-                        // Failed to read value
                     }
                 });
             }
@@ -162,14 +152,12 @@ public class tafritim extends AppCompatActivity {
             refSentence.child(week).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
+
                     String tmp=dataSnapshot.getValue(String.class);
                     tvSentence.setText(tmp);
                 }
                 @Override
                 public void onCancelled(DatabaseError error) {
-                    // Failed to read value
                 }
             });
             MainTafrit();
@@ -191,14 +179,11 @@ public class tafritim extends AppCompatActivity {
             refSentence.child(week).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
                         String tmp=dataSnapshot.getValue(String.class);
                         tvSentence.setText(tmp);
                 }
                 @Override
                 public void onCancelled(DatabaseError error) {
-                    // Failed to read value
                 }
             });
             MainTafrit();

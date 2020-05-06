@@ -10,6 +10,7 @@
         android:label="Keren Shlissel"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <activity android:name=".sessions"></activity>
         <activity android:name=".Substitutes" />
