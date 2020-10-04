@@ -20,10 +20,6 @@ package com.example.beta;
  */
 
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,7 +36,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -61,23 +56,27 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.beta.FBref.refAuth;
 import static com.example.beta.FBref.refPlaces;
 import static com.example.beta.FBref.refUsers;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 public class Register_Login extends AppCompatActivity {
 
     private static final String TAG="MainActivity";
 
     TextView tvTitle, tvRegister, tvFemale, tvMale;
-    EditText etName, etLastName, etPhone, etMail, etWeight, etId, etHeight;
-    CheckBox cbStayconnect;
+    EditText etName, etLastName, etPhone, etMail, etWeight, etHeight;
+  //  CheckBox cbStayconnect;
     Switch swMoF;
     Boolean isFemale= false;
 
@@ -92,7 +91,7 @@ public class Register_Login extends AppCompatActivity {
 
     User userdb;
 
-    String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="", id="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
+    String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
     Boolean stayConnect, registered=false, isUID = false;
     Boolean mVerificationInProgress = false;
 
@@ -104,6 +103,7 @@ public class Register_Login extends AppCompatActivity {
     Boolean firstRun=true;
 
 
+//    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +116,6 @@ public class Register_Login extends AppCompatActivity {
         etMail=(EditText)findViewById(R.id.etMail);
         etPhone=(EditText)findViewById(R.id.etPhone);
         etWeight= (EditText) findViewById(R.id.etWeight);
-        etId=(EditText)findViewById(R.id.etId);
-        cbStayconnect=(CheckBox)findViewById(R.id.cbStayConnect);
         tvRegister=(TextView) findViewById(R.id.tvRegister);
 
         tvFemale=(TextView) findViewById(R.id.tvFemale);
@@ -187,14 +185,15 @@ public class Register_Login extends AppCompatActivity {
                 if ((currentYear-year)>=15)
                     mDisplayDate.setText(date);
                 else
-                    Toast.makeText(Register_Login.this, "You are too young to use this application!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_Login.this, "עליך להיות לפחות מעל גיל 15", Toast.LENGTH_SHORT).show();
             }
         };
 
 
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         firstRun=settings.getBoolean("firstRun",true);
-        stayConnect = false;
+        //stayConnect = false;
+        stayConnect=true;
     /**
      * this condition checks if this is the first run on the user's device
      * if so, the function sends th user directly to the registration option
@@ -211,6 +210,7 @@ public class Register_Login extends AppCompatActivity {
             onVerificationStateChanged();
             logOption();
         }
+
     }
 
     /**
@@ -244,10 +244,9 @@ public class Register_Login extends AppCompatActivity {
      * the function "changes" the screen for the register option.
      */
     private void regOption() {
-        tvTitle.setText("Register");
+        tvTitle.setText("הרשמה");
         etHeight.setVisibility(View.VISIBLE);
         mDisplayDate.setVisibility(View.VISIBLE);
-        etId.setVisibility(View.VISIBLE);
         etWeight.setVisibility(View.VISIBLE);
         etLastName.setVisibility(View.VISIBLE);
         etName.setVisibility(View.VISIBLE);
@@ -278,10 +277,9 @@ public class Register_Login extends AppCompatActivity {
      * It is also the default option (the Login activity) unless the user is entering the app for the first time
      */
     private void logOption() {
-        tvTitle.setText("Login");
+        tvTitle.setText("התחברות");
         etWeight.setVisibility(View.INVISIBLE);
         etHeight.setVisibility(View.INVISIBLE);
-        etId.setVisibility(View.INVISIBLE);
         mDisplayDate.setVisibility(View.INVISIBLE);
         etName.setVisibility(View.INVISIBLE);
         etLastName.setVisibility(View.INVISIBLE);
@@ -360,7 +358,6 @@ public class Register_Login extends AppCompatActivity {
             fstName=etName.getText().toString();
             lastName=etLastName.getText().toString();
             phoneInput=etPhone.getText().toString();
-            id=etId.getText().toString();
             weight=etWeight.getText().toString();
             currentWeight=weight;
             height=etHeight.getText().toString();
@@ -375,19 +372,16 @@ public class Register_Login extends AppCompatActivity {
             }
 
             if ((!fstName.isEmpty()) && (!email.isEmpty()) &&(!lastName.isEmpty())&&
-                    (!phoneInput.isEmpty()) && (!id.isEmpty()) && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
+                    (!phoneInput.isEmpty())  && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
                 if (places.equals("select your meetings location")) {
                         Toast.makeText(this, "please choose your meetings location", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Pattern.matches("[a-zA-Z]+", id) == true || id.length() != 9) {
-                        etId.setError("invalid id");
-                    } else {
                         if (((!email.endsWith(".com")) || (!email.endsWith(".il"))) && (email.indexOf("@") == (-1)))
-                            etMail.setError("invalid e-mail");
+                            etMail.setError("חשבון המייל אינו תקין");
                         else {
                             if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) {
-                                etPhone.setError("invalid phone number");
+                                etPhone.setError("מספר הטלפון אינו תקין");
                             } else {
                                 if (phone.equals("+972")) {
                                     for (int x = 1; x <= 9; x++)
@@ -421,7 +415,6 @@ public class Register_Login extends AppCompatActivity {
                             }
                         }
                     }
-                }
             } else {
                     Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
             }
@@ -465,14 +458,14 @@ public class Register_Login extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
                             SharedPreferences.Editor editor = settings.edit();
-                            editor.putBoolean("stayConnect", cbStayconnect.isChecked());
+                        //    editor.putBoolean("stayConnect", cbStayconnect.isChecked());
                             editor.putBoolean("firstRun", false);
                             editor.commit();
 
                             FirebaseUser user = refAuth.getCurrentUser();
                             uid = user.getUid();
                             if (!isUID) {
-                                userdb = new User(fstName, lastName, email, phone, id, date, weight, weight, height, isFemale, places, uid, afterImage, beforeImage);
+                                userdb = new User(fstName, lastName, email, phone, date, weight, weight, height, isFemale, places, uid, afterImage, beforeImage);
                                 refUsers.child(fstName + " " + lastName).setValue(userdb);
                             }
                             setUsersListener();

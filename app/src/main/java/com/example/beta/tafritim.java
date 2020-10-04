@@ -36,7 +36,8 @@ public class tafritim extends AppCompatActivity {
     ArrayAdapter<String> adp;
 
     String day="Sunday", week;
-    int wk=1, wkmax=1;
+    int wk=1;
+        int wkmax=1;
 
     SeekBar seekBardays;
 
@@ -64,7 +65,8 @@ public class tafritim extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    wkmax=Integer.parseInt(ds.getKey(), (int) ds.getChildrenCount());
+                    //wkmax=Integer.parseInt(ds.getKey(), (int) ds.getChildrenCount());
+                    wkmax=(int) ds.getChildrenCount();
                 }
             }
             @Override

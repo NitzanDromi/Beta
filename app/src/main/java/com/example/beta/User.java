@@ -4,7 +4,7 @@ package com.example.beta;
  * a User class - contains all of the data required for a user
  */
 public class User {
-    private String name, lastName, email, phone, uid, id, date, weight, beginningweight, height, places, beforeImage, afterImage;
+    private String name, lastName, email, phone, uid, date, weight, beginningweight, height, places, beforeImage, afterImage;
     private Boolean isFemale;
 
     /**
@@ -18,7 +18,6 @@ public class User {
      * @param email
      * @param phone
      * @param isFemale
-     * @param id
      * @param date
      * @param weight
      * @param beginningweight
@@ -28,12 +27,11 @@ public class User {
      * @param afterImage
      * @param uid
      */
-    public User (String name,String lastName, String email, String phone, String id, String date, String weight, String beginningweight, String height, Boolean isFemale, String places, String uid,String afterImage, String beforeImage) {
+    public User (String name,String lastName, String email, String phone, String date, String weight, String beginningweight, String height, Boolean isFemale, String places, String uid,String afterImage, String beforeImage) {
         this.name=name;
         this.lastName=lastName;
         this.email=email;
         this.phone=phone;
-        this.id=id;
         this.date=date;
         this.height=height;
         this.weight=weight;
@@ -76,10 +74,6 @@ public class User {
     public void setPhone(String phone) {
         this.phone=phone;
     }
-
-    public String getId() {return id;}
-
-    public void setId(String id) {this.id = id;  }
 
     public String getDate() {return date;}
 

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:autoSizeTextType="uniform"
             android:gravity="center"
-            android:text="Login"
+            android:text="התחברות"
             android:textColor="#DF26BC5C"
             android:textSize="30dp"
             android:textStyle="bold" />
@@ -28,7 +28,7 @@
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="first name"
+            android:hint="שם פרטי"
             android:inputType="textPersonName"
             android:visibility="invisible"
             />
@@ -37,7 +37,7 @@
             android:id="@+id/etLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="last name"
+            android:hint="שם משפחה"
             android:inputType="textPersonName"
             android:visibility="invisible"
             />
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:hint="e-mail"
+            android:hint="חשבון המייל שלך"
             android:inputType="textEmailAddress" />
 
 
@@ -55,7 +55,7 @@
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="phone"
+            android:hint="מספר הטלפון שלך"
             android:inputType="phone" />
 
         <TextView
@@ -63,42 +63,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#DF26BC5C"
-            android:text="WARNING: your phone number will be exhibited to your sessions participates" />
+            android:text="אזהרה: מספר הטלפון שלך יוצג למשתתפי הסדנה שלך" />
 
         <TextView
             android:id="@+id/tvBDate"
-            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:hint="תאריך לידה"
             android:textColorHint="#DF26BC5C"
-            android:hint="Select date of birth" />
-
-        <EditText
-            android:id="@+id/etId"
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="id"
-            android:inputType="numberDecimal" />
+            android:textSize="20dp"
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/etWeight"
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="current weight (KG)"
-            android:inputType="numberDecimal" />
+            android:hint="משקל נוכחי (KG)"
+            android:inputType="numberDecimal"
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/etHeight"
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="height (CM)"
-            android:inputType="numberDecimal" />
+            android:hint="גובה  (CM)"
+            android:inputType="numberDecimal"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -108,11 +100,11 @@
 
             <TextView
                 android:id="@+id/tvMale"
-                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Male"
-                android:textColor="#000000" />
+                android:text="זכר"
+                android:textColor="#000000"
+                android:visibility="invisible" />
 
             <Switch
                 android:id="@+id/switchFM"
@@ -124,11 +116,11 @@
 
             <TextView
                 android:id="@+id/tvFemale"
-                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Female"
-                android:textColor="#000000" />
+                android:text="נקבה"
+                android:textColor="#000000"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
@@ -141,14 +133,6 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <CheckBox
-            android:id="@+id/cbStayConnect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="#DF26BC5C"
-            android:text="Stay Connected"
-            android:textColor="#DF26BC5C" />
 
         <TextView
             android:id="@+id/tvRegister"
