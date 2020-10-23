@@ -1,22 +1,15 @@
 package com.example.beta;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,16 +22,15 @@ import com.google.firebase.storage.StorageReference;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.beta.FBref.refRecfiles;
+import static com.example.beta.FBref.refRecipesImages;
 
 /**
  * @author Nitzan Dromi
@@ -49,6 +41,7 @@ public class Matcon extends AppCompatActivity {
     int n;
     TextView tv_output;
     String fname;
+    ImageView ivRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +49,53 @@ public class Matcon extends AppCompatActivity {
         setContentView(R.layout.activity_matcon);
 
         tv_output=(TextView)findViewById(R.id.tv_Output);
+        ivRecipe=(ImageView)findViewById(R.id.imageViewRecipe);
 
         Intent a= getIntent();
         n=a.getExtras().getInt("recNum");
         fname=Integer.toString(n);
         fname+=".txt";
 
-        download();
+        downloadRecipe();
+        try {
+            downloadImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    /**
+     * this function downloads the recipe image (image file) from Firebase Storage to a local file
+     * and presents the image
+     * @throws IOException
+     */
+    public void downloadImage() throws IOException{
+        StorageReference refRecImg = refRecipesImages.child(Integer.toString(n)+".png");
+
+        final File localFile = File.createTempFile(Integer.toString(n)+"tmp","png");
+        refRecImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                String filePath = localFile.getPath();
+                Bitmap bitmapImage = BitmapFactory.decodeFile(filePath);
+                ivRecipe.setImageBitmap(bitmapImage);
+                ivRecipe.setVisibility(View.VISIBLE);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(Matcon.this, "תמונת המתכון לא מצליחה לעלות", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
      * this function uploads the recipe file (text file) from Firebase Storage
      * according to the recipe location from the previous activity (recipes activity)
      */
-    public void download() {
-        final ProgressDialog pd=ProgressDialog.show(this,"Recipe download","downloading...",true);
+    public void downloadRecipe() {
+        final ProgressDialog pd=ProgressDialog.show(this,"המתכון יורד","טוען...",true);
 
         StorageReference refFile = refRecfiles.child(fname);
 
@@ -80,7 +104,7 @@ public class Matcon extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
-                Toast.makeText(Matcon.this, "Recipe download success", Toast.LENGTH_LONG).show();
+                Toast.makeText(Matcon.this, "המתכון ירד בהצלחה", Toast.LENGTH_LONG).show();
 
                 try {
                     InputStream is = openFileInput(fname);
@@ -97,7 +121,7 @@ public class Matcon extends AppCompatActivity {
                     tv_output.setText(sb);
                     deleteFile(fname);
                 } catch (FileNotFoundException e) {
-                    Toast.makeText(Matcon.this, "File not downloaded yet", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Matcon.this, "המתכון עדיין לא עלה", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     Log.e("Matcon",e.toString());
                 }
@@ -109,9 +133,9 @@ public class Matcon extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 pd.dismiss();
                 if (((StorageException) exception).getErrorCode() == StorageException.ERROR_OBJECT_NOT_FOUND) {
-                    Toast.makeText(Matcon.this, "File not exist in storage", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Matcon.this, "קובץ לא קיים בזיכרון", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(Matcon.this, "Recipe download failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Matcon.this, "המתכון נכשל לעלות", Toast.LENGTH_LONG).show();
                     Log.e("Matcon", exception.toString());
                 }
             }
@@ -120,28 +144,12 @@ public class Matcon extends AppCompatActivity {
 
     /**
      * this function is called if the user presses the "back" button on his device.
-     * it assures the user's intention to leave the current screen.
-     * if the user wants to exit, it sends him back to the recipes activity.
+     * it sends him back to the recipes activity.
      */
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setMessage("Are you sure you want to close the recipe?");
-        adb.setTitle("BACK");
-        adb.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int whichButton) {
-                Intent a=new Intent(Matcon.this, recipes.class);
-                startActivity(a);
-                dialogInterface.dismiss();
-            }
-        });
-        adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int whichButton) {
-                dialogInterface.cancel();
-            }
-        });
-        AlertDialog ad = adb.create();
-        ad.show();
+        Intent a=new Intent(Matcon.this, recipes.class);
+        startActivity(a);
     }
 
     /**

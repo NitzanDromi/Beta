@@ -1,10 +1,6 @@
 package com.example.beta;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,9 +17,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.beta.FBref.refAuth;
 import static com.example.beta.FBref.refUsers;
@@ -169,7 +166,7 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        Toast.makeText(this, "please choose a recipe", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "לתשומת ליבך: עלייך לבחור מתכון", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -235,6 +232,16 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+
+    /**
+     * this function is called if the user presses the "back" button on his device.
+     * it sends him back to the tafritim's activity.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent a=new Intent(recipes.this, tafritim.class);
+        startActivity(a);
+    }
 
     /**
      * this function creates the menu options - the menu - main.xml

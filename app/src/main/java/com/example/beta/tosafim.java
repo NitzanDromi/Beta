@@ -1,8 +1,5 @@
 package com.example.beta;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,8 +27,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refRecfiles;
 import static com.example.beta.FBref.refSUPfiles;
 import static com.example.beta.FBref.refUsers;
 
@@ -97,7 +96,7 @@ public class tosafim extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
-                Toast.makeText(tosafim.this, "Supplements download success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(tosafim.this, "התוספים ירדו בהצלחה", Toast.LENGTH_SHORT).show();
                 // String filePath = localFile.getPath();
 
                 try {
@@ -115,7 +114,7 @@ public class tosafim extends AppCompatActivity {
                     tvoutput.setText(sb);
                     deleteFile(fname);
                 } catch (FileNotFoundException e) {
-                    Toast.makeText(tosafim.this, "File not downloaded yet", Toast.LENGTH_LONG).show();
+                    Toast.makeText(tosafim.this, "קובץ התוספים עדיין לא ירד", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     Log.e("supplements",e.toString());
                 }
@@ -127,13 +126,23 @@ public class tosafim extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 pd.dismiss();
                 if (((StorageException) exception).getErrorCode() == StorageException.ERROR_OBJECT_NOT_FOUND) {
-                    Toast.makeText(tosafim.this, "File not exist in storage", Toast.LENGTH_LONG).show();
+                    Toast.makeText(tosafim.this, "הקובץ לא קיים במאגר", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(tosafim.this, "supplements download failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(tosafim.this, "הורדת התוספים נכשלה", Toast.LENGTH_LONG).show();
                     Log.e("supplements", exception.toString());
                 }
             }
         });
+    }
+
+    /**
+     * this function is called if the user presses the "back" button on his device.
+     * it sends him back to the tafritim's activity.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent a=new Intent(tosafim.this, tafritim.class);
+        startActivity(a);
     }
 
     /**

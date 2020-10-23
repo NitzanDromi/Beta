@@ -7,12 +7,24 @@
     android:orientation="vertical"
     tools:context=".Matcon">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewRecipe"
+        android:layout_weight="2"
+        app:srcCompat="@drawable/blank_screen" />
     <TextView
         android:id="@+id/tv_Output"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@android:dimen/app_icon_size"
         android:text="" />
 
+    </LinearLayout>
 
 </ScrollView>

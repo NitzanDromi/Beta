@@ -1,22 +1,15 @@
 package com.example.beta;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import static com.example.beta.FBref.refMenu;
-import static com.example.beta.FBref.refSentence;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +17,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import static com.example.beta.FBref.refMenu;
+import static com.example.beta.FBref.refSentence;
 
 /**
  * an activity that presents the menus.
@@ -165,7 +164,7 @@ public class tafritim extends AppCompatActivity {
             MainTafrit();
         }
         else{
-            Toast.makeText(this, "this is the last week", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "זהו השבוע האחרון במאגר", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -191,7 +190,7 @@ public class tafritim extends AppCompatActivity {
             MainTafrit();
         }
         else{
-            Toast.makeText(this, "this is the first week", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "זהו השבוע הראשון", Toast.LENGTH_SHORT).show();
         }
     }
 

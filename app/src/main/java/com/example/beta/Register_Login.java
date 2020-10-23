@@ -36,6 +36,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -76,7 +77,7 @@ public class Register_Login extends AppCompatActivity {
 
     TextView tvTitle, tvRegister, tvFemale, tvMale;
     EditText etName, etLastName, etPhone, etMail, etWeight, etHeight;
-  //  CheckBox cbStayconnect;
+    CheckBox cbStayConnect;
     Switch swMoF;
     Boolean isFemale= false;
 
@@ -91,7 +92,7 @@ public class Register_Login extends AppCompatActivity {
 
     User userdb;
 
-    String mVerificationId, code,lastName="", fstName="", phone="+972", phoneInput="", email="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
+    String mVerificationId, code, lastName="", fstName="", phone="+972", phoneInput="", email="",currentWeight="", weight="", height="", uid="", date="", places="", beforeImage="empty", afterImage="empty";
     Boolean stayConnect, registered=false, isUID = false;
     Boolean mVerificationInProgress = false;
 
@@ -116,6 +117,7 @@ public class Register_Login extends AppCompatActivity {
         etMail=(EditText)findViewById(R.id.etMail);
         etPhone=(EditText)findViewById(R.id.etPhone);
         etWeight= (EditText) findViewById(R.id.etWeight);
+        cbStayConnect=(CheckBox)findViewById(R.id.cbStayConnect);
         tvRegister=(TextView) findViewById(R.id.tvRegister);
 
         tvFemale=(TextView) findViewById(R.id.tvFemale);
@@ -185,15 +187,15 @@ public class Register_Login extends AppCompatActivity {
                 if ((currentYear-year)>=15)
                     mDisplayDate.setText(date);
                 else
-                    Toast.makeText(Register_Login.this, "עליך להיות לפחות מעל גיל 15", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_Login.this, "הגיל המינימלי לשימוש באפליקציה הינו 15", Toast.LENGTH_SHORT).show();
             }
         };
 
 
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         firstRun=settings.getBoolean("firstRun",true);
-        //stayConnect = false;
-        stayConnect=true;
+        stayConnect = false;
+        //stayConnect=true;
     /**
      * this condition checks if this is the first run on the user's device
      * if so, the function sends th user directly to the registration option
@@ -255,9 +257,11 @@ public class Register_Login extends AppCompatActivity {
         swMoF.setVisibility(View.VISIBLE);
         spFplace.setVisibility(View.VISIBLE);
         etMail.setVisibility(View.VISIBLE);
-        btn.setText("Register");
+        btn.setText("הרשמות");//להרשם או הרשמה?
 
-        SpannableString spannableString = new SpannableString("Already have an account?  Login here!");
+        //SpannableString spannableString = new SpannableString("Already have an account?  Login here!");
+        //יש לך חשבון? התחברי כאן!
+        SpannableString spannableString = new SpannableString("יש לך חשבון? להתחברות יש ללחוץ כאן!");
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -266,7 +270,8 @@ public class Register_Login extends AppCompatActivity {
                 logOption();
             }
         };
-        spannableString.setSpan(span, 26, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(span, 13, 35, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // spannableString.setSpan(span, 26, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvRegister.setText(spannableString);
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
@@ -288,10 +293,12 @@ public class Register_Login extends AppCompatActivity {
         swMoF.setVisibility(View.INVISIBLE);
         spFplace.setVisibility(View.INVISIBLE);
         etMail.setVisibility(View.INVISIBLE);
-        btn.setText("Login");
+      //  btn.setText("Login");
+        btn.setText("התחברות");
         registered=true;
 
-        SpannableString spannableString = new SpannableString("Don't have an account?  Register here!");
+        SpannableString spannableString = new SpannableString("אין לך חשבון? להרשמה יש ללחוץ כאן!");
+        //SpannableString spannableString = new SpannableString("Don't have an account?  Register here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -300,7 +307,8 @@ public class Register_Login extends AppCompatActivity {
                 regOption();
             }
         };
-        spannableString.setSpan(span, 24, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(span, 14, 34, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //spannableString.setSpan(span, 24, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvRegister.setText(spannableString);
         tvRegister.setMovementMethod(LinkMovementMethod.getInstance());
     }
@@ -350,7 +358,7 @@ public class Register_Login extends AppCompatActivity {
                     adCode.show();
                 }
             }else {
-                Toast.makeText(Register_Login.this, "Please, enter your phone number.", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register_Login.this, "יש להכניס את מספר הטלפון שלך", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -394,10 +402,10 @@ public class Register_Login extends AppCompatActivity {
                                 AlertDialog.Builder adb = new AlertDialog.Builder(this);
                                 final EditText et = new EditText(this);
                                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                adb.setMessage("enter the code you received");
-                                adb.setTitle("Authentication");
+                                adb.setMessage("יש להכניס את הקוד שקיבלת");
+                                adb.setTitle("הזדהות");
                                 adb.setView(et);
-                                adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                adb.setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialogInterface, int whichButton) {
                                             code = et.getText().toString();
                                             if (!code.isEmpty())
@@ -405,7 +413,7 @@ public class Register_Login extends AppCompatActivity {
                                             dialogInterface.dismiss();
                                         }
                                 });
-                                adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                                adb.setNeutralButton("ביטול", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialogInterface, int whichButton) {
                                             dialogInterface.cancel();
                                         }
@@ -416,7 +424,7 @@ public class Register_Login extends AppCompatActivity {
                         }
                     }
             } else {
-                    Toast.makeText(Register_Login.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Register_Login.this, "יש למלא את כל הפרטים הנדרשים", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -473,7 +481,7 @@ public class Register_Login extends AppCompatActivity {
 
                         else {
                             Log.d(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(Register_Login.this, "wrong!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Register_Login.this, "הקוד אינו נכון!", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

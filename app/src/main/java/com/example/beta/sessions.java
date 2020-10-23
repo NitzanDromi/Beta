@@ -1,8 +1,5 @@
 package com.example.beta;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,14 +11,15 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refMenu;
 import static com.example.beta.FBref.refUsers;
 
 public class sessions extends AppCompatActivity {
@@ -92,6 +90,16 @@ public class sessions extends AppCompatActivity {
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+
+    /**
+     * this function is called if the user presses the "back" button on his device.
+     * it sends him back to the tafritim's activity.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent a=new Intent(sessions.this, tafritim.class);
+        startActivity(a);
+    }
 
     /**
      * this function creates the menu options - the menu - main.xml

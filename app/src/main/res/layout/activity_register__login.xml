@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#DF26BC5C"
-            android:text="אזהרה: מספר הטלפון שלך יוצג למשתתפי הסדנה שלך" />
+            android:text="אזהרה: מספר הטלפון שלך יוצג לשאר משתתפי הסדנה" />
 
         <TextView
             android:id="@+id/tvBDate"
@@ -102,7 +102,7 @@
                 android:id="@+id/tvMale"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="זכר"
+                android:text="גבר"
                 android:textColor="#000000"
                 android:visibility="invisible" />
 
@@ -118,7 +118,7 @@
                 android:id="@+id/tvFemale"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="נקבה"
+                android:text="אישה"
                 android:textColor="#000000"
                 android:visibility="invisible" />
 
@@ -133,6 +133,33 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="אני רוצה להשאר מחוברת"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:textColor="#DF26BC5C"/>
+
+            <CheckBox
+                android:id="@+id/cbStayConnect"
+                style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:visibility="gone"
+                android:buttonTint="#DF26BC5C"
+
+                android:textColor="#DF26BC5C" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvRegister"
@@ -153,7 +180,7 @@
                 android:layout_height="match_parent"
                 android:background="#DF26BC5C"
                 android:onClick="logOrReg"
-                android:text="Login"
+                android:text="התחברות"
                 android:textColor="#FFFFFF" />
 
         </LinearLayout>

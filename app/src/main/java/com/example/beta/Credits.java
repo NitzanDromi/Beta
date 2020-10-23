@@ -1,12 +1,12 @@
 package com.example.beta;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @author Nitzan Dromi
@@ -19,6 +19,16 @@ public class Credits extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credits);
+    }
+
+    /**
+     * this function is called if the user presses the "back" button on his device.
+     * it sends him back to the tafritim's activity.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent a=new Intent(Credits.this, tafritim.class);
+        startActivity(a);
     }
 
     /**

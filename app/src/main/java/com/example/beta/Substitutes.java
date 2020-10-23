@@ -1,8 +1,5 @@
 package com.example.beta;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +11,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
@@ -30,10 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import static com.example.beta.FBref.refAuth;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import static com.example.beta.FBref.refSUBfiles;
-import static com.example.beta.FBref.refSUPfiles;
-import static com.example.beta.FBref.refUsers;
 /**
  * @author Nitzan Dromi
  * an activity that presents substitutes for vegans or vegiterians
@@ -68,7 +60,7 @@ public class Substitutes extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
-                Toast.makeText(Substitutes.this, "Substitutes download success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Substitutes.this, "תחליפי התזונה ירדו בהצלחה", Toast.LENGTH_SHORT).show();
 
                 try {
                     InputStream is = openFileInput(fname);
@@ -85,7 +77,7 @@ public class Substitutes extends AppCompatActivity {
                     tvOutPutSub.setText(sb);
                     deleteFile(fname);
                 } catch (FileNotFoundException e) {
-                    Toast.makeText(Substitutes.this, "File not downloaded yet", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Substitutes.this, "קובץ התוספים עדיין לא ירד", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     Log.e("Substitutes",e.toString());
                 }
@@ -97,13 +89,23 @@ public class Substitutes extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 pd.dismiss();
                 if (((StorageException) exception).getErrorCode() == StorageException.ERROR_OBJECT_NOT_FOUND) {
-                    Toast.makeText(Substitutes.this, "File not exist in storage", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Substitutes.this, "הקובץ לא קיים במאגר", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(Substitutes.this, "Substitutes download failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Substitutes.this, "הורדת התחליפים נכשלה", Toast.LENGTH_LONG).show();
                     Log.e("Substitutes", exception.toString());
                 }
             }
         });
+    }
+
+    /**
+     * this function is called if the user presses the "back" button on his device.
+     * it sends him back to the tafritim's activity.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent a=new Intent(Substitutes.this, tafritim.class);
+        startActivity(a);
     }
 
     /**

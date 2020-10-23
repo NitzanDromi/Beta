@@ -1,35 +1,19 @@
 package com.example.beta;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.text.InputType;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,9 +29,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.beta.FBref.refAuth;
 import static com.example.beta.FBref.refImages;
@@ -63,6 +50,7 @@ public class Settings extends AppCompatActivity {
     EditText etweight, etheight;
     int Gallery=1, count=0;
     ImageView ivBefore, ivAfter;
+    ImageButton ibHeightChange, ibWeightChange;
     TextView tvBefore, tvAfter, tvweight;
     AlertDialog adImagebefore, adImageAfter;
     Boolean female;
@@ -73,6 +61,8 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        ibWeightChange=(ImageButton) findViewById(R.id.imbtWeight);
+        ibHeightChange=(ImageButton) findViewById(R.id.imbtHeight);
         ivBefore=(ImageView)findViewById(R.id.imageViewBeforeImage);
         ivAfter=(ImageView)findViewById(R.id.imageViewAfterImage);
         tvBefore=(TextView) findViewById(R.id.tvBefore);
@@ -99,14 +89,24 @@ public class Settings extends AppCompatActivity {
             if (dS.exists()) {
                 for(DataSnapshot data : dS.getChildren()) {
                     user = data.getValue(User.class);
-                    tvname.setText("Welcome " + user.getName() + "!");
-                    fullName=user.getName()+" "+user.getLastName();
+                    female=user.getIsFemale();
                     name=user.getName();
-                    weight=user.getBeginningweight();
-                    tvweight.setText(weight);
+                    tvname.setText("שלום " + name + "!");
+
+                    fullName=name+" "+user.getLastName();
+                    tvweight.setText(user.getBeginningweight());
                     etweight.setText(user.getWeight());
                     etheight.setText(user.getHeight());
-                    female=user.getIsFemale();
+
+                    if (female) {
+                        ibWeightChange.setImageResource(R.drawable.save_changes_female);
+                        ibHeightChange.setImageResource(R.drawable.save_changes_female);
+                    }
+                    else{
+                        ibWeightChange.setImageResource(R.drawable.save_changes_male);
+                        ibHeightChange.setImageResource(R.drawable.save_changes_male);
+                    }
+
                     if (user.getBeforeImage().equals("empty")){
                         imBefore="empty";
                         tvBefore.setVisibility(View.INVISIBLE);
@@ -184,12 +184,12 @@ public class Settings extends AppCompatActivity {
             refUsers.child(fullName).child("height").setValue(etheight.getText().toString());
             if(!Settings.this.isFinishing())
             {
-                Toast.makeText(this, "Changes are saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "השינויים נשמרו", Toast.LENGTH_SHORT).show();
 
             }
         }
         else
-            Toast.makeText(this, "please, fill your height", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "לתשומת ליבך: יש למלא את הגובה שלך", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -337,7 +337,7 @@ public class Settings extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         pd.dismiss();
-                                        Toast.makeText(Settings.this, "Image Uploaded", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Settings.this, "התמונה הועלתה", Toast.LENGTH_LONG).show();
 
                                         refUsers.child(fullName).child("afterImage").removeValue();
                                         refUsers.child(fullName).child("afterImage").setValue("checked");
@@ -355,7 +355,7 @@ public class Settings extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Exception exception) {
                                         pd.dismiss();
-                                        Toast.makeText(Settings.this, "Upload failed", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Settings.this, "העלאה נכשלה", Toast.LENGTH_LONG).show();
                                     }
                                 });
                     }
@@ -368,7 +368,7 @@ public class Settings extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         pd.dismiss();
-                                        Toast.makeText(Settings.this, "Image Uploaded", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Settings.this, "התמונה הועלתה", Toast.LENGTH_LONG).show();
 
                                         refUsers.child(fullName).child("beforeImage").removeValue();
                                         refUsers.child(fullName).child("beforeImage").setValue("checked");
@@ -385,12 +385,12 @@ public class Settings extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Exception exception) {
                                         pd.dismiss();
-                                        Toast.makeText(Settings.this, "Upload failed", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Settings.this, "העלאה נכשלה", Toast.LENGTH_LONG).show();
                                     }
                                 });
                     }
                 } else {
-                    Toast.makeText(this, "No Image was selected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "לא נבחרה תמונה", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -418,7 +418,7 @@ public class Settings extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                 Toast.makeText(Settings.this, "Image download failed", Toast.LENGTH_LONG).show();
+                 Toast.makeText(Settings.this, "הורדת התמונה נכשלה", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -445,9 +445,19 @@ public class Settings extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                 Toast.makeText(Settings.this, "Image download failed", Toast.LENGTH_LONG).show();
+                 Toast.makeText(Settings.this, "הורדת התמונה נכשלה", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /**
+     * this function is called if the user presses the "back" button on his device.
+     * it sends him back to the tafritim's activity.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent a=new Intent(Settings.this, tafritim.class);
+        startActivity(a);
     }
 
     /**
