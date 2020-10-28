@@ -27,27 +27,27 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:onClick="NextWeek"
-            android:layout_weight="1"
+            android:layout_weight="1.25"
             app:srcCompat="@drawable/arrow2" />
 
         <TextView
             android:id="@+id/tvNumOfWeek"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#E91E63"
+            android:layout_weight="1.25"
+            android:background="#ef2b7d"
             android:text="1"
             android:textAlignment="textEnd"
             android:textColor="#FFFFFF"
-            android:textSize="35dp"
+            android:textSize="35sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvweek"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:background="#E91E63"
+            android:layout_weight="6.25"
+            android:background="#ef2b7d"
             android:text="תפריט שבוע  "
             android:textAlignment="textEnd"
             android:textColor="#FFFFFF"
@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:onClick="PreviousWeek"
-            android:layout_weight="1"
+            android:layout_weight="1.25"
             app:srcCompat="@drawable/arrow" />
     </LinearLayout>
 
@@ -109,49 +109,54 @@
             android:id="@+id/tvFriSatur"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="25"
             android:fontFamily="@font/adamina"
             android:text="שישי ושבת"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="22dp"
+            android:textSize="22sp"
+            android:onClick="FridaySaturday"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvWednesThurs"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="25"
             android:fontFamily="@font/adamina"
             android:text="רביעי וחמישי"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="22dp"
+            android:onClick="WednesdayThursday"
+            android:textSize="22sp"
+
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvMonTues"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="25"
             android:fontFamily="@font/adamina"
             android:text="שני ושלישי"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="22dp"
+            android:textSize="22sp"
+            android:onClick="MondayTuesday"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvSunday"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="25"
             android:fontFamily="@font/adamina"
             android:text="ראשון"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="22dp"
+            android:textSize="22sp"
             android:textStyle="bold"
+            android:onClick="Sunday"
             tools:visibility="visible" />
 
 
@@ -174,15 +179,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="9"
-            android:foregroundTint="#E91E63"
-            android:indeterminateTint="#E91E63"
+            android:foregroundTint="#ef2b7d"
+            android:indeterminateTint="#ef2b7d"
             android:max="3"
             android:progress="3"
-            android:progressBackgroundTint="#E91E63"
-            android:progressTint="#E91E63"
-            android:secondaryProgressTint="#E91E63"
+            android:progressBackgroundTint="#ef2b7d"
+            android:progressTint="#ef2b7d"
+            android:secondaryProgressTint="#ef2b7d"
             android:thumb="@drawable/arrow_movement"
-            app:tickMarkTint="#E91E63" />
+            app:tickMarkTint="#ef2b7d" />
 
         <Space
             android:layout_width="0dp"

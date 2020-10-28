@@ -141,6 +141,24 @@ public class tafritim extends AppCompatActivity {
         });
     }
 
+    public void Sunday(View view) {
+        seekBardays.setProgress(3);
+    }
+
+    public void MondayTuesday(View view) {
+        seekBardays.setProgress(2);
+    }
+
+    public void WednesdayThursday(View view) {
+        seekBardays.setProgress(1);
+    }
+
+    public void FridaySaturday(View view) {
+        seekBardays.setProgress(0);
+    }
+
+
+
     /**
      * this function changes the screen into the next week's menu and information (unless it's the last one)
      * @param view
@@ -253,4 +271,6 @@ public class tafritim extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
+
+
 }

@@ -71,9 +71,9 @@ public class Matcon extends AppCompatActivity {
      * @throws IOException
      */
     public void downloadImage() throws IOException{
-        StorageReference refRecImg = refRecipesImages.child(Integer.toString(n)+".png");
+        StorageReference refRecImg = refRecipesImages.child(Integer.toString(n)+".jpg");
 
-        final File localFile = File.createTempFile(Integer.toString(n)+"tmp","png");
+        final File localFile = File.createTempFile(Integer.toString(n)+"tmp","jpg");
         refRecImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

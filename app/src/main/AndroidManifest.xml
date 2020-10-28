@@ -10,9 +10,10 @@
         android:label="Keren Shlissel"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
-        <activity android:name=".sessions"></activity>
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Main_Screen"></activity>
+        <activity android:name=".sessions" />
         <activity android:name=".Substitutes" />
         <activity android:name=".tosafim" />
         <activity android:name=".Matcon" />

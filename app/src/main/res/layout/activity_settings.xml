@@ -12,7 +12,7 @@
         android:id="@+id/tvname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E91E63"
+        android:background="#ef2b7d"
         android:text=""
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -213,21 +213,21 @@
             android:id="@+id/tvAfter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="5"
+            android:text="אחרי"
             android:textAlignment="center"
-            android:textColor="#E91E63"
-            android:visibility="invisible"
-            android:text="אחרי" />
+            android:textColor="#ef2b7d"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tvBefore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="5"
+            android:text="לפני"
             android:textAlignment="center"
-            android:textColor="#E91E63"
-            android:visibility="invisible"
-            android:text="לפני" />
+            android:textColor="#ef2b7d"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <LinearLayout
@@ -240,7 +240,7 @@
             android:id="@+id/imageViewAfterImage"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:onClick="upload_after"
             app:srcCompat="@drawable/blank_screen" />
 
@@ -248,7 +248,7 @@
             android:id="@+id/imageViewBeforeImage"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:onClick="upload_before"
             app:srcCompat="@drawable/blank_screen" />
     </LinearLayout>
