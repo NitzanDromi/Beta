@@ -23,12 +23,12 @@ public class Credits extends AppCompatActivity {
 
     /**
      * this function is called if the user presses the "back" button on his device.
-     * it sends him back to the tafritim's activity.
+     * it sends him back to the Main Screen activity.
      */
     @Override
     public void onBackPressed() {
-        Intent a=new Intent(Credits.this, tafritim.class);
-        startActivity(a);
+        Intent a88=new Intent(this, Main_Screen.class);
+        startActivity(a88);
     }
 
     /**
@@ -43,37 +43,32 @@ public class Credits extends AppCompatActivity {
 
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
-     * @param item
+     * @param item8
      */
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        String st=item.getTitle().toString();
-        Intent a=new Intent();
-        if(st.equals("מתכונים"))
-            a=new Intent(this, recipes.class);
-        else {
-            if (st.equals("פרטי הסדנה"))
-                a = new Intent(this, sessions.class);
-            else {
-                if (st.equals("תפריט"))
-                    a = new Intent(this, tafritim.class);
-                else {
-                    if (st.equals("תוספי תזונה"))
-                        a = new Intent(this, tosafim.class);
-                    else {
-                        if (st.equals("תחליפים לצמחוניים וטבעוניים"))
-                            a = new Intent(this, Substitutes.class);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item8) {
+        String st8=item8.getTitle().toString();
+        Intent a8=new Intent();
+        if(st8.equals("מסך ראשי"))
+            a8=new Intent(this, Main_Screen.class);
+        if (st8.equals("פרטי הסדנה"))
+            a8 = new Intent(this, sessions.class);
+        if (st8.equals("תפריט"))
+            a8 = new Intent(this, tafritim.class);
+        if (st8.equals("מתכונים"))
+            a8 = new Intent(this, recipes.class);
+        if (st8.equals("תוספי תזונה"))
+            a8 = new Intent(this, tosafim.class);
+        if (st8.equals("תחליפים לצמחוניים וטבעוניים"))
+            a8 = new Intent(this, Substitutes.class);
+        if (st8.equals("אודות"))
+            a8 = new Intent(this, Credits.class);
+        if (st8.equals("פרופיל אישי"))
+            a8 = new Intent(this, Settings.class);
 
-                        else
-                        if (st.equals("פרופיל אישי"))
-                            a = new Intent(this, Settings.class);
-                    }
-                }
-            }
-        }
-        startActivity(a);
+        startActivity(a8);
         finish();
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item8);
     }
 
 }

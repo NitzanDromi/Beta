@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#ef2b7d"
+    android:background="#d6758e"
     android:orientation="vertical"
     tools:context=".Credits">
 
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        app:srcCompat="@drawable/keren_information" />
+        app:srcCompat="@drawable/keren_details" />
 
     <Space
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
         android:background="#FFFFFF"
         android:gravity="center"
         android:text="האפליקציה נוצרה על ידי ניצן דרומי"
-        android:textColor="#E91E63"
+        android:textColor="#d6758e"
         android:textSize="24sp"
         android:textStyle="bold" />
 

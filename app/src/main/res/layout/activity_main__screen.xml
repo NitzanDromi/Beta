@@ -38,14 +38,16 @@
                 android:textAlignment="center"
                 android:layout_weight="6"
                 android:text="מתכונים"
+                android:onClick="moveToRecipes"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imvRecipe"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:onClick="moveToRecipes"
                 android:layout_weight="4"
                 app:srcCompat="@drawable/recipes_icon" />
 
@@ -71,16 +73,18 @@
                 android:textAlignment="center"
                 android:layout_weight="6"
                 android:text="פרופיל אישי"
+                android:onClick="moveToPersonalProfile"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/im3"
+                android:id="@+id/imvProfile"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:onClick="moveToPersonalProfile"
                 android:layout_weight="4"
-                app:srcCompat="@drawable/user_info_female" />
+                app:srcCompat="@drawable/men_info_icon" />
         </LinearLayout>
 
         <Space
@@ -95,20 +99,22 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv6"
+                android:id="@+id/tvSupplements"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="6"
                 android:text="תוספים"
+                android:onClick="moveToSupplements"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/im5"
+                android:id="@+id/imvSupplements"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:onClick="moveToSupplements"
                 android:layout_weight="4"
                 app:srcCompat="@drawable/men_sup_icon" />
         </LinearLayout>
@@ -150,13 +156,15 @@
                 android:text="תפריט"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                android:onClick="moveToTafritim"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imvMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
+                android:onClick="moveToTafritim"
                 app:srcCompat="@drawable/menu_icon" />
         </LinearLayout>
 
@@ -177,16 +185,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="7"
+                android:onClick="moveToSubstitutes"
                 android:text="תחליפים"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/imvSub"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
+                android:onClick="moveToSubstitutes"
                 app:srcCompat="@drawable/substitutes_icon" />
         </LinearLayout>
 
@@ -208,16 +218,18 @@
                 android:layout_gravity="center"
                 android:layout_weight="6"
                 android:text="פרטי סדנה"
+                android:onClick="moveToSession"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/im20"
+                android:id="@+id/imvSession"
                 android:layout_width="0dp"
+                android:onClick="moveToSession"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                app:srcCompat="@drawable/session_icon" />
+                app:srcCompat="@drawable/sessions_icon" />
         </LinearLayout>
 
         <Space
@@ -238,16 +250,18 @@
                 android:layout_gravity="center"
                 android:layout_weight="6"
                 android:text="אודות"
+                android:onClick="moveToCredits"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imagev5"
+                android:id="@+id/imvCredits"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:onClick="moveToCredits"
                 android:layout_weight="4"
-                app:srcCompat="@drawable/credit_icon" />
+                app:srcCompat="@drawable/credits_icon" />
         </LinearLayout>
 
         <Space

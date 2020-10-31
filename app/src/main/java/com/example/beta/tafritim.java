@@ -78,6 +78,16 @@ public class tafritim extends AppCompatActivity {
     }
 
     /**
+     * this function is called if the user presses the "back" button on his device.
+     * it sends him back to the Main Screen activity.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent a55=new Intent(this, Main_Screen.class);
+        startActivity(a55);
+    }
+
+    /**
      * this function is called in order to set the appropriate menu.
      * the default option (when called from the oncreate) is the first week and Sunday
      */
@@ -224,51 +234,32 @@ public class tafritim extends AppCompatActivity {
 
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
-     * @param item
+     * @param item5
      */
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        String st=item.getTitle().toString();
-        if(st.equals("מתכונים")){
-            Intent a=new Intent(this, recipes.class);
-            startActivity(a);
-            finish();
-        }
-        else {
-            if (st.equals("פרטי הסדנה")) {
-                Intent  a = new Intent(this, sessions.class);
-                startActivity(a);
-                finish();
-            }
-            else {
-                if (st.equals("פרופיל אישי")) {
-                    Intent    a = new Intent(this, Settings.class);
-                    startActivity(a);
-                    finish();
-                }
-                else {
-                    if (st.equals("תוספי תזונה")) {
-                        Intent   a = new Intent(this, tosafim.class);
-                        startActivity(a);
-                        finish();
-                    }
-                    else {
-                        if (st.equals("תחליפים לצמחוניים וטבעוניים")){
-                            Intent  a = new Intent(this, Substitutes.class);
-                            startActivity(a);
-                            finish();}
+    public boolean onOptionsItemSelected(@NonNull MenuItem item5) {
+        String st5=item5.getTitle().toString();
+        Intent a5=new Intent();
+        if(st5.equals("מסך ראשי"))
+            a5=new Intent(this, Main_Screen.class);
+        if (st5.equals("פרטי הסדנה"))
+            a5 = new Intent(this, sessions.class);
+        if (st5.equals("תפריט"))
+            a5 = new Intent(this, tafritim.class);
+        if (st5.equals("מתכונים"))
+            a5 = new Intent(this, recipes.class);
+        if (st5.equals("תוספי תזונה"))
+            a5 = new Intent(this, tosafim.class);
+        if (st5.equals("תחליפים לצמחוניים וטבעוניים"))
+            a5 = new Intent(this, Substitutes.class);
+        if (st5.equals("אודות"))
+            a5 = new Intent(this, Credits.class);
+        if (st5.equals("פרופיל אישי"))
+            a5 = new Intent(this, Settings.class);
 
-                        else
-                        if (st.equals("אודות")) {
-                            Intent   a = new Intent(this, Credits.class);
-                            startActivity(a);
-                            finish();
-                        }
-                    }
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item);
+        startActivity(a5);
+        finish();
+        return super.onOptionsItemSelected(item5);
 
     }
 

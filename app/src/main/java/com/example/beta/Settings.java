@@ -99,12 +99,12 @@ public class Settings extends AppCompatActivity {
                     etheight.setText(user.getHeight());
 
                     if (female) {
-                        ibWeightChange.setImageResource(R.drawable.save_changes_female);
-                        ibHeightChange.setImageResource(R.drawable.save_changes_female);
+                        ibWeightChange.setImageResource(R.drawable.arrow);
+                        ibHeightChange.setImageResource(R.drawable.arrow);
                     }
                     else{
-                        ibWeightChange.setImageResource(R.drawable.save_changes_male);
-                        ibHeightChange.setImageResource(R.drawable.save_changes_male);
+                        ibWeightChange.setImageResource(R.drawable.arrow2);
+                        ibHeightChange.setImageResource(R.drawable.arrow2);
                     }
 
                     if (user.getBeforeImage().equals("empty")){
@@ -452,13 +452,14 @@ public class Settings extends AppCompatActivity {
 
     /**
      * this function is called if the user presses the "back" button on his device.
-     * it sends him back to the tafritim's activity.
+     * it sends him back to the Main Screen activity.
      */
     @Override
     public void onBackPressed() {
-        Intent a=new Intent(Settings.this, tafritim.class);
-        startActivity(a);
+        Intent a33=new Intent(this, Main_Screen.class);
+        startActivity(a33);
     }
+
 
     /**
      * this function creates the menu options - the menu - main.xml
@@ -472,53 +473,32 @@ public class Settings extends AppCompatActivity {
 
     /**
      * this function gets the user's choice from the menu and sends him to the appropriate activity (based on his choice...)
-     * @param item
+     * @param item3
      */
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        String st=item.getTitle().toString();
-        if(st.equals("מתכונים")){
-            Intent a=new Intent(this, recipes.class);
-            startActivity(a);
-            finish();
-        }
-        else {
-            if (st.equals("פרטי הסדנה")) {
-                Intent  a = new Intent(this, sessions.class);
-                startActivity(a);
-                finish();
-            }
-            else {
-                if (st.equals("תפריט")) {
-                    Intent    a = new Intent(Settings.this, tafritim.class);
-                    startActivity(a);
-                    finish();
-                }
-                else {
-                    if (st.equals("תוספי תזונה")) {
-                        Intent   a = new Intent(this, tosafim.class);
-                        startActivity(a);
-                        finish();
-                    }
-                    else {
-                      if (st.equals("תחליפים לצמחוניים וטבעוניים")){
-                          Intent  a = new Intent(this, Substitutes.class);
-                        startActivity(a);
-                        finish();}
+    public boolean onOptionsItemSelected(@NonNull MenuItem item3) {
+        String st3=item3.getTitle().toString();
+        Intent a3=new Intent();
+        if(st3.equals("מסך ראשי"))
+            a3=new Intent(this, Main_Screen.class);
+        if (st3.equals("פרטי הסדנה"))
+            a3 = new Intent(this, sessions.class);
+        if (st3.equals("תפריט"))
+            a3 = new Intent(this, tafritim.class);
+        if (st3.equals("מתכונים"))
+            a3 = new Intent(this, recipes.class);
+        if (st3.equals("תוספי תזונה"))
+            a3 = new Intent(this, tosafim.class);
+        if (st3.equals("תחליפים לצמחוניים וטבעוניים"))
+            a3 = new Intent(this, Substitutes.class);
+        if (st3.equals("אודות"))
+            a3 = new Intent(this, Credits.class);
+        if (st3.equals("פרופיל אישי"))
+            a3 = new Intent(this, Settings.class);
 
-                      else
-                        if (st.equals("אודות")) {
-                            Intent   a = new Intent(this, Credits.class);
-                            startActivity(a);
-                            finish();
-                        }
-                    }
-                }
-            }
-        }
-
-
-        return super.onOptionsItemSelected(item);
+        startActivity(a3);
+        finish();
+        return super.onOptionsItemSelected(item3);
     }
 
 }

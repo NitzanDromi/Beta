@@ -86,7 +86,7 @@
             android:layout_weight="28"
             android:background="#FFFFFF"
             android:onClick="updateWeight"
-            app:srcCompat="@drawable/blank_screen" />
+            app:srcCompat="@drawable/arrow" />
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -190,7 +190,7 @@
             android:layout_weight="28"
             android:onClick="updateHeight"
             android:background="#FFFFFF"
-            app:srcCompat="@drawable/blank_screen" />
+            app:srcCompat="@drawable/arrow" />
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"

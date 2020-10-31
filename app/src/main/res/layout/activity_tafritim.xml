@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.25"
-            android:background="#ef2b7d"
+            android:background="#d6758e"
             android:text="1"
             android:textAlignment="textEnd"
             android:textColor="#FFFFFF"
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="6.25"
-            android:background="#ef2b7d"
+            android:background="#d6758e"
             android:text="תפריט שבוע  "
             android:textAlignment="textEnd"
             android:textColor="#FFFFFF"
@@ -114,6 +114,7 @@
             android:text="שישי ושבת"
             android:textAlignment="center"
             android:textColor="#000000"
+            android:background="#4ea999"
             android:textSize="22sp"
             android:onClick="FridaySaturday"
             android:textStyle="bold" />
@@ -127,6 +128,7 @@
             android:text="רביעי וחמישי"
             android:textAlignment="center"
             android:textColor="#000000"
+            android:background="#91bc55"
             android:onClick="WednesdayThursday"
             android:textSize="22sp"
 
@@ -141,6 +143,7 @@
             android:text="שני ושלישי"
             android:textAlignment="center"
             android:textColor="#000000"
+            android:background="#d6758e"
             android:textSize="22sp"
             android:onClick="MondayTuesday"
             android:textStyle="bold" />
@@ -154,6 +157,7 @@
             android:text="ראשון"
             android:textAlignment="center"
             android:textColor="#000000"
+            android:background="#eccb76"
             android:textSize="22sp"
             android:textStyle="bold"
             android:onClick="Sunday"
@@ -179,15 +183,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="9"
-            android:foregroundTint="#ef2b7d"
-            android:indeterminateTint="#ef2b7d"
+            android:foregroundTint="#d6758e"
+            android:indeterminateTint="#d6758e"
             android:max="3"
             android:progress="3"
-            android:progressBackgroundTint="#ef2b7d"
-            android:progressTint="#ef2b7d"
-            android:secondaryProgressTint="#ef2b7d"
+            android:progressBackgroundTint="#d6758e"
+            android:progressTint="#d6758e"
+            android:secondaryProgressTint="#d6758e"
             android:thumb="@drawable/arrow_movement"
-            app:tickMarkTint="#ef2b7d" />
+            app:tickMarkTint="#d6758e" />
 
         <Space
             android:layout_width="0dp"

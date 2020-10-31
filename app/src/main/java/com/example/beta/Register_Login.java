@@ -216,14 +216,14 @@ public class Register_Login extends AppCompatActivity {
     }
 
     /**
-     * on activity start - if the user exists & asked to  be remembered -transfer to the next activity (tafritim)
+     * on activity start - if the user exists & asked to  be remembered -transfer to the next activity (Main Screen)
      */
     @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         Boolean isChecked=settings.getBoolean("stayConnect",false);
-        Intent si = new Intent(Register_Login.this,tafritim.class);
+        Intent si = new Intent(Register_Login.this,Main_Screen.class);
         if (refAuth.getCurrentUser()!=null && isChecked) {
             stayConnect=true;
             startActivity(si);
@@ -503,7 +503,7 @@ public class Register_Login extends AppCompatActivity {
                             adCode.dismiss();
                         else
                             ad.dismiss();;
-                        Intent si = new Intent(Register_Login.this, tafritim.class);
+                        Intent si = new Intent(Register_Login.this, Main_Screen.class);
                         startActivity(si);
                         finish();
                     }
