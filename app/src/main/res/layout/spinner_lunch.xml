@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="#eccb76"
+    android:backgroundTint="#d6758e"
+    android:gravity="right"
+    android:padding="10dp"
+    android:shadowColor="#d6758e"
+android:id="@+id/spinnerLunch"
+    android:hint="לחץ לבחירת מתכון"
+    android:textColorHighlight="#FFFFFF"
+    android:textColorHint="#FFFFFF"
+    android:textColor="#FFFFFF"
+    android:textSize="20sp" />

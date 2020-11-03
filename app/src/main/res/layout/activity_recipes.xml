@@ -24,10 +24,7 @@
         android:textSize="@android:dimen/app_icon_size"
         android:textStyle="bold" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+
 
     <TextView
         android:id="@+id/tvLunch"
@@ -50,7 +47,7 @@
             android:id="@+id/btnLunch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:onClick="lunchRecipe"
             android:textSize="35dp"
             android:text="הצג"
@@ -58,13 +55,38 @@
             android:background="#eccb76"
             android:textColor="#d6758e" />
 
-        <Spinner
-            android:id="@+id/spLunch"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#FFFFFF" />
+            android:layout_weight="7">
+
+            <TextView
+                android:id="@+id/tvChooseLunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#eccb76"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="22dp"
+                android:textColor="#FFFFFF"
+                android:text=""/>
+
+            <Spinner
+                android:id="@+id/spLunch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:backgroundTint="#d6758e"
+                android:gravity="center"
+                android:outlineSpotShadowColor="#d6758e"
+                />
+
+        </FrameLayout>
+
+
+
     </LinearLayout>
 
     <Space
@@ -95,33 +117,47 @@
             android:id="@+id/btnDinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:onClick="dinnerRecipe"
             android:textSize="35dp"
             android:text="הצג"
             android:textStyle="bold"
-            android:background="#d6758e"
-            android:textColor="#eccb76" />
+            android:textColor="#d6758e"
+            android:background="#eccb76" />
 
-        <Spinner
-            android:id="@+id/spDinner"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:backgroundTint="#d6758e"
-            android:outlineSpotShadowColor="@color/common_google_signin_btn_text_dark_default" />
+            android:layout_weight="7">
 
+            <TextView
+                android:id="@+id/tvChooseDinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#eccb76"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="22dp"
+                android:textColor="#FFFFFF"
+                android:text=""/>
+
+            <Spinner
+                android:id="@+id/spDinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:backgroundTint="#d6758e"
+                android:gravity="center"
+                android:outlineSpotShadowColor="#d6758e" />
+        </FrameLayout>
     </LinearLayout>
 
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_weight="2.5" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
 </LinearLayout>

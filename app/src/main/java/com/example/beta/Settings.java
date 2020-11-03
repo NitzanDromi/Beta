@@ -99,12 +99,12 @@ public class Settings extends AppCompatActivity {
                     etheight.setText(user.getHeight());
 
                     if (female) {
-                        ibWeightChange.setImageResource(R.drawable.arrow);
-                        ibHeightChange.setImageResource(R.drawable.arrow);
+                        ibWeightChange.setImageResource(R.drawable.save_changes_women);
+                        ibHeightChange.setImageResource(R.drawable.save_changes_women);
                     }
                     else{
-                        ibWeightChange.setImageResource(R.drawable.arrow2);
-                        ibHeightChange.setImageResource(R.drawable.arrow2);
+                        ibWeightChange.setImageResource(R.drawable.save_changes_men);
+                        ibHeightChange.setImageResource(R.drawable.save_changes_men);
                     }
 
                     if (user.getBeforeImage().equals("empty")){
@@ -228,8 +228,11 @@ public class Settings extends AppCompatActivity {
         }
         else {
             androidx.appcompat.app.AlertDialog.Builder alertDialogB = new AlertDialog.Builder(this);
-            alertDialogB.setTitle("what would you like to do with the image?");
-            alertDialogB.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            if (female)
+                alertDialogB.setTitle("מה תרצי לעשות עם התמונה?");
+            else
+                alertDialogB.setTitle("מה תרצה לעשות עם התמונה?");
+            alertDialogB.setPositiveButton("למחוק", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     if (female)
                         ivBefore.setImageResource(R.drawable.request_before_female);
@@ -242,7 +245,7 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.dismiss();
                 }
             });
-            alertDialogB.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
+            alertDialogB.setNegativeButton("להחליף", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     count = 1;
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -250,7 +253,7 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.cancel();
                 }
             });
-            alertDialogB.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialogB.setNeutralButton("ביטול", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     dialogInterface.cancel();
                 }
@@ -279,8 +282,11 @@ public class Settings extends AppCompatActivity {
         }
         else {
             androidx.appcompat.app.AlertDialog.Builder adbAfter= new AlertDialog.Builder(this);
-            adbAfter.setTitle("what would you like to do with this image?");
-            adbAfter.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            if (female)
+                adbAfter.setTitle("מה תרצי לעשות עם התמונה?");
+            else
+                adbAfter.setTitle("מה תרצה לעשות עם התמונה?");
+            adbAfter.setPositiveButton("למחוק", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     if (female)
                         ivAfter.setImageResource(R.drawable.request_after_female);
@@ -293,7 +299,7 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.dismiss();
                 }
             });
-            adbAfter.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
+            adbAfter.setNegativeButton("להחליף", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     count = 2;
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -301,7 +307,7 @@ public class Settings extends AppCompatActivity {
                     dialogInterface.dismiss();
                 }
             });
-            adbAfter.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            adbAfter.setNeutralButton("ביטול", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int whichButton) {
                     dialogInterface.cancel();
                 }

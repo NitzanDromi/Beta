@@ -57,12 +57,10 @@ public class Main_Screen extends AppCompatActivity {
                     if (female) {
                         ivProfile.setImageResource(R.drawable.women_id_icon);
                         ivSupplements.setImageResource(R.drawable.pregnancy_icon);
-                        tvSup.setText("תוספי תזונה להריוניות");
 
                     } else {
                         ivProfile.setImageResource(R.drawable.men_info_icon);
                         ivSupplements.setImageResource(R.drawable.men_sup_icon);
-                        tvSup.setText("תוספי תזונה לגברים");
                     }
                 }
             }
@@ -79,38 +77,38 @@ public class Main_Screen extends AppCompatActivity {
     }
 
     public void moveToSubstitutes(View view) {
-        Intent  a = new Intent(this, Substitutes.class);
-        startActivity(a);
+        Intent  t = new Intent(this, Substitutes.class);
+        startActivity(t);
         finish();
     }
 
     public void moveToSession(View view) {
-        Intent  a = new Intent(this, sessions.class);
-        startActivity(a);
+        Intent  g = new Intent(this, sessions.class);
+        startActivity(g);
         finish();
     }
 
     public void moveToCredits(View view) {
-        Intent   a = new Intent(this, Credits.class);
-        startActivity(a);
+        Intent   f = new Intent(this, Credits.class);
+        startActivity(f);
         finish();
     }
 
     public void moveToRecipes(View view) {
-        Intent a=new Intent(this, recipes.class);
-        startActivity(a);
+        Intent h=new Intent(this, recipes.class);
+        startActivity(h);
         finish();
     }
 
     public void moveToPersonalProfile(View view) {
-        Intent  a = new Intent(this, Settings.class);
-        startActivity(a);
+        Intent  l = new Intent(this, Settings.class);
+        startActivity(l);
         finish();
     }
 
     public void moveToSupplements(View view) {
-        Intent   a = new Intent(this, tosafim.class);
-        startActivity(a);
+        Intent   j = new Intent(this, tosafim.class);
+        startActivity(j);
         finish();
     }
 

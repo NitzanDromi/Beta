@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:onClick="NextWeek"
             android:layout_weight="1.25"
-            app:srcCompat="@drawable/arrow2" />
+            app:srcCompat="@drawable/arrow_menu" />
 
         <TextView
             android:id="@+id/tvNumOfWeek"
@@ -60,7 +60,7 @@
             android:layout_height="match_parent"
             android:onClick="PreviousWeek"
             android:layout_weight="1.25"
-            app:srcCompat="@drawable/arrow" />
+            app:srcCompat="@drawable/arrow_menu2" />
     </LinearLayout>
 
     <Space

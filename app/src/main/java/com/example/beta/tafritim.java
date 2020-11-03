@@ -89,7 +89,7 @@ public class tafritim extends AppCompatActivity {
 
     /**
      * this function is called in order to set the appropriate menu.
-     * the default option (when called from the oncreate) is the first week and Sunday
+     * the default option (when called from the onCreate) is the first week and Sunday
      */
     public void MainTafrit (){
         DatabaseReference refDay = refMenu.child(week).child(day);

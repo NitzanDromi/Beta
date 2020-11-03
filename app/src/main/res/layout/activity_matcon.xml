@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:orientation="vertical"
     tools:context=".Matcon">
 
 
 
         <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+            android:layout_weight="3"
         android:layout_gravity="center"
         android:id="@+id/imageViewRecipe"
         app:srcCompat="@drawable/blank_screen" />
 
 
-    <TextView
-        android:id="@+id/tv_Output"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:padding="@android:dimen/app_icon_size"
-        android:text="" />
+        android:layout_height="0dp"
+        android:layout_weight="7">
+
+        <TextView
+            android:id="@+id/tv_Output"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@android:dimen/app_icon_size"
+            android:text=""
+            android:textColor="#000000" />
+    </ScrollView>
 
 
-</ScrollView>
+
+</LinearLayout>

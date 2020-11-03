@@ -3,7 +3,6 @@ package com.example.beta;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -51,7 +50,7 @@ public class Substitutes extends AppCompatActivity {
      * this function uploads the substitutes file (text file) from Firebase Storage
      */
     public void download() {
-        final ProgressDialog pd=ProgressDialog.show(this,"Substitutes download","downloading...",true);
+        final ProgressDialog pd_sub=ProgressDialog.show(this,"התחליפים בהורדה","טוען...",true);
 
         StorageReference refFile = refSUBfiles.child(fname);
 
@@ -59,8 +58,8 @@ public class Substitutes extends AppCompatActivity {
         refFile.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
-                Toast.makeText(Substitutes.this, "תחליפי התזונה ירדו בהצלחה", Toast.LENGTH_SHORT).show();
+                pd_sub.dismiss();
+             //   Toast.makeText(Substitutes.this, "תחליפי התזונה ירדו בהצלחה", Toast.LENGTH_SHORT).show();
 
                 try {
                     InputStream is = openFileInput(fname);
@@ -77,9 +76,9 @@ public class Substitutes extends AppCompatActivity {
                     tvOutPutSub.setText(sb);
                     deleteFile(fname);
                 } catch (FileNotFoundException e) {
-                    Toast.makeText(Substitutes.this, "קובץ התוספים עדיין לא ירד", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Substitutes.this, "קובץ התחליפים עדיין לא ירד", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
-                    Log.e("Substitutes",e.toString());
+                   // Log.e("Substitutes",e.toString());
                 }
 
 
@@ -87,12 +86,12 @@ public class Substitutes extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                pd.dismiss();
+                pd_sub.dismiss();
                 if (((StorageException) exception).getErrorCode() == StorageException.ERROR_OBJECT_NOT_FOUND) {
                     Toast.makeText(Substitutes.this, "הקובץ לא קיים במאגר", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(Substitutes.this, "הורדת התחליפים נכשלה", Toast.LENGTH_LONG).show();
-                    Log.e("Substitutes", exception.toString());
+               //     Log.e("Substitutes", exception.toString());
                 }
             }
         });

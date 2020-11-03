@@ -3,7 +3,6 @@ package com.example.beta;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -87,7 +86,7 @@ public class tosafim extends AppCompatActivity {
      * according to the user's gender
      */
     public void download() {
-        final ProgressDialog pd=ProgressDialog.show(this,"Supplements download","downloading...",true);
+        final ProgressDialog pd=ProgressDialog.show(this,"התוספים בירידה","טוען...",true);
 
         StorageReference refFile = refSUPfiles.child(fname);
 
@@ -96,7 +95,7 @@ public class tosafim extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
-                Toast.makeText(tosafim.this, "התוספים ירדו בהצלחה", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(tosafim.this, "התוספים ירדו בהצלחה", Toast.LENGTH_SHORT).show();
                 // String filePath = localFile.getPath();
 
                 try {
@@ -116,7 +115,7 @@ public class tosafim extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     Toast.makeText(tosafim.this, "קובץ התוספים עדיין לא ירד", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
-                    Log.e("supplements",e.toString());
+                  //  Log.e("supplements",e.toString());
                 }
 
 
@@ -129,7 +128,7 @@ public class tosafim extends AppCompatActivity {
                     Toast.makeText(tosafim.this, "הקובץ לא קיים במאגר", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(tosafim.this, "הורדת התוספים נכשלה", Toast.LENGTH_LONG).show();
-                    Log.e("supplements", exception.toString());
+                 //   Log.e("supplements", exception.toString());
                 }
             }
         });
@@ -141,8 +140,8 @@ public class tosafim extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        Intent a=new Intent(this, Main_Screen.class);
-        startActivity(a);
+        Intent a11=new Intent(this, Main_Screen.class);
+        startActivity(a11);
     }
 
     /**

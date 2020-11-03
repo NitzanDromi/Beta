@@ -8,6 +8,7 @@
     android:orientation="horizontal"
     tools:context=".Main_Screen">
 
+
     <Space
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -22,7 +23,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10" />
+            android:layout_weight="14.5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +57,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10" />
+            android:layout_weight="5.5" />
 
 
         <LinearLayout
@@ -84,13 +85,13 @@
                 android:layout_height="match_parent"
                 android:onClick="moveToPersonalProfile"
                 android:layout_weight="4"
-                app:srcCompat="@drawable/men_info_icon" />
+                app:srcCompat="@drawable/women_id_icon" />
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10" />
+            android:layout_weight="5.5" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,7 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="6"
-                android:text="תוספים"
+                android:textAlignment="center"
+                android:text="תוספי תזונה"
                 android:onClick="moveToSupplements"
                 android:textColor="#000000"
                 android:textSize="24sp"
@@ -116,13 +118,13 @@
                 android:layout_height="match_parent"
                 android:onClick="moveToSupplements"
                 android:layout_weight="4"
-                app:srcCompat="@drawable/men_sup_icon" />
+                app:srcCompat="@drawable/pregnancy_icon" />
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10" />
+            android:layout_weight="14.5" />
     </LinearLayout>
 
     <Space
@@ -184,6 +186,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textAlignment="center"
                 android:layout_weight="7"
                 android:onClick="moveToSubstitutes"
                 android:text="תחליפים"
@@ -218,6 +221,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="6"
                 android:text="פרטי סדנה"
+                android:textAlignment="center"
                 android:onClick="moveToSession"
                 android:textColor="#000000"
                 android:textSize="24sp"

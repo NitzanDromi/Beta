@@ -12,7 +12,7 @@
         android:id="@+id/tvname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ef2b7d"
+        android:background="#559fc9"
         android:text=""
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -77,7 +77,7 @@
             android:layout_weight="28"
             android:ems="10"
             android:inputType="numberDecimal"
-            android:textColor="@color/colorAccent" />
+            android:textColor="#d6758e" />
 
         <ImageButton
             android:id="@+id/imbtWeight"
@@ -86,7 +86,7 @@
             android:layout_weight="28"
             android:background="#FFFFFF"
             android:onClick="updateWeight"
-            app:srcCompat="@drawable/arrow" />
+            app:srcCompat="@drawable/save_changes_women" />
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -177,7 +177,7 @@
             android:layout_weight="28"
             android:ems="10"
             android:inputType="numberDecimal"
-            android:textColor="@color/colorAccent" />
+            android:textColor="#d6758e" />
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -190,7 +190,7 @@
             android:layout_weight="28"
             android:onClick="updateHeight"
             android:background="#FFFFFF"
-            app:srcCompat="@drawable/arrow" />
+            app:srcCompat="@drawable/save_changes_women" />
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -216,7 +216,7 @@
             android:layout_weight="5"
             android:text="אחרי"
             android:textAlignment="center"
-            android:textColor="#ef2b7d"
+            android:textColor="#d6758e"
             android:visibility="invisible" />
 
         <TextView
@@ -226,7 +226,7 @@
             android:layout_weight="5"
             android:text="לפני"
             android:textAlignment="center"
-            android:textColor="#ef2b7d"
+            android:textColor="#d6758e"
             android:visibility="invisible" />
     </LinearLayout>
 

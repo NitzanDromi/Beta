@@ -32,7 +32,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -463,7 +462,7 @@ public class Register_Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:success");
+                           // Log.d(TAG, "signInWithCredential:success");
                             SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
                             SharedPreferences.Editor editor = settings.edit();
                         //    editor.putBoolean("stayConnect", cbStayconnect.isChecked());
@@ -480,7 +479,7 @@ public class Register_Login extends AppCompatActivity {
                         }
 
                         else {
-                            Log.d(TAG, "signInWithCredential:failure", task.getException());
+                          //  Log.d(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(Register_Login.this, "הקוד אינו נכון!", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -524,14 +523,14 @@ public class Register_Login extends AppCompatActivity {
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
-                Log.d(TAG, "onVerificationCompleted:" + credential);
+            //    Log.d(TAG, "onVerificationCompleted:" + credential);
                 mVerificationInProgress = false;
                 signInWithPhoneAuthCredential(credential);
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                Log.w(TAG, "onVerificationFailed", e);
+              //  Log.w(TAG, "onVerificationFailed", e);
                 mVerificationInProgress = false;
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     etPhone.setError("Invalid phone number");
@@ -544,7 +543,7 @@ public class Register_Login extends AppCompatActivity {
             @Override
             public void onCodeSent(@NonNull String verificationId,
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                Log.d(TAG, "onCodeSent:" + verificationId);
+               // Log.d(TAG, "onCodeSent:" + verificationId);
                 mVerificationId = verificationId;
             }
         };

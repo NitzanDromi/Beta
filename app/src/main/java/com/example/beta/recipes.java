@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -34,12 +35,14 @@ import static com.example.beta.FBref.reflunch;
  */
 public class recipes extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Spinner spLunch, spDinner;
+    TextView spinner_lunch, spinner_dinner;
     Button btnLunch, btnDinner;
     String strlunch="",strdinner="";
     Recipe recipe, recipe2;
 
     List<String> lst_lunch = new ArrayList<String>();
     List<String> lst_dinner = new ArrayList<String>();
+
 
     String uid;
     User user;
@@ -56,13 +59,22 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
         btnLunch=(Button)findViewById(R.id.btnLunch);
 
 
+        spinner_lunch=(TextView)findViewById(R.id.tvChooseLunch);
+        spinner_dinner=(TextView)findViewById(R.id.tvChooseDinner);
+
+
         lst_lunch.clear();
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_lunch);
+       // final ArrayAdapter arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_lunch);
+                final ArrayAdapter arrayAdapter = new ArrayAdapter<String>(recipes.this, R.layout.spinner_lunch, lst_lunch);
         spLunch.setAdapter(arrayAdapter);
         spLunch.setOnItemSelectedListener(this);
 
+       // arrayAdapter1=new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item,lst_dinner);
+
         lst_dinner.clear();
-        final ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_dinner);
+       // final ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_dinner);
+              final  ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, R.layout.spinner_dinner,lst_dinner);
+
         spDinner.setAdapter(arrayAdapter1);
         spDinner.setOnItemSelectedListener(this);
 
@@ -78,8 +90,10 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
                     String recipesname = (String) data.child("name").getValue();
                     lst_lunch.add(recipesname);
                 }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_lunch);
-                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+               // ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_lunch);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recipes.this, R.layout.spinner_lunch,lst_lunch);
+              //  arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                arrayAdapter.setDropDownViewResource(R.layout.spinner_lunch);
                 spLunch.setAdapter(arrayAdapter);
             }
 
@@ -88,6 +102,9 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
                 Toast.makeText(recipes.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
 
         /**
          * this function uploads the information from the firebase tree - recipes ->(branch) dinner - to a spinner
@@ -101,8 +118,11 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
                     String recipesname = (String) data.child("name").getValue();
                     lst_dinner.add(recipesname);
                 }
-                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_dinner);
-                arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+               // ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_dinner);
+
+                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, R.layout.spinner_dinner,lst_dinner);
+                //arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                arrayAdapter1.setDropDownViewResource(R.layout.spinner_dinner);
                 spDinner.setAdapter(arrayAdapter1);
             }
 
@@ -131,10 +151,14 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
                     if (user.getIsFemale()) {
                         btnDinner.setText("הציגי");
                         btnLunch.setText("הציגי");
+                        spinner_dinner.setText("לחצי לבחירת מתכון");
+                        spinner_lunch.setText("לחצי לבחירת מתכון");
                     }
                     else {
                         btnDinner.setText("הצג");
                         btnLunch.setText("הצג");
+                         spinner_dinner.setText("לחץ לבחירת מתכון");
+                        spinner_lunch.setText("לחץ לבחירת מתכון");
                     }
                 }
             }
@@ -156,10 +180,23 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         if (spLunch.equals(parent)){
             strlunch = lst_lunch.get(pos);
+            if (!strlunch.equals("רשימת המתכונים:"))
+                spinner_lunch.setText(strlunch);
+            if (!spinner_lunch.getText().equals("לחצי לבחירת מתכון")&& !spinner_lunch.getText().equals("לחץ לבחירת מתכון") && !spinner_lunch.getText().equals("רשימת המתכונים")){
+                Query query = reflunch.orderByChild("name").equalTo(strlunch);
+                query.addListenerForSingleValueEvent(VELrecipe1);
+            }
         }
         else{
             if (spDinner.equals(parent)){
                 strdinner=lst_dinner.get(pos);
+                if (!strdinner.equals("רשימת המתכונים"))
+                    spinner_dinner.setText(strdinner);
+                if (!spinner_dinner.getText().equals("לחצי לבחירת מתכון")&& !spinner_dinner.getText().equals("לחץ לבחירת מתכון")
+                        && !spinner_dinner.getText().equals("רשימת המתכונים:")) {
+                    Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
+                    query2.addListenerForSingleValueEvent(VELrecipe2);
+                }
             }
         }
     }
@@ -189,10 +226,12 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
             if (dataSnapshot.exists()) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     recipe = data.getValue(Recipe.class);
-                    Intent a = new Intent(recipes.this, Matcon.class);
-                    a.putExtra("recNum", recipe.getLocation());
-                    startActivity(a);
-                    finish();
+                    if (recipe.getLocation()!=0) {
+                        Intent a = new Intent(recipes.this, Matcon.class);
+                        a.putExtra("recNum", recipe.getLocation());
+                        startActivity(a);
+                        finish();
+                    }
                 }
             }
         }

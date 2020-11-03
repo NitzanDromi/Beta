@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,7 +94,7 @@ public class Matcon extends AppCompatActivity {
      * according to the recipe location from the previous activity (recipes activity)
      */
     public void downloadRecipe() {
-        final ProgressDialog pd=ProgressDialog.show(this,"המתכון יורד","טוען...",true);
+        final ProgressDialog pd_matcon=ProgressDialog.show(this,"המתכון יורד","טוען...",true);
 
         StorageReference refFile = refRecfiles.child(fname);
 
@@ -103,8 +102,8 @@ public class Matcon extends AppCompatActivity {
         refFile.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
-                Toast.makeText(Matcon.this, "המתכון ירד בהצלחה", Toast.LENGTH_LONG).show();
+                pd_matcon.dismiss();
+            //    Toast.makeText(Matcon.this, "המתכון ירד בהצלחה", Toast.LENGTH_LONG).show();
 
                 try {
                     InputStream is = openFileInput(fname);
@@ -123,7 +122,7 @@ public class Matcon extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     Toast.makeText(Matcon.this, "המתכון עדיין לא עלה", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
-                    Log.e("Matcon",e.toString());
+                 //   Log.e("Matcon",e.toString());
                 }
 
 
@@ -131,12 +130,12 @@ public class Matcon extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                pd.dismiss();
+                pd_matcon.dismiss();
                 if (((StorageException) exception).getErrorCode() == StorageException.ERROR_OBJECT_NOT_FOUND) {
                     Toast.makeText(Matcon.this, "קובץ לא קיים בזיכרון", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(Matcon.this, "המתכון נכשל לעלות", Toast.LENGTH_LONG).show();
-                    Log.e("Matcon", exception.toString());
+                  //  Log.e("Matcon", exception.toString());
                 }
             }
         });
