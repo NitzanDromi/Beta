@@ -55,7 +55,7 @@ public class sessions extends AppCompatActivity {
             if (dSSessions.exists()) {
                 for(DataSnapshot dataSessions : dSSessions.getChildren()) {
                     usersess = dataSessions.getValue(User.class);
-                    tvPlaces.setText("your sessions are in "+usersess.getPlaces());
+                    tvPlaces.setText("המפגשים שלך ב"+usersess.getPlaces());
                     Query queryParticipates = refUsers.orderByChild("places").equalTo(usersess.getPlaces());
                     queryParticipates.addListenerForSingleValueEvent(VELPARTICIPATES);
                 }

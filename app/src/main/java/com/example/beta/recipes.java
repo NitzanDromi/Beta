@@ -180,23 +180,23 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         if (spLunch.equals(parent)){
             strlunch = lst_lunch.get(pos);
-            if (!strlunch.equals("רשימת המתכונים:"))
+            if (!strlunch.equals("רשימת המתכונים"))
                 spinner_lunch.setText(strlunch);
-            if (!spinner_lunch.getText().equals("לחצי לבחירת מתכון")&& !spinner_lunch.getText().equals("לחץ לבחירת מתכון") && !spinner_lunch.getText().equals("רשימת המתכונים")){
+          /*  if (!spinner_lunch.getText().equals("לחצי לבחירת מתכון")&& !spinner_lunch.getText().equals("לחץ לבחירת מתכון") && !spinner_lunch.getText().equals("רשימת המתכונים")){
                 Query query = reflunch.orderByChild("name").equalTo(strlunch);
                 query.addListenerForSingleValueEvent(VELrecipe1);
-            }
+            }*/
         }
         else{
             if (spDinner.equals(parent)){
                 strdinner=lst_dinner.get(pos);
                 if (!strdinner.equals("רשימת המתכונים"))
                     spinner_dinner.setText(strdinner);
-                if (!spinner_dinner.getText().equals("לחצי לבחירת מתכון")&& !spinner_dinner.getText().equals("לחץ לבחירת מתכון")
-                        && !spinner_dinner.getText().equals("רשימת המתכונים:")) {
+              /*  if (!spinner_dinner.getText().equals("לחצי לבחירת מתכון")&& !spinner_dinner.getText().equals("לחץ לבחירת מתכון")
+                        && !spinner_dinner.getText().equals("רשימת המתכונים")) {
                     Query query2 = refdinner.orderByChild("name").equalTo(strdinner);
                     query2.addListenerForSingleValueEvent(VELrecipe2);
-                }
+                }*/
             }
         }
     }
@@ -226,7 +226,7 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
             if (dataSnapshot.exists()) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     recipe = data.getValue(Recipe.class);
-                    if (recipe.getLocation()!=0) {
+                    if (!recipe.getName().equals("רשימת המתכונים")) {
                         Intent a = new Intent(recipes.this, Matcon.class);
                         a.putExtra("recNum", recipe.getLocation());
                         startActivity(a);
