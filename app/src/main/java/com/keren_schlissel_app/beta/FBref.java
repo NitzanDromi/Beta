@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

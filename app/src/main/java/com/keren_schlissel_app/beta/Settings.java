@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -36,9 +36,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refImages;
-import static com.example.beta.FBref.refUsers;
+import static com.keren_schlissel_app.beta.FBref.refAuth;
+import static com.keren_schlissel_app.beta.FBref.refImages;
+import static com.keren_schlissel_app.beta.FBref.refUsers;
 
 /**
  * an activity that shows personal information about the user

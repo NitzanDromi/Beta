@@ -72,7 +72,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:hint="תאריך לידה"
-            android:textColorHint="#91bc55"
+            android:textColorHint="#000000"
             android:textSize="20dp"
             android:visibility="invisible" />
 
@@ -123,6 +123,9 @@
                 android:visibility="invisible" />
 
         </LinearLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Spinner
         android:id="@+id/spPlace"
@@ -178,7 +181,7 @@
                 android:layout_height="match_parent"
                 android:background="#91bc55"
                 android:onClick="logOrReg"
-                android:text="התחברות"
+                android:text="התחבר/י"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>

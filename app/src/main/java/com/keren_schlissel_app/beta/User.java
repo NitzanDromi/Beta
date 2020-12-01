@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 /**
  * a User class - contains all of the data required for a user

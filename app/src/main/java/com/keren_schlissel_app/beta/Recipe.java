@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 /**
  * a recipe class. build like the firebase tree - recipes.

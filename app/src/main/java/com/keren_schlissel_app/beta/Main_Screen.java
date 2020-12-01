@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refUsers;
+import static com.keren_schlissel_app.beta.FBref.refAuth;
+import static com.keren_schlissel_app.beta.FBref.refUsers;
 
 public class Main_Screen extends AppCompatActivity {
     ImageView ivProfile, ivSupplements;

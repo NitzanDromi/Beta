@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refSUBfiles;
+import static com.keren_schlissel_app.beta.FBref.refSUBfiles;
 /**
  * @author Nitzan Dromi
  * an activity that presents substitutes for vegans or vegiterians

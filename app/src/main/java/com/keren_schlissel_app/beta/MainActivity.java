@@ -1,12 +1,12 @@
-package com.example.beta;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.keren_schlissel_app.beta;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @author Nitzan Dromi

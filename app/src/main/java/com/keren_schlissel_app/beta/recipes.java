@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,10 +24,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refUsers;
-import static com.example.beta.FBref.refdinner;
-import static com.example.beta.FBref.reflunch;
+import static com.keren_schlissel_app.beta.FBref.refAuth;
+import static com.keren_schlissel_app.beta.FBref.refUsers;
+import static com.keren_schlissel_app.beta.FBref.refdinner;
+import static com.keren_schlissel_app.beta.FBref.reflunch;
 
 /**
  * @author Nitzan Dromi

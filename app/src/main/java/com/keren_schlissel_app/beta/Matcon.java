@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,8 +28,8 @@ import java.io.InputStreamReader;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refRecfiles;
-import static com.example.beta.FBref.refRecipesImages;
+import static com.keren_schlissel_app.beta.FBref.refRecfiles;
+import static com.keren_schlissel_app.beta.FBref.refRecipesImages;
 
 /**
  * @author Nitzan Dromi

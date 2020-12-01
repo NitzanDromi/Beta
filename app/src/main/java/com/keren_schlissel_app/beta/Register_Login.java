@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 /**
  * @author		Nitzan Dromi <address @nitzandr13@gmail.com>
@@ -66,9 +66,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refPlaces;
-import static com.example.beta.FBref.refUsers;
+import static com.keren_schlissel_app.beta.FBref.refAuth;
+import static com.keren_schlissel_app.beta.FBref.refPlaces;
+import static com.keren_schlissel_app.beta.FBref.refUsers;
 
 public class Register_Login extends AppCompatActivity {
 
@@ -256,7 +256,7 @@ public class Register_Login extends AppCompatActivity {
         swMoF.setVisibility(View.VISIBLE);
         spFplace.setVisibility(View.VISIBLE);
         etMail.setVisibility(View.VISIBLE);
-        btn.setText("הרשמות");//להרשם או הרשמה?
+        btn.setText("הרשמ/י");//להרשם או הרשמה?
 
         //SpannableString spannableString = new SpannableString("Already have an account?  Login here!");
         //יש לך חשבון? התחברי כאן!
@@ -293,7 +293,7 @@ public class Register_Login extends AppCompatActivity {
         spFplace.setVisibility(View.INVISIBLE);
         etMail.setVisibility(View.INVISIBLE);
       //  btn.setText("Login");
-        btn.setText("התחברות");
+        btn.setText("התחבר/י");
         registered=true;
 
         SpannableString spannableString = new SpannableString("אין לך חשבון? להרשמה יש ללחוץ כאן!");
@@ -325,7 +325,7 @@ public class Register_Login extends AppCompatActivity {
             if (!phoneInput.isEmpty()) {
 
                 if ((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) {
-                    etPhone.setError("invalid phone number");
+                    etPhone.setError("מספר הטלפון אינו תקין");
                 } else {
                     if (phone.equals("+972"))
                         for (int x = 1; x <= 9; x++)
@@ -381,8 +381,8 @@ public class Register_Login extends AppCompatActivity {
             if ((!fstName.isEmpty()) && (!email.isEmpty()) &&(!lastName.isEmpty())&&
                     (!phoneInput.isEmpty())  && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
-                if (places.equals("select your meetings location")) {
-                        Toast.makeText(this, "please choose your meetings location", Toast.LENGTH_SHORT).show();
+                if (places.equals("לחצי כאן כדי לבחור את הסדנה שלך")) {
+                        Toast.makeText(this, "יש לבחור את מקום הסדנה שלך", Toast.LENGTH_SHORT).show();
                 } else {
                         if (((!email.endsWith(".com")) || (!email.endsWith(".il"))) && (email.indexOf("@") == (-1)))
                             etMail.setError("חשבון המייל אינו תקין");
@@ -533,7 +533,7 @@ public class Register_Login extends AppCompatActivity {
               //  Log.w(TAG, "onVerificationFailed", e);
                 mVerificationInProgress = false;
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    etPhone.setError("Invalid phone number");
+                    etPhone.setError("מספר הטלפון אינו תקין");
                 } else {
                     if (e instanceof FirebaseTooManyRequestsException) {
                     }

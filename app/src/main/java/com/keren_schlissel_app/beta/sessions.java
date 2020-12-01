@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refUsers;
+import static com.keren_schlissel_app.beta.FBref.refAuth;
+import static com.keren_schlissel_app.beta.FBref.refUsers;
 
 public class sessions extends AppCompatActivity {
     TextView tvPlaces;

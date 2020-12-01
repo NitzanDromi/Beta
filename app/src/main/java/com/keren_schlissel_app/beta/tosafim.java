@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,9 +29,9 @@ import java.io.InputStreamReader;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refAuth;
-import static com.example.beta.FBref.refSUPfiles;
-import static com.example.beta.FBref.refUsers;
+import static com.keren_schlissel_app.beta.FBref.refAuth;
+import static com.keren_schlissel_app.beta.FBref.refSUPfiles;
+import static com.keren_schlissel_app.beta.FBref.refUsers;
 
 /**
  * an activity that shows the supplements for women/ men according to the user's gender

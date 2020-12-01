@@ -1,4 +1,4 @@
-package com.example.beta;
+package com.keren_schlissel_app.beta;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.beta.FBref.refMenu;
-import static com.example.beta.FBref.refSentence;
+import static com.keren_schlissel_app.beta.FBref.refMenu;
+import static com.keren_schlissel_app.beta.FBref.refSentence;
 
 /**
  * an activity that presents the menus.
