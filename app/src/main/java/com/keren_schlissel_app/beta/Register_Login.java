@@ -51,6 +51,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -381,7 +382,7 @@ public class Register_Login extends AppCompatActivity {
             if ((!fstName.isEmpty()) && (!email.isEmpty()) &&(!lastName.isEmpty())&&
                     (!phoneInput.isEmpty())  && (!date.isEmpty()) && (!weight.isEmpty()) && (!height.isEmpty())) {
 
-                if (places.equals("לחצי כאן כדי לבחור את הסדנה שלך")) {
+                if (places.equals("לחצ/י כאן כדי לבחור את הסדנה שלך")) {
                         Toast.makeText(this, "יש לבחור את מקום הסדנה שלך", Toast.LENGTH_SHORT).show();
                 } else {
                         if (((!email.endsWith(".com")) || (!email.endsWith(".il"))) && (email.indexOf("@") == (-1)))
@@ -394,6 +395,8 @@ public class Register_Login extends AppCompatActivity {
                                     for (int x = 1; x <= 9; x++)
                                         phone = phone + phoneInput.charAt(x);
                                 }
+
+
 
                                 startPhoneNumberVerification(phone);
                                 onVerificationStateChanged();
@@ -436,9 +439,19 @@ public class Register_Login extends AppCompatActivity {
      */
 
     private void startPhoneNumberVerification(String phoneNumber) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber, 40, TimeUnit.SECONDS, this, mCallbacks);
+      //  PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber, 40, TimeUnit.SECONDS, this, mCallbacks);
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(refAuth)
+                        .setPhoneNumber(phoneNumber)       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
         mVerificationInProgress = true;
     }
+
+
 
     /**
      * this function is called in order to check if the code the user wrote is the code he received and create a credential.
@@ -524,7 +537,7 @@ public class Register_Login extends AppCompatActivity {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
             //    Log.d(TAG, "onVerificationCompleted:" + credential);
-                mVerificationInProgress = false;
+            //    mVerificationInProgress = false;
                 signInWithPhoneAuthCredential(credential);
             }
 
@@ -545,6 +558,7 @@ public class Register_Login extends AppCompatActivity {
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
                // Log.d(TAG, "onCodeSent:" + verificationId);
                 mVerificationId = verificationId;
+                PhoneAuthProvider.ForceResendingToken mResendToken = token;
             }
         };
     }
