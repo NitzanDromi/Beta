@@ -72,7 +72,6 @@ public class recipes extends AppCompatActivity implements AdapterView.OnItemSele
        // arrayAdapter1=new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item,lst_dinner);
 
         lst_dinner.clear();
-       // final ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, android.R.layout.simple_spinner_item, lst_dinner);
               final  ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(recipes.this, R.layout.spinner_dinner,lst_dinner);
 
         spDinner.setAdapter(arrayAdapter1);
